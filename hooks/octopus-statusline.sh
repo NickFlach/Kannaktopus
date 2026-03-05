@@ -42,6 +42,14 @@ MODEL=$(echo "$input" | jq -r '.model.display_name // "Claude"')
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 COST=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
 
+# v8.35.0: Extract worktree info (Claude Code v2.1.69+ provides worktree field)
+WORKTREE=$(echo "$input" | jq -r '.worktree // empty' 2>/dev/null)
+WORKTREE_BRANCH=""
+if [[ -n "$WORKTREE" && "$WORKTREE" != "null" ]]; then
+    # Extract branch name from worktree path (last component)
+    WORKTREE_BRANCH=$(basename "$WORKTREE" 2>/dev/null)
+fi
+
 # Colors
 GREEN='\033[32m'
 YELLOW='\033[33m'
@@ -87,8 +95,19 @@ if [[ -n "$PHASE" && "$PHASE" != "null" ]]; then
         *)        PHASE_EMOJI="🐙" ;;
     esac
 
-    echo -e "${CYAN}[🐙 Octopus]${RESET} ${PHASE_EMOJI} ${PHASE} | ${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET}"
+    # v8.35.0: Append worktree branch when running in isolation
+    local wt_suffix=""
+    if [[ -n "$WORKTREE_BRANCH" ]]; then
+        wt_suffix=" | 🌿 ${WORKTREE_BRANCH}"
+    fi
+
+    echo -e "${CYAN}[🐙 Octopus]${RESET} ${PHASE_EMOJI} ${PHASE} | ${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET}${wt_suffix}"
 else
     # No active workflow - compact display
-    echo -e "${CYAN}[🐙]${RESET} ${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET}"
+    local wt_suffix=""
+    if [[ -n "$WORKTREE_BRANCH" ]]; then
+        wt_suffix=" | 🌿 ${WORKTREE_BRANCH}"
+    fi
+
+    echo -e "${CYAN}[🐙]${RESET} ${BAR_COLOR}${BAR}${RESET} ${PCT}% | ${YELLOW}${COST_FMT}${RESET}${wt_suffix}"
 fi
