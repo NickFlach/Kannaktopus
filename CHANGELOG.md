@@ -1,3 +1,13 @@
+## [8.35.0] - 2026-03-05
+
+### Added
+
+- Adaptive reasoning effort per phase — `get_effort_level()` now wired into `spawn_agent()`, gated by `SUPPORTS_OPUS_MEDIUM_EFFORT` (CC v2.1.68+)
+- Worktree branch display in statusline — shows active worktree branch when agents run in isolation (CC v2.1.69+)
+- InstructionsLoaded hook — injects dynamic workflow context (phase, autonomy, recent results) when CLAUDE.md loads (CC v2.1.69+)
+
+---
+
 ## [8.34.0] - 2026-03-04
 
 ### Changed

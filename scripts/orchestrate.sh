@@ -10891,6 +10891,19 @@ ${earned_skills_ctx}"
         fi
     fi
     log "DEBUG" "Model selected: $model (from agent_type=$agent_type)"
+
+    # v8.35.0: Adaptive reasoning effort per phase
+    # get_effort_level() maps phase+complexity to low/medium/high effort
+    # Only active when SUPPORTS_OPUS_MEDIUM_EFFORT=true (Claude Code v2.1.68+)
+    local effort_level=""
+    if [[ "$SUPPORTS_OPUS_MEDIUM_EFFORT" == "true" ]]; then
+        effort_level=$(get_effort_level "${phase:-unknown}")
+        if [[ -n "$effort_level" ]]; then
+            export OCTOPUS_EFFORT_LEVEL="$effort_level"
+            log "DEBUG" "Effort level: $effort_level (phase=${phase:-unknown})"
+        fi
+    fi
+
     record_agent_call "$agent_type" "$model" "$enhanced_prompt" "${phase:-unknown}" "${role:-none}" "0"
 
     # v8.14.0: Track provider usage in persistent state
@@ -10946,9 +10959,11 @@ ${earned_skills_ctx}"
                 --arg model "$model" \
                 --arg prompt "$enhanced_prompt" \
                 --arg result_file "$result_file" \
+                --arg effort "${effort_level:-medium}" \
                 '{agent_type: $agent_type, task_id: $task_id, role: $role,
                   phase: $phase, model: $model, prompt: $prompt,
                   result_file: $result_file, dispatch_method: "agent_teams",
+                  effort: $effort,
                   agent_id: "", dispatched_at: now | todate}' \
                 > "$agent_instruction_file" 2>/dev/null
         fi
