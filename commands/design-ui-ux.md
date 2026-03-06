@@ -1,10 +1,5 @@
 ---
-command: design-ui-ux
 description: "Design UI/UX systems with style guides, palettes, typography, and component specs"
-aliases:
-  - design
-  - ui-design
-  - ux-design
 ---
 
 # /octo:design-ui-ux - UI/UX Design Workflow

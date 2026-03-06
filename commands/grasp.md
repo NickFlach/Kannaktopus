@@ -1,5 +1,4 @@
 ---
-command: grasp
 description: Definition phase - Requirements clarification and scope definition
 ---
 

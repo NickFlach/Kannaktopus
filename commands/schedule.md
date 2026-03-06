@@ -1,9 +1,5 @@
 ---
-command: schedule
 description: "Manage scheduled workflow jobs (add/list/remove/enable/disable/logs)"
-aliases:
-  - jobs
-  - cron
 ---
 
 # Schedule

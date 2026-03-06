@@ -1,9 +1,5 @@
 ---
-command: staged-review
 description: "Two-stage review: spec compliance then code quality"
-aliases:
-  - two-stage-review
-  - full-review
 ---
 
 # Staged Review — Two-Stage Pipeline

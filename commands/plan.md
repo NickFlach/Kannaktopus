@@ -1,9 +1,5 @@
 ---
-command: plan
 description: "Intelligent plan builder - creates strategic execution plans (doesn't execute). Use /octo:embrace to execute plans."
-aliases:
-  - build-plan
-  - intent
 ---
 
 # Plan - Intelligent Plan Builder

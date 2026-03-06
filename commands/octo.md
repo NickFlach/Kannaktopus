@@ -1,11 +1,5 @@
 ---
-command: octo
 description: Smart router - Single entry point with natural language intent detection
-version: 1.0.0
-category: workflow
-tags: [router, intent-detection, workflow, smart-routing]
-created: 2025-02-03
-updated: 2025-02-03
 ---
 
 # Smart Router (/octo)

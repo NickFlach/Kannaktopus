@@ -1,7 +1,5 @@
 ---
-command: resume
 description: "Restore project context from prior Claude Octopus session"
-skill: skill-resume
 ---
 
 # Resume

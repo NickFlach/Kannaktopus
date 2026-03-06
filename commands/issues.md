@@ -1,7 +1,5 @@
 ---
-command: issues
 description: "Track, inspect, and resolve cross-session Octopus issues"
-skill: skill-issues
 ---
 
 # Issues

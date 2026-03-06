@@ -1,5 +1,4 @@
 ---
-command: brainstorm
 description: "Start a creative thought partner brainstorming session"
 ---
 

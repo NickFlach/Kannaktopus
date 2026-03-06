@@ -1,5 +1,4 @@
 ---
-command: loop
 description: Execute tasks in loops with conditions, iterative improvements until goals are met
 ---
 

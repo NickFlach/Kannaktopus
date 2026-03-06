@@ -1,9 +1,5 @@
 ---
-command: develop
 description: "Development phase - Build solutions with multi-AI implementation and quality gates"
-aliases:
-  - tangle
-  - build-phase
 ---
 
 # Develop - Development Phase 🛠️

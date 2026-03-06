@@ -1,5 +1,4 @@
 ---
-command: debug
 description: Systematic debugging with methodical problem investigation
 ---
 

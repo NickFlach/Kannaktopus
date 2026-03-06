@@ -1,9 +1,5 @@
 ---
-command: factory
 description: "Dark Factory Mode - Spec-in, software-out autonomous pipeline"
-aliases:
-  - dark-factory
-  - build-from-spec
 ---
 
 # Factory - Dark Factory Mode (v8.25.0)

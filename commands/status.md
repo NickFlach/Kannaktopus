@@ -1,7 +1,5 @@
 ---
-command: status
 description: "Show Claude Octopus workflow and provider status"
-skill: skill-status
 ---
 
 # Status

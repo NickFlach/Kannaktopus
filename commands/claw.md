@@ -1,5 +1,4 @@
 ---
-command: claw
 description: OpenClaw instance administration — manage hosts across macOS, Ubuntu/Debian, Docker, OCI, and Proxmox
 ---
 

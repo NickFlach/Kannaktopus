@@ -1,10 +1,5 @@
 ---
-command: prd-score
 description: Score an existing PRD against the 100-point AI-optimization framework
-arguments:
-  - name: file
-    description: Path to the PRD file to score (relative or absolute)
-    required: true
 ---
 
 ## STOP - DO NOT INVOKE /skill OR Skill() AGAIN

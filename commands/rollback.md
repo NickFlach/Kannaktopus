@@ -1,7 +1,5 @@
 ---
-command: rollback
 description: "Restore project state from a saved checkpoint"
-skill: skill-rollback
 ---
 
 # Rollback

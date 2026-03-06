@@ -1,9 +1,5 @@
 ---
-command: spec
 description: "NLSpec authoring - Structured specification from multi-AI research"
-aliases:
-  - nlspec
-  - specification
 ---
 
 # Spec - NLSpec Authoring

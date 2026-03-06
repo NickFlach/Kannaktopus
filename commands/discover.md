@@ -1,9 +1,5 @@
 ---
-command: discover
 description: "Discovery phase - Multi-AI research and exploration"
-aliases:
-  - probe
-  - research-phase
 ---
 
 # Discover - Discovery Phase 🔍

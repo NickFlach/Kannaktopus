@@ -1,5 +1,4 @@
 ---
-command: docs
 description: Document delivery with export to PPTX, DOCX, PDF formats
 ---
 

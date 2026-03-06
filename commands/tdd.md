@@ -1,5 +1,4 @@
 ---
-command: tdd
 description: Test-driven development with red-green-refactor discipline
 ---
 

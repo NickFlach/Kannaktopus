@@ -1,11 +1,5 @@
 ---
-command: sentinel
 description: GitHub-aware work monitor - triages issues, PRs, and CI failures
-version: 1.0.0
-category: monitoring
-tags: [sentinel, github, triage, issues, ci, monitoring]
-created: 2026-02-21
-updated: 2026-02-21
 ---
 
 # Sentinel (/octo:sentinel)

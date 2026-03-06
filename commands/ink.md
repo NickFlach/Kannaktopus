@@ -1,5 +1,4 @@
 ---
-command: ink
 description: Delivery phase - Quality assurance, validation, and review
 ---
 

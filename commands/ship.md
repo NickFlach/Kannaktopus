@@ -1,7 +1,5 @@
 ---
-command: ship
 description: "Finalize project delivery with validation and checkpointing"
-skill: skill-ship
 ---
 
 # Ship

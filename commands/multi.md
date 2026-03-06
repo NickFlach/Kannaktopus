@@ -1,5 +1,4 @@
 ---
-command: multi
 description: Force multi-provider parallel execution for any task - manual override mode
 ---
 

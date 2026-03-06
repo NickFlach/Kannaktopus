@@ -1,7 +1,5 @@
 ---
-command: quick
 description: Quick execution mode for ad-hoc tasks without full workflow overhead
-skill: octopus-quick
 ---
 
 # Quick Mode Command

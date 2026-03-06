@@ -1,5 +1,4 @@
 ---
-command: tangle
 description: Development phase - Multi-AI implementation with quality gates
 ---
 

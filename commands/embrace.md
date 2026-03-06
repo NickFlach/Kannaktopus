@@ -1,9 +1,5 @@
 ---
-command: embrace
 description: "Full Double Diamond workflow - Research → Define → Develop → Deliver"
-aliases:
-  - full-cycle
-  - complete-workflow
 ---
 
 # Embrace - Complete Double Diamond Workflow

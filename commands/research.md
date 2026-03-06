@@ -1,5 +1,4 @@
 ---
-command: research
 description: Deep research with multi-source synthesis and comprehensive analysis
 ---
 

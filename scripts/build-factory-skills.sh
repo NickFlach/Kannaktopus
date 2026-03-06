@@ -103,20 +103,59 @@ echo "Skipped: $skipped"
 echo "Output: $SKILLS_OUT/"
 
 # --- Commands generation ---
+# Factory only supports: description, argument-hint, allowed-tools, disable-model-invocation
+# Strip Claude Code-specific keys: command, aliases, redirect, version, category, tags, created, updated
 
 rm -rf "$COMMANDS_OUT"
 mkdir -p "$COMMANDS_OUT"
 
 cmd_count=0
+cmd_skipped=0
+
+# Frontmatter keys to strip from commands (Claude Code / Octopus-specific)
+CMD_STRIP_KEYS="command|aliases|redirect|version|category|tags|created|updated|agent|context|cost_optimization|execution_mode|invocation|pattern|pre_execution_contract|providers|task_dependencies|task_management|trigger|use_native_tasks|validation_gates"
 
 if [[ -d "$COMMANDS_SRC" ]]; then
   for src in "$COMMANDS_SRC"/*.md; do
     [[ -f "$src" ]] || continue
-    cp "$src" "$COMMANDS_OUT/"
+    filename="$(basename "$src")"
+
+    # Extract frontmatter (only first block between --- delimiters)
+    frontmatter="$(awk 'BEGIN{c=0} /^---$/{c++; if(c==2) exit; next} c==1{print}' "$src")"
+
+    # Extract description
+    cmd_desc="$(echo "$frontmatter" | grep "^description:" | head -1 | sed 's/^description: *//')"
+    if [[ -z "$cmd_desc" ]]; then
+      echo "  SKIP (no description): $filename"
+      cmd_skipped=$((cmd_skipped + 1))
+      continue
+    fi
+
+    # Extract optional Factory-compatible fields (|| true to avoid exit on no-match)
+    arg_hint="$(echo "$frontmatter" | grep "^argument-hint:" | head -1 | sed 's/^argument-hint: *//' || true)"
+    disable_model="$(echo "$frontmatter" | grep "^disable-model-invocation:" | head -1 | sed 's/^disable-model-invocation: *//' || true)"
+    allowed_tools="$(echo "$frontmatter" | grep "^allowed-tools:" | head -1 | sed 's/^allowed-tools: *//' || true)"
+
+    # Extract body (everything after the closing --- of frontmatter)
+    cmd_body="$(awk 'BEGIN{c=0} /^---$/{c++; if(c==2){found=1; next}} found{print}' "$src")"
+
+    # Build Factory-compatible command file
+    {
+      echo "---"
+      echo "description: $cmd_desc"
+      [[ -n "$arg_hint" ]] && echo "argument-hint: $arg_hint"
+      [[ -n "$disable_model" ]] && echo "disable-model-invocation: $disable_model"
+      [[ -n "$allowed_tools" ]] && echo "allowed-tools: $allowed_tools"
+      echo "---"
+      echo "$cmd_body"
+    } > "$COMMANDS_OUT/$filename"
+
+    echo "  GEN: $filename"
     cmd_count=$((cmd_count + 1))
   done
 fi
 
 echo ""
-echo "Factory commands copied: $cmd_count"
+echo "Factory commands generated: $cmd_count"
+[[ $cmd_skipped -gt 0 ]] && echo "Skipped: $cmd_skipped"
 echo "Output: $COMMANDS_OUT/"

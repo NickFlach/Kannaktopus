@@ -1,7 +1,5 @@
 ---
-command: validate
 description: "Run comprehensive multi-AI validation on code or project targets"
-skill: skill-validate
 ---
 
 # Validate

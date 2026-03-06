@@ -1,8 +1,5 @@
 ---
-command: dev
 description: "Switch to Dev Work mode - optimized for software development"
-aliases:
-  - dev-mode
 ---
 
 # Dev Work Mode

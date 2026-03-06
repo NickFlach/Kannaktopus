@@ -1,5 +1,4 @@
 ---
-command: doctor
 description: Environment diagnostics — check providers, auth, config, hooks, scheduler, and more
 ---
 

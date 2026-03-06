@@ -1,9 +1,5 @@
 ---
-command: deliver
 description: "Delivery phase - Review, validate, and test with multi-AI quality assurance"
-aliases:
-  - ink
-  - review-phase
 ---
 
 # Deliver - Delivery Phase ✅
