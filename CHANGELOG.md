@@ -1,3 +1,26 @@
+## [8.38.1] - 2026-03-05
+
+### Added
+
+- `scripts/build-factory-skills.sh` — generates Factory AI-compatible `skills/<name>/SKILL.md` directories from `.claude/skills/*.md` sources
+- Generated `skills/` directory at plugin root with 44 Factory-format skill files (6 human_only skills excluded)
+
+### Changed
+
+- Factory skill discovery: replaced symlink approach (v8.38.0) with build-generated skill directories — Factory clones strip symlinks
+- Factory skills use simplified frontmatter (`name`, `version`, `description`) with trigger content merged into descriptions
+- Updated `docs/FACTORY-AI.md` to document build-based approach and Factory's skills-only model
+
+### Removed
+
+- Root-level `commands` and `skills` symlinks (Factory clone doesn't preserve symlinks; Factory has no commands concept)
+
+### Fixed
+
+- Factory AI Droid not discovering skills after plugin install (symlinks from v8.38.0 broken by Factory's clone process)
+
+---
+
 ## [8.38.0] - 2026-03-05
 
 ### Added
