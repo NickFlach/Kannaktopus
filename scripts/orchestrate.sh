@@ -1749,6 +1749,16 @@ _get_agent_model_raw() {
             ;;
     esac
 
+    # v8.41.0 Priority 0.5: Check native CC model settings (mixed models integration)
+    # When users configure models through Claude Code's native settings, respect those
+    # for claude-side agent types. This avoids duplicating model config in two places.
+    if [[ "$provider" == "claude" && -n "${CLAUDE_MODEL:-}" ]]; then
+        # CC sets CLAUDE_MODEL when user configures model preferences natively
+        log "DEBUG" "Model from native CC setting: CLAUDE_MODEL=${CLAUDE_MODEL} (tier 0.5)"
+        echo "${CLAUDE_MODEL}"
+        return 0
+    fi
+
     # Priority 1: Check environment variables
     if [[ "$provider" == "codex" && -n "${OCTOPUS_CODEX_MODEL:-}" ]]; then
         log "DEBUG" "Model from env var: OCTOPUS_CODEX_MODEL=${OCTOPUS_CODEX_MODEL} (tier 1)"

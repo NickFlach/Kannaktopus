@@ -174,8 +174,8 @@ Use AskUserQuestion tool to ask:
      description: "Focus on clean architecture, may take longer"
    - label: "Best performance"
      description: "Optimize for speed and efficiency"
-   - label: "Let AI decide"
-     description: "Use multi-AI research to determine best approach"
+   - label: "Multi-LLM debate (Claude + Codex + Gemini)"
+     description: "Three AI models debate the best approach — uses external API credits"
 
 3. **Scope Boundaries**
    Question: "What's explicitly OUT of scope for this phase?"
@@ -191,6 +191,13 @@ Use AskUserQuestion tool to ask:
      description: "Everything is in scope"
    multiSelect: true
 ```
+
+**If user selected "Multi-LLM debate (Claude + Codex + Gemini)" for approach:**
+Before proceeding with orchestrate.sh, run a Multi-LLM debate to determine the technical approach:
+```
+/octo:debate --rounds 2 --debate-style collaborative "What is the best technical approach for [feature]? Consider: speed to market, maintainability, performance, and the existing codebase patterns."
+```
+Use the debate synthesis to set the approach context for the Define phase.
 
 **After gathering answers, create context file:**
 
