@@ -84,6 +84,29 @@ After receiving answers, incorporate them into the Skill invocation.
 Skill(skill: "octo:discover", args: "<user's arguments>")
 ```
 
+### Step 3: Post-Completion — Interactive Next Steps
+
+**CRITICAL: After the skill completes, you MUST ask the user what to do next. Do NOT end the session silently.**
+
+```javascript
+AskUserQuestion({
+  questions: [
+    {
+      question: "Discovery phase complete. What would you like to do next?",
+      header: "Next Steps",
+      multiSelect: false,
+      options: [
+        {label: "Move to Define phase", description: "Scope and clarify requirements based on findings (/octo:define)"},
+        {label: "Go deeper on a specific finding", description: "Research a particular area in more detail"},
+        {label: "Run the full workflow", description: "Continue through all remaining phases (/octo:embrace)"},
+        {label: "Export the research", description: "Save findings as a document"},
+        {label: "Done for now", description: "I have what I need"}
+      ]
+    }
+  ]
+})
+```
+
 ---
 
 **Auto-loads the `flow-discover` skill for the research/discovery phase.**

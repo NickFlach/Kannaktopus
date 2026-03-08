@@ -214,9 +214,33 @@ Use: `--rounds 1 --debate-style collaborative --max-words 200`
 
 3. **Present any non-trivial findings** to user before proceeding to Deliver.
 
-### Step 4: Present Results
+### Step 4: Present Results & Interactive Next Steps
 
-After orchestrate.sh completes, read the result files and present synthesis to user.
+**CRITICAL: After orchestrate.sh completes, you MUST present results AND ask the user what to do next. Do NOT end the session silently.**
+
+1. Read the result files from `~/.claude-octopus/results/` and present a concise synthesis
+2. **Always ask what to do next using AskUserQuestion:**
+
+```javascript
+AskUserQuestion({
+  questions: [
+    {
+      question: "The embrace workflow has completed all 4 phases. What would you like to do next?",
+      header: "Next Steps",
+      multiSelect: false,
+      options: [
+        {label: "Review phase outputs in detail", description: "Walk through each phase's findings and deliverables"},
+        {label: "Refine the implementation", description: "Make adjustments based on the results"},
+        {label: "Run another iteration", description: "Re-run specific phases with updated context"},
+        {label: "Start a new task", description: "Move on to something else"},
+        {label: "Export results", description: "Save a summary document of the workflow output"}
+      ]
+    }
+  ]
+})
+```
+
+**You are PROHIBITED from ending the conversation or session after the workflow completes without asking the user this question.** The user expects an interactive handoff, not a silent exit.
 
 ## Usage
 
@@ -266,11 +290,6 @@ Use embrace for:
 - High-stakes projects needing validation
 - Features where you want multiple AI perspectives
 - When you need structured quality gates
-
-Don't use for:
-- Simple bug fixes or edits
-- Quick research-only tasks (use discover phase)
-- Code review only (use deliver phase)
 
 ## Quality Gates
 

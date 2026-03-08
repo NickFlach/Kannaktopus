@@ -30,6 +30,29 @@ Task(subagent_type: "octo:develop", ...)  ❌ Wrong! This is a skill, not an age
 
 **Why:** This command loads the `flow-develop` skill. Skills use the `Skill` tool, not `Task`.
 
+### Post-Completion — Interactive Next Steps
+
+**CRITICAL: After the skill completes, you MUST ask the user what to do next. Do NOT end the session silently.**
+
+```javascript
+AskUserQuestion({
+  questions: [
+    {
+      question: "Development phase complete. What would you like to do next?",
+      header: "Next Steps",
+      multiSelect: false,
+      options: [
+        {label: "Move to Deliver phase", description: "Validate and review the implementation (/octo:deliver)"},
+        {label: "Iterate on the implementation", description: "Make adjustments or handle edge cases"},
+        {label: "Run quality gates again", description: "Re-validate with updated code"},
+        {label: "Export the implementation", description: "Save a summary of what was built"},
+        {label: "Done for now", description: "I have what I need"}
+      ]
+    }
+  ]
+})
+```
+
 ---
 
 **Auto-loads the `flow-develop` skill for the implementation phase.**
@@ -64,11 +87,6 @@ Use develop when you need:
 - **Building**: "Build X" or "Implement Y"
 - **Creating**: "Create Z feature"
 - **Code Generation**: "Write code to do Y"
-
-**Don't use develop for:**
-- Simple code edits (use Edit tool)
-- Reading or reviewing code (use Read/review skills)
-- Trivial single-file changes
 
 ## Part of the Full Workflow
 

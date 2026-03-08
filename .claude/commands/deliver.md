@@ -30,6 +30,29 @@ Task(subagent_type: "octo:deliver", ...)  ❌ Wrong! This is a skill, not an age
 
 **Why:** This command loads the `flow-deliver` skill. Skills use the `Skill` tool, not `Task`.
 
+### Post-Completion — Interactive Next Steps
+
+**CRITICAL: After the skill completes, you MUST ask the user what to do next. Do NOT end the session silently.**
+
+```javascript
+AskUserQuestion({
+  questions: [
+    {
+      question: "Delivery/validation phase complete. What would you like to do next?",
+      header: "Next Steps",
+      multiSelect: false,
+      options: [
+        {label: "Address findings", description: "Fix issues identified in the review"},
+        {label: "Run another review pass", description: "Re-validate after fixes"},
+        {label: "Ship it", description: "Findings are acceptable, proceed to deployment"},
+        {label: "Export the review", description: "Save validation results as a document"},
+        {label: "Done for now", description: "I have what I need"}
+      ]
+    }
+  ]
+})
+```
+
 ---
 
 **Auto-loads the `flow-deliver` skill for the validation/review phase.**
@@ -65,11 +88,6 @@ Use deliver when you need:
 - **Validation**: "Validate Z"
 - **Testing**: "Test the implementation"
 - **Quality Check**: "Check if X works correctly"
-
-**Don't use deliver for:**
-- Implementation tasks (use develop phase)
-- Research tasks (use discover phase)
-- Requirement definition (use define phase)
 
 ## Part of the Full Workflow
 
