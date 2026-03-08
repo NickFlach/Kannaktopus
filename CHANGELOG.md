@@ -1,3 +1,45 @@
+## [8.41.0] - 2026-03-07
+
+### Added
+
+- 3 new hook events registered in hooks.json:
+  - `PreCompact` — persists workflow state (phase, decisions, blockers) before context compaction
+  - `SessionEnd` — finalizes metrics, persists preferences to auto-memory, cleans up session artifacts
+  - `UserPromptSubmit` — classifies task intent via keyword matching for improved skill routing
+- 10 native agent definitions in `.claude/agents/` mirroring top personas:
+  - security-auditor, code-reviewer, backend-architect, tdd-orchestrator, debugger,
+    performance-engineer, frontend-developer, docs-architect, cloud-architect, database-architect
+- Persona-agent sync test ensuring every agent definition has a matching persona file
+- Auto-memory integration: SessionEnd hook writes `octopus-preferences.md` to project memory
+  with autonomy mode, provider config, and last update timestamp
+- `enable-http-telemetry.sh` script for converting shell-based telemetry to native HTTP hooks (CC v2.1.63+)
+- Mixed models integration: `_get_agent_model_raw()` now checks `CLAUDE_MODEL` env var (Priority 0.5)
+  for Claude-side agents, respecting native CC model settings without duplicate config
+- Spec mode plan view alignment: `flow-spec.md` Step 7.5 uses `EnterPlanMode` for NLSpec review
+  when VSCode plan view is available (CC v2.1.70+), with graceful terminal fallback
+- 89-test suite (`test-v8.41.0-feature-adoption.sh`) covering hooks, agents, sync, droids, telemetry, and auto-memory
+- Factory droid generation in `build-factory-skills.sh` — generates `agents/droids/` from `.claude/agents/`
+  so Factory AI discovers native droids alongside Claude Code agent definitions
+- Native HTTP telemetry hook in hooks.json (`"type": "http"`) alongside shell fallback;
+  shell hook skips when `SUPPORTS_HTTP_HOOKS=true` to avoid double telemetry
+- SessionStart auto-memory restoration (`session-start-memory.sh`) — reads persisted preferences
+  from `octopus-preferences.md` on session start and injects them into `session.json`
+
+### Changed
+
+- Command consolidation: 13 thin wrapper commands removed (49 → 36 commands)
+  - 8 pure wrappers deleted: issues, ship, rollback, debate, resume, setup, validate, status
+  - 5 flow aliases deleted: probe, grasp, tangle, ink, research
+  - Matching skills now have `user-invocable: true` frontmatter for direct invocation
+- Hook event count: 10 → 13 (PreCompact, SessionEnd, UserPromptSubmit)
+- Total hook scripts: 25 → 29
+- Task manager simplified: `create_embrace_tasks()` and `create_phase_task()` deprecated
+  in favor of native TodoWrite for Claude-side task tracking
+- Telemetry webhook updated: native HTTP hook entry in hooks.json with shell fallback;
+  shell hook has `SUPPORTS_HTTP_HOOKS` guard to skip when HTTP hooks are active
+
+---
+
 ## [8.40.0] - 2026-03-07
 
 ### Added
