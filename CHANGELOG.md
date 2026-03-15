@@ -1,3 +1,11 @@
+## [9.0.1] - 2026-03-14
+
+### Fixed
+
+- **Plugin install/uninstall mismatch**: Aligned `marketplace.json` plugin name from `"claude-octopus"` to `"octo"` to match `plugin.json`. Install command is now `octo@nyldn-plugins`. Fixes `/plugin uninstall` and `/plugin update` failures.
+
+---
+
 ## [9.0.0] - 2026-03-14
 
 ### Added
