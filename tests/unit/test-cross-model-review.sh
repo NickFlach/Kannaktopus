@@ -55,7 +55,8 @@ test_explicit_score_extraction() {
     local func_body
     func_body=$(sed -n '/^score_cross_model_review()/,/^}/p' "$PROJECT_ROOT/scripts/orchestrate.sh")
 
-    if echo "$func_body" | grep -q 'security.*10' && echo "$func_body" | grep -q 'reliability.*10'; then
+    # v9.5: score function uses bash regex vars (_re_sec, _re_rel, etc.)
+    if echo "$func_body" | grep -q '_re_sec.*ecurity.*10' && echo "$func_body" | grep -q '_re_rel.*eliability.*10'; then
         test_pass
     else
         test_fail "Explicit score extraction patterns not found"
