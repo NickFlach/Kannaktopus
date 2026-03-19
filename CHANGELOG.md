@@ -1,3 +1,19 @@
+## [9.7.3] - 2026-03-19
+
+### Fixed
+
+- **`local` outside function** — `octopus-statusline.sh` used `local wt_suffix` at script scope, which aborts under `set -e`. Broke the entire bash statusline fallback when worktrees were active. Same bug in `scheduler-security-gate.sh` silently bypassed file path restrictions.
+- **Atomic credential writes** — `writeBackCredentials` now uses temp file + `renameSync` with `mode: 0o600`. Prevents concurrent sessions from clobbering `~/.claude/.credentials.json`.
+- **Atomic cache writes** — `writeUsageCache` uses temp + `renameSync` to prevent torn JSON from concurrent sessions.
+- **Python injection in context-awareness** — Bridge file path was interpolated into `python3 -c` string literal. Now passed via `os.environ['BRIDGE_PATH']`.
+- **Unsafe `/tmp` glob removed** — `context-awareness.sh` no longer falls back to `ls -t /tmp/octopus-ctx-*.json`. Exits cleanly when `CLAUDE_SESSION_ID` is unset.
+- **5 additional timeout guards** — `plan-mode-interceptor.sh`, `scheduler-security-gate.sh`, `sysadmin-safety-gate.sh`, `telemetry-webhook.sh`, `agent-teams-phase-gate.sh` now have the `command -v timeout` fallback pattern. Total: 10 hooks hardened.
+- **HUD stdin timeout** — `readStdin()` now uses `Promise.race` with a 5s guard to prevent indefinite hang on unclosed pipes.
+- **`contextBar` clamp** — `Math.min(10, Math.max(0, ...))` prevents `RangeError` if pct > 100 reaches the function.
+- **Bridge file permissions** — Written with `umask 0177` (owner-only) instead of default umask.
+
+---
+
 ## [9.7.2] - 2026-03-19
 
 ### Added
