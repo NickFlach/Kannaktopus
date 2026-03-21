@@ -1,3 +1,12 @@
+## [9.7.8] - 2026-03-21
+
+### Fixed
+
+- **Windows `${USER}` unbound variable crash** (#201): `$USER` is unset on Windows (Git Bash) — Windows uses `$USERNAME` instead. All 6 occurrences in the model cache path now use `${USER:-${USERNAME:-unknown}}` to handle both platforms.
+- **Codex smoke test false negative outside git repos** (#202): `codex exec` requires a git repository, so the smoke test always failed with "Not inside a trusted directory" when run from a non-git directory. Now creates a temp git repo for the test and cleans up after. Added `GIT_REPO_REQUIRED` error classifier for a clearer message if the workaround fails.
+
+---
+
 ## [9.7.7] - 2026-03-20
 
 ### Fixed
