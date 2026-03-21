@@ -10,6 +10,11 @@ set -euo pipefail
 # Kill switch — respect user's choice to disable careful mode entirely
 [[ "${OCTO_CAREFUL_MODE:-on}" == "off" ]] && { echo '{"decision":"allow"}'; exit 0; }
 
+# Respect bypassPermissions mode — hooks must not override the user's CLI permission setting
+for _sf in "${CLAUDE_PROJECT_DIR:-.}/.claude/settings.local.json" "${CLAUDE_PROJECT_DIR:-.}/.claude/settings.json" "$HOME/.claude/settings.json"; do
+    [[ -f "$_sf" ]] && grep -q '"bypassPermissions"' "$_sf" 2>/dev/null && { echo '{"decision":"allow"}'; exit 0; }
+done
+
 # Read tool input from stdin
 if command -v timeout &>/dev/null; then
     INPUT=$(timeout 3 cat 2>/dev/null || true)
