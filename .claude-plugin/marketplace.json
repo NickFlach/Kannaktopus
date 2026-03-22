@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Multi-tentacled orchestration plugin for Claude Code",
-    "version": "9.9.0"
+    "version": "9.9.1"
   },
   "plugins": [
     {
       "name": "octo",
       "source": "./",
-      "description": "v9.9.0 - Copilot CLI + Ollama providers, adapter bug fixes, 7-provider architecture. 32 personas, 47 commands, 50 skills. Run /octo:setup.",
-      "version": "9.9.0",
+      "description": "v9.9.1 - Copilot CLI + Ollama providers fully wired, 7-provider architecture. 32 personas, 47 commands, 50 skills. Run /octo:setup.",
+      "version": "9.9.1",
       "author": {
         "name": "nyldn"
       },

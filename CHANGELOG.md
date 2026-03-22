@@ -1,3 +1,17 @@
+## [9.9.1] - 2026-03-22
+
+### Fixed
+
+- **Ollama dispatch missing**: Added `ollama|ollama-*` case to `dispatch.sh` and `ollama` to `AVAILABLE_AGENTS` — v9.9.0 wired detection but missed the dispatch branch.
+- **detect-providers incomplete**: `detect_providers()`, `cmd_detect_providers()`, `install-deps.sh`, and `is_agent_available_v2()` now include Perplexity, Ollama, and Copilot (were only in doctor.sh).
+- **copilot-instructions.md wrong path**: `marketplace.json` → `.claude-plugin/marketplace.json`.
+
+### Changed
+
+- **Removed inline adversarial steps**: Deleted STEP 6.5 (flow-define), STEP 3.5 (flow-develop), STEP 4.5 (flow-deliver) — superseded by centralized multi-LLM adversarial debate system (v9.4.0+v9.8.0).
+
+---
+
 ## [9.9.0] - 2026-03-22
 
 ### Added
