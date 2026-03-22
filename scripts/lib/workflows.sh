@@ -98,6 +98,7 @@ IMPORTANT: If you find yourself searching or grepping more than 3 times in a row
         perplexity*) provider_name="perplexity" ;;
         copilot*) provider_name="copilot" ;;
         ollama*) provider_name="ollama" ;;
+        qwen*) provider_name="qwen" ;;
         *) provider_name="$agent_type" ;;
     esac
     update_metrics "provider" "$provider_name" 2>/dev/null || true
@@ -132,9 +133,10 @@ IMPORTANT: If you find yourself searching or grepping more than 3 times in a row
     echo "## Output" >> "$result_file"
     echo '```' >> "$result_file"
 
-    # Append gemini/copilot headless flag (-p "" triggers stdin reading)
+    # Append gemini/copilot/qwen headless flag (-p "" triggers stdin reading)
     # NOTE: .toml commands exist for human use but don't compose with stdin in headless mode
-    if [[ "$agent_type" == gemini* ]] || [[ "$agent_type" == copilot* ]]; then
+    # Qwen is a fork of Gemini CLI — same flags
+    if [[ "$agent_type" == gemini* ]] || [[ "$agent_type" == copilot* ]] || [[ "$agent_type" == qwen* ]]; then
         cmd_array+=(-p "")
     fi
 

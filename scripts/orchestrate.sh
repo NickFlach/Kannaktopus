@@ -2257,6 +2257,13 @@ is_agent_available_v2() {
                 { command -v gh &>/dev/null && gh auth status &>/dev/null 2>&1; }
             }
             ;;
+        qwen|qwen-research)
+            command -v qwen &>/dev/null && {
+                [[ -f "${HOME}/.qwen/oauth_creds.json" ]] || \
+                [[ -f "${HOME}/.qwen/config.json" ]] || \
+                [[ -n "${QWEN_API_KEY:-}" ]]
+            }
+            ;;
         *)
             return 0  # Unknown agents assumed available
             ;;

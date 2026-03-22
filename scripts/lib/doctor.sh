@@ -160,6 +160,28 @@ doctor_check_providers() {
             "Copilot CLI not installed (optional)" "brew install copilot-cli — zero-cost research via GitHub subscription"
     fi
 
+    # Qwen CLI (optional — free tier)
+    if command -v qwen &>/dev/null; then
+        local qwen_auth="none"
+        if [[ -f "${HOME}/.qwen/oauth_creds.json" ]]; then
+            qwen_auth="oauth"
+        elif [[ -f "${HOME}/.qwen/config.json" ]]; then
+            qwen_auth="config"
+        elif [[ -n "${QWEN_API_KEY:-}" ]]; then
+            qwen_auth="env:QWEN_API_KEY"
+        fi
+        if [[ "$qwen_auth" != "none" ]]; then
+            doctor_add "qwen-cli" "providers" "pass" \
+                "Qwen CLI installed (auth: ${qwen_auth})" "$(command -v qwen) — free-tier research via Qwen OAuth"
+        else
+            doctor_add "qwen-cli" "providers" "warn" \
+                "Qwen CLI installed but not authenticated" "Run: qwen (to trigger OAuth) or set QWEN_API_KEY"
+        fi
+    else
+        doctor_add "qwen-cli" "providers" "info" \
+            "Qwen CLI not installed (optional)" "npm install -g @qwen-code/qwen-code — free-tier research via Qwen OAuth"
+    fi
+
     # v9.0: Check recent provider fallback history
     local fallback_log="${HOME}/.claude-octopus/provider-fallbacks.log"
     if [[ -f "$fallback_log" ]]; then

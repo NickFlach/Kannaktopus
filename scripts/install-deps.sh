@@ -84,6 +84,13 @@ check_deps() {
         warnings+=("copilot:Copilot CLI not installed (optional) — brew install copilot-cli for zero-cost research")
     fi
 
+    # Qwen CLI (optional — free tier)
+    if has_cmd qwen; then
+        ok+=("qwen:Qwen CLI installed")
+    else
+        warnings+=("qwen:Qwen CLI not installed (optional) — npm install -g @qwen-code/qwen-code for free-tier research")
+    fi
+
     # Statusline resolver
     local resolver="$HOME/.claude-octopus/statusline.sh"
     if [[ -f "$resolver" ]]; then

@@ -158,6 +158,7 @@ get_agent_model() {
         claude*)     provider="claude" ;;
         openrouter*) provider="openrouter" ;;
         perplexity*) provider="perplexity" ;;
+        qwen*)       provider="qwen" ;;
     esac
 
     local resolved_model
@@ -189,6 +190,7 @@ validate_model_allowed() {
         claude)     allowlist_var="OCTOPUS_CLAUDE_ALLOWED_MODELS" ;;
         openrouter) allowlist_var="OCTOPUS_OPENROUTER_ALLOWED_MODELS" ;;
         perplexity) allowlist_var="OCTOPUS_PERPLEXITY_ALLOWED_MODELS" ;;
+        qwen)       allowlist_var="OCTOPUS_QWEN_ALLOWED_MODELS" ;;
         *)          return 0 ;;  # Unknown provider — allow
     esac
 

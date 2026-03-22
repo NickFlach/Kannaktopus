@@ -521,6 +521,19 @@ check_provider_health() {
                 fi
             fi
             ;;
+        qwen)
+            if ! command -v qwen &>/dev/null; then
+                echo "qwen CLI not found in PATH" >&2
+                return 1
+            fi
+            # Check auth: OAuth creds or config in ~/.qwen/, or API key env var
+            if [[ ! -f "${HOME}/.qwen/oauth_creds.json" ]] && \
+               [[ ! -f "${HOME}/.qwen/config.json" ]] && \
+               [[ -z "${QWEN_API_KEY:-}" ]]; then
+                echo "qwen: not authenticated (run: qwen to trigger OAuth, or set QWEN_API_KEY)" >&2
+                return 1
+            fi
+            ;;
     esac
     return 0
 }
@@ -531,7 +544,7 @@ check_all_providers() {
     local healthy=0 unhealthy=0
     local -a results=()
 
-    for provider in codex gemini claude perplexity openrouter ollama copilot; do
+    for provider in codex gemini claude perplexity openrouter ollama copilot qwen; do
         local diag
         if diag=$(check_provider_health "$provider" 2>&1); then
             results+=("  ✓ $provider")

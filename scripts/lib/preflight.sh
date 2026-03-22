@@ -128,6 +128,24 @@ cmd_detect_providers() {
     fi
     echo ""
 
+    # Check Qwen CLI (optional — free tier via Qwen OAuth, v9.10.0)
+    if command -v qwen &>/dev/null; then
+        local qwen_auth="none"
+        if [[ -f "${HOME}/.qwen/oauth_creds.json" ]]; then
+            qwen_auth="oauth"
+        elif [[ -f "${HOME}/.qwen/config.json" ]]; then
+            qwen_auth="config"
+        elif [[ -n "${QWEN_API_KEY:-}" ]]; then
+            qwen_auth="api-key"
+        fi
+        echo "QWEN_STATUS=ok"
+        echo "QWEN_AUTH=$qwen_auth"
+    else
+        echo "QWEN_STATUS=not-installed"
+        echo "QWEN_AUTH=none"
+    fi
+    echo ""
+
     # Write to cache
     mkdir -p "$WORKSPACE_DIR"
     local codex_status=$(command -v codex &>/dev/null && echo "ok" || echo "missing")
@@ -138,6 +156,7 @@ cmd_detect_providers() {
     local perplexity_auth=$([[ -n "${PERPLEXITY_API_KEY:-}" ]] && echo "api-key" || echo "none")
     local ollama_status=$(command -v ollama &>/dev/null && { curl -sf http://localhost:11434/api/tags &>/dev/null && echo "running" || echo "stopped"; } || echo "not-installed")
     local copilot_status=$(command -v copilot &>/dev/null && echo "ok" || echo "not-installed")
+    local qwen_status=$(command -v qwen &>/dev/null && echo "ok" || echo "not-installed")
 
     cat > "$WORKSPACE_DIR/.provider-cache" <<EOF
 # Auto-generated on $(date)
@@ -160,6 +179,9 @@ OLLAMA_STATUS=$ollama_status
 
 # Copilot Status (v9.9.0)
 COPILOT_STATUS=$copilot_status
+
+# Qwen Status (v9.10.0)
+QWEN_STATUS=$qwen_status
 
 # Timestamp
 CACHE_TIME=$(date +%s)
@@ -207,6 +229,13 @@ EOF
         echo "  ✓ Copilot: Installed — zero-cost research via GitHub subscription"
     else
         echo "  ○ Copilot: Not installed (optional — brew install copilot-cli)"
+    fi
+
+    # Qwen (optional, v9.10.0)
+    if [[ "$qwen_status" == "ok" ]]; then
+        echo "  ✓ Qwen: Installed — free-tier research via Qwen OAuth"
+    else
+        echo "  ○ Qwen: Not installed (optional — npm install -g @qwen-code/qwen-code)"
     fi
     echo ""
 
