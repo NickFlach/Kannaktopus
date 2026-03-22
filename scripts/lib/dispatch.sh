@@ -88,6 +88,9 @@ get_agent_command() {
             model=$(get_agent_model "$agent_type" "$phase" "$role")
             echo "perplexity_execute $model"
             ;;
+        copilot|copilot-research)  # v9.8.0: GitHub Copilot CLI — copilot -p (Issue #198)
+            echo "copilot_execute $agent_type"
+            ;;
         *) return 1 ;;
     esac
 }

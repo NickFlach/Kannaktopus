@@ -1,8 +1,8 @@
 ---
 name: skill-copilot-provider
-version: 1.0.0
+version: 2.0.0
 aliases: [copilot-provider, github-copilot, copilot]
-description: GitHub Copilot as limited-role provider via gh copilot CLI for research, explanation, and suggestion tasks
+description: GitHub Copilot CLI as optional zero-cost provider via copilot -p programmatic mode
 trigger: |
   AUTOMATICALLY ACTIVATE when user says:
   "copilot provider" or "add copilot" or "github copilot" or "use copilot"
@@ -13,100 +13,94 @@ trigger: |
 
 ## Overview
 
-Adds GitHub Copilot as a limited-role provider in the Claude Octopus multi-LLM ecosystem. Copilot is accessed via the `gh copilot` CLI extension, supporting research, explanation, and suggestion roles only.
+GitHub Copilot CLI (GA since Feb 2026) serves as an optional provider in the Claude Octopus
+multi-LLM ecosystem. Integration uses the official `copilot -p` programmatic mode, not
+reverse-engineered API endpoints.
 
-**Core principle:** Copilot supplements existing providers for quick explanations and shell suggestions at zero additional cost (uses existing GitHub subscription).
+**Core principle:** Copilot supplements existing providers for research and exploration at
+zero additional cost (uses existing GitHub Copilot subscription). Each prompt counts as one
+premium request against your subscription quota.
+
+**Agent types:** `copilot` (general), `copilot-research` (research-focused)
 
 ---
 
 ## Detection
 
-Before using Copilot as a provider, verify the `gh copilot` extension is installed:
-
 ```bash
-# Check gh CLI is available
-if ! command -v gh &>/dev/null; then
-  # gh CLI not installed — silently skip Copilot provider
-  return 0
-fi
-
-# Check copilot extension is present
-if ! gh extension list 2>/dev/null | grep -q 'copilot'; then
-  # Copilot extension not installed — silently skip
+# Check copilot CLI is available
+if ! command -v copilot &>/dev/null; then
+  # Copilot CLI not installed — silently skip
   return 0
 fi
 ```
 
-**Graceful degradation:** When `gh copilot` is unavailable, silently skip the Copilot provider. Do NOT emit errors or warnings. Other providers continue to operate normally.
+**Graceful degradation:** When Copilot CLI is unavailable or unauthenticated, silently skip.
+Other providers continue to operate normally.
+
+---
+
+## Authentication
+
+Copilot CLI checks credentials in this precedence order:
+
+1. `COPILOT_GITHUB_TOKEN` env var (highest priority — fine-grained PAT with "Copilot Requests" permission)
+2. `GH_TOKEN` env var
+3. `GITHUB_TOKEN` env var
+4. OAuth token from system keychain (via `copilot login`)
+5. GitHub CLI (`gh`) authentication fallback
+
+### Setup
+
+**Option 1: Interactive login (recommended for local dev)**
+```bash
+copilot login
+```
+
+**Option 2: Fine-grained PAT (recommended for CI/automation)**
+1. Create a fine-grained PAT at https://github.com/settings/personal-access-tokens/new
+2. Enable the "Copilot Requests" permission
+3. Set the env var:
+```bash
+export COPILOT_GITHUB_TOKEN="github_pat_..."
+```
+
+**Option 3: Reuse existing `gh` auth**
+If `gh auth login` is already configured, Copilot CLI will use it automatically.
+
+**Note:** Classic PATs (`ghp_*`) are NOT supported. Use fine-grained PATs (`github_pat_*`).
 
 ---
 
 ## Available Roles
 
-Copilot is a **limited provider** — it supports only the following roles:
+| Role | Agent Type | Use Case |
+|------|-----------|----------|
+| **General** | `copilot` | Broad research, code explanation, exploration |
+| **Research** | `copilot-research` | Research-focused exploration and analysis |
 
-| Role | Command | Use Case |
-|------|---------|----------|
-| **Research** | `gh copilot explain` | Quick concept lookups, code explanations |
-| **Explanation** | `gh copilot explain` | Summarize code behavior, error messages |
-| **Suggestion** | `gh copilot suggest` | Shell command suggestions, CLI help |
+### Dispatch
 
-### Commands Used
-
-**Explanation / Research:**
 ```bash
-gh copilot explain "<query>"
+# Programmatic mode (non-interactive)
+copilot -p "<prompt>" --no-ask-user
 ```
-Use for research and explanation roles. Returns a natural language explanation of the query topic.
-
-**Shell Suggestions:**
-```bash
-gh copilot suggest "<query>"
-```
-Use for suggestion roles. Returns shell command suggestions for the given task.
 
 ---
 
-## Prohibited Roles
+## Provider Indicators
 
-Copilot CLI is NOT a full provider. The following roles MUST NOT be assigned to Copilot:
-
-| Prohibited Role | Reason |
-|-----------------|--------|
-| **Implementation** | Copilot CLI cannot write or modify files |
-| **Review** | Copilot CLI cannot perform structured code review |
-| **Orchestration** | Copilot CLI has no orchestration capabilities |
-
-Never assign Copilot to roles requiring structured output, file modifications, or multi-step workflows.
-
----
-
-## Integration with Provider Router
-
-Register Copilot as a limited provider with role restrictions in the provider router:
-
-```
-Provider: copilot
-Type: limited
-Roles: [research, explanation, suggestion]
-Prohibited: [implementation, review, orchestration]
-Detection: gh extension list | grep copilot
-Cost: Zero additional (GitHub subscription)
-```
-
-### Provider Indicators
-
-When Copilot is active in a multi-provider workflow, use the green indicator:
+When Copilot is active in a multi-provider workflow:
 
 ```
 Providers:
 🔴 Codex CLI - Implementation
 🟡 Gemini CLI - Security review
-🟢 Copilot CLI - Quick explanation
+🟢 Copilot CLI - Research perspective
 🔵 Claude - Synthesis
 ```
 
-The 🟢 indicator is distinct from other providers:
+Indicator legend:
 - 🔴 = Codex CLI
 - 🟡 = Gemini CLI
 - 🟢 = Copilot CLI
@@ -117,27 +111,26 @@ The 🟢 indicator is distinct from other providers:
 
 ## Doctor Integration
 
-The `/octo:doctor` providers check reports Copilot availability:
+The `/octo:doctor` providers check reports Copilot availability and auth method:
 
 ```
 Providers:
-  ✓ Claude Code v2.x.x
-  ✓ Codex CLI installed
-  ✓ Gemini CLI installed
-  ✓ Copilot CLI installed (gh copilot)    # or ✗ if unavailable
+  ✓ Copilot CLI installed (auth: keychain)
 ```
 
-When Copilot is unavailable, doctor reports it as informational (not an error), since Copilot is an optional supplementary provider.
+When unauthenticated: `⚠ Copilot CLI installed but not authenticated`
+When missing: `ℹ Copilot CLI not installed (optional)`
 
 ---
 
 ## Integration Notes
 
-1. **Zero additional cost** — Uses existing GitHub subscription, no API keys required
-2. **Works alongside existing providers** — Copilot supplements Codex, Gemini, and Claude
-3. **Never assigned structured output roles** — Copilot CLI returns plain text only
-4. **Graceful degradation** — When unavailable, silently skip with no errors or warnings
-5. **No provider cascade** — Copilot does not fall back to other providers; if unavailable, the role is reassigned
+1. **Zero additional cost** — Uses existing GitHub Copilot subscription (Pro, Pro+, Business, Enterprise)
+2. **Premium request quota** — Each `copilot -p` prompt = 1 premium request from your monthly allowance
+3. **Graceful degradation** — When unavailable, silently skip with no errors or warnings
+4. **No provider cascade** — If unavailable, the role is reassigned to another provider
+5. **Model selection** — Copilot CLI selects the model internally (default: Claude Sonnet 4.5, configurable via `/model`)
+6. **Multi-model access** — Copilot subscription includes access to Claude, GPT, and Gemini models
 
 ---
 
@@ -152,7 +145,7 @@ When Copilot is unavailable, doctor reports it as informational (not an error), 
 Providers:
 🔴 Codex CLI - Technical implementation analysis
 🟡 Gemini CLI - Ecosystem research
-🟢 Copilot CLI - Quick explanation of auth tokens
+🟢 Copilot CLI - Research perspective
 🔵 Claude - Strategic synthesis
 ```
 
@@ -168,4 +161,4 @@ Providers:
 🔵 Claude - Strategic synthesis
 ```
 
-When Copilot is not detected, it is silently omitted from the provider list. No error messages, no warnings, no degraded-mode banners.
+When Copilot is not detected, it is silently omitted from the provider list.

@@ -173,7 +173,7 @@ get_circuit_breaker_status() {
     local now
     now=$(date +%s)
 
-    for provider in codex gemini claude perplexity ollama; do
+    for provider in codex gemini claude perplexity ollama copilot; do
         local state="closed"
         local detail=""
         local cooldown_file="${_PROVIDER_STATE_DIR}/${provider}.cooldown"

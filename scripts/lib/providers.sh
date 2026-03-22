@@ -494,6 +494,33 @@ check_provider_health() {
                 return 1
             fi
             ;;
+        ollama)
+            if ! command -v ollama &>/dev/null; then
+                echo "ollama CLI not found in PATH" >&2
+                return 1
+            fi
+            # Check server is running
+            if ! curl -sf http://localhost:11434/api/tags &>/dev/null; then
+                echo "ollama: server not running (run: ollama serve)" >&2
+                return 1
+            fi
+            ;;
+        copilot)
+            if ! command -v copilot &>/dev/null; then
+                echo "copilot CLI not found in PATH" >&2
+                return 1
+            fi
+            # Check auth via the same precedence chain as copilot_is_available()
+            if [[ -z "${COPILOT_GITHUB_TOKEN:-}" ]] && \
+               [[ -z "${GH_TOKEN:-}" ]] && \
+               [[ -z "${GITHUB_TOKEN:-}" ]] && \
+               [[ ! -f "${HOME}/.copilot/config.json" ]]; then
+                if ! command -v gh &>/dev/null || ! gh auth status &>/dev/null 2>&1; then
+                    echo "copilot: not authenticated (run: copilot login)" >&2
+                    return 1
+                fi
+            fi
+            ;;
     esac
     return 0
 }
@@ -504,7 +531,7 @@ check_all_providers() {
     local healthy=0 unhealthy=0
     local -a results=()
 
-    for provider in codex gemini claude perplexity openrouter; do
+    for provider in codex gemini claude perplexity openrouter ollama copilot; do
         local diag
         if diag=$(check_provider_health "$provider" 2>&1); then
             results+=("  ✓ $provider")

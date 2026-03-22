@@ -105,6 +105,10 @@ async function executeOrchestrate(
         // Ollama Anthropic-compatible path (ANTHROPIC_BASE_URL=http://localhost:11434)
         ANTHROPIC_BASE_URL: process.env.ANTHROPIC_BASE_URL,
         ANTHROPIC_AUTH_TOKEN: process.env.ANTHROPIC_AUTH_TOKEN,
+        // GitHub Copilot CLI auth (checked in precedence order by copilot CLI)
+        COPILOT_GITHUB_TOKEN: process.env.COPILOT_GITHUB_TOKEN,
+        GH_TOKEN: process.env.GH_TOKEN,
+        GITHUB_TOKEN: process.env.GITHUB_TOKEN,
         // Octopus config
         ...Object.fromEntries(
           Object.entries(process.env).filter(([k]) =>

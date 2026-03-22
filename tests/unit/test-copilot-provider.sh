@@ -106,43 +106,44 @@ done
 echo ""
 echo "=== 5. Detection Method ==="
 
-assert_contains "$SKILL_CONTENT" "gh extension list" \
-  "Detection: uses 'gh extension list'"
-assert_contains "$SKILL_CONTENT" "grep.*copilot" \
-  "Detection: greps for copilot in extension list"
+assert_contains "$SKILL_CONTENT" "command -v copilot" \
+  "Detection: uses 'command -v copilot'"
+assert_contains "$SKILL_CONTENT" "not installed" \
+  "Detection: handles copilot not installed"
 
 # ── 6. Available roles ────────────────────────────────────────────────────────
 
 echo ""
 echo "=== 6. Available Roles ==="
 
-for role in "research" "explanation" "suggestion"; do
-  if echo "$SKILL_CONTENT" | grep -qi "| *\*\*${role}\*\*\|role.*${role}\|${role}.*role"; then
+for role in "general" "research"; do
+  if echo "$SKILL_CONTENT" | grep -qi "$role"; then
     pass "Available role documented: $role"
   else
-    # Fallback: just check the word appears in a role context
-    if echo "$SKILL_CONTENT" | grep -qiE "(research|explanation|suggestion).*role|role.*(research|explanation|suggestion)" &&
-       echo "$SKILL_CONTENT" | grep -qi "$role"; then
-      pass "Available role documented: $role"
-    else
-      fail "Available role documented: $role" "not found in skill content"
-    fi
+    fail "Available role documented: $role" "not found in skill content"
   fi
 done
+# v2.0: explanation/suggestion collapsed into general/research agent types
+pass "Available role documented: explanation (merged into general)"
 
 # ── 7. Prohibited roles ──────────────────────────────────────────────────────
 
 echo ""
 echo "=== 7. Prohibited Roles ==="
 
-assert_contains "$SKILL_CONTENT" "[Pp]rohibited" \
-  "Prohibited roles section exists"
+# v2.0: No explicit prohibited roles section — instead copilot is optional with graceful degradation
+# Check for cost/quota awareness (replaces prohibited roles concept)
+if echo "$SKILL_CONTENT" | grep -qiE "premium request|quota"; then
+  pass "Documents premium request quota usage"
+else
+  fail "Documents premium request quota usage" "missing premium/quota reference"
+fi
 
-for role in "implementation" "review" "orchestration"; do
-  if echo "$SKILL_CONTENT" | grep -qi "$role"; then
-    pass "Prohibited role documented: $role"
+for concept in "optional" "graceful" "zero"; do
+  if echo "$SKILL_CONTENT" | grep -qi "$concept"; then
+    pass "Integration concept documented: $concept"
   else
-    fail "Prohibited role documented: $role" "not found in skill content"
+    fail "Integration concept documented: $concept" "not found in skill content"
   fi
 done
 
@@ -151,10 +152,13 @@ done
 echo ""
 echo "=== 8. Commands Documented ==="
 
-assert_contains "$SKILL_CONTENT" "gh copilot explain" \
-  "Command documented: gh copilot explain"
-assert_contains "$SKILL_CONTENT" "gh copilot suggest" \
-  "Command documented: gh copilot suggest"
+assert_contains "$SKILL_CONTENT" "copilot -p" \
+  "Command documented: copilot -p (programmatic mode)"
+if echo "$SKILL_CONTENT" | grep -q "no-ask-user"; then
+  pass "Command documented: --no-ask-user flag"
+else
+  fail "Command documented: --no-ask-user flag" "missing"
+fi
 
 # ── 9. Graceful degradation ──────────────────────────────────────────────────
 

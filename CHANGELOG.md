@@ -1,3 +1,32 @@
+## [9.9.0] - 2026-03-22
+
+### Added
+
+- **GitHub Copilot CLI as runtime provider** (#198): Official `copilot -p` programmatic mode (GA Feb 2026) with 5-tier fallback auth chain: `COPILOT_GITHUB_TOKEN` → `GH_TOKEN` → `GITHUB_TOKEN` → keychain → `gh` CLI. Agent types: `copilot`, `copilot-research`. Zero additional cost (uses GitHub Copilot subscription). Graceful degradation when unavailable.
+- **Ollama as local LLM provider**: Primary integration via `ollama run` CLI dispatch. Doctor checks CLI install + server health + model count. Added to provider health checks, circuit breaker, and model resolver (`ollama*` → `llama3.3`). Secondary `ANTHROPIC_BASE_URL` bridge path documented for drop-in compatibility.
+- **Repo-level agent discovery files**: `AGENTS.md` for GitHub Copilot coding agent discovery, `.github/copilot-instructions.md` for Copilot-specific repo instructions.
+- **Adapter integration tests** (`test-adapter-flags.sh`): 23 tests covering debate flag placement, quality_threshold forwarding, env var allowlists, and Copilot wiring.
+
+### Fixed
+
+- **Debate flag placement in MCP/OpenClaw** (CRITICAL): Both adapters placed grapple-specific flags (`-r`, `--mode`) before the command, where orchestrate.sh's global parser consumed them incorrectly. OpenClaw's `-d` flag collided with the global `--dir` flag. Added `postFlags` parameter to both `runOrchestrate()` and `executeOrchestrate()`. Debate flags now correctly go after the subcommand.
+- **`quality_threshold` silently ignored**: Both MCP and OpenClaw accepted the parameter but never forwarded it. Now passes `-q` flag to orchestrate.sh when non-default.
+- **MCP/OpenClaw env var allowlists**: Added `ANTHROPIC_BASE_URL`, `ANTHROPIC_AUTH_TOKEN` (Ollama bridge), `COPILOT_GITHUB_TOKEN`, `GH_TOKEN`, `GITHUB_TOKEN` (Copilot auth), `PERPLEXITY_API_KEY` (was missing from OpenClaw).
+- **OpenClaw registry stale**: Regenerated to 97 entries matching current skills/commands.
+- **OpenClaw debate description**: "Three-way" → "Four-way" (Sonnet was added as 4th participant in v9.4.0).
+- **OpenClaw debate style param**: Removed broken `style` param (no CLI mapping) and `-d` flag. Replaced with `mode` param (cross-critique/blinded) matching orchestrate.sh's actual `--mode` flag.
+- **`test-openclaw-compat.sh` early abort**: `test_build_check_mode` and `test_validate_script_passes` used command substitution under `set -e`, causing the entire suite to abort on first failure. Fixed with `&& exit_code=0 || exit_code=$?` pattern.
+
+### Changed
+
+- **ARCHITECTURE.md**: Updated from "three providers" to 5 core + 2 optional (Codex, Gemini, Claude, Perplexity, OpenRouter + Ollama, Copilot). Updated provider table and ASCII diagram.
+- **skill-copilot-provider.md v2.0**: Rewritten from `gh copilot` (retired) to official `copilot -p` programmatic mode. Documents auth chain, PAT setup, and premium request quota.
+- **setup.md**: Added Copilot CLI setup section with install and auth instructions.
+- **skill-doctor.md**: Updated providers table to match actual doctor checks.
+- **test-copilot-provider.sh**: Updated assertions for v2.0 skill content (37 tests).
+
+---
+
 ## [9.8.0] - 2026-03-22
 
 ### Added

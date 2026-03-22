@@ -116,6 +116,50 @@ doctor_check_providers() {
             "Perplexity not configured (optional)" "export PERPLEXITY_API_KEY=\"pplx-...\" for live web search"
     fi
 
+    # Ollama (local LLM — optional)
+    if command -v ollama &>/dev/null; then
+        local ollama_health
+        ollama_health=$(curl -sf http://localhost:11434/api/tags 2>/dev/null) || true
+        if [[ -n "$ollama_health" ]]; then
+            local model_count
+            model_count=$(printf '%s' "$ollama_health" | grep -c '"name"' 2>/dev/null || echo "0")
+            doctor_add "ollama" "providers" "pass" \
+                "Ollama running (${model_count} models)" "http://localhost:11434"
+        else
+            doctor_add "ollama" "providers" "warn" \
+                "Ollama installed but server not running" "Run: ollama serve"
+        fi
+    else
+        doctor_add "ollama" "providers" "info" \
+            "Ollama not installed (optional)" "brew install ollama — local LLM for zero-cost workflows"
+    fi
+
+    # GitHub Copilot CLI (optional — zero additional cost, uses GitHub subscription)
+    if command -v copilot &>/dev/null; then
+        local copilot_auth="none"
+        if [[ -n "${COPILOT_GITHUB_TOKEN:-}" ]]; then
+            copilot_auth="env:COPILOT_GITHUB_TOKEN"
+        elif [[ -n "${GH_TOKEN:-}" ]]; then
+            copilot_auth="env:GH_TOKEN"
+        elif [[ -n "${GITHUB_TOKEN:-}" ]]; then
+            copilot_auth="env:GITHUB_TOKEN"
+        elif [[ -f "${HOME}/.copilot/config.json" ]]; then
+            copilot_auth="keychain"
+        elif command -v gh &>/dev/null && gh auth status &>/dev/null 2>&1; then
+            copilot_auth="gh-cli"
+        fi
+        if [[ "$copilot_auth" != "none" ]]; then
+            doctor_add "copilot-cli" "providers" "pass" \
+                "Copilot CLI installed (auth: ${copilot_auth})" "$(command -v copilot) — research/exploration via copilot -p"
+        else
+            doctor_add "copilot-cli" "providers" "warn" \
+                "Copilot CLI installed but not authenticated" "Run: copilot login (or set COPILOT_GITHUB_TOKEN)"
+        fi
+    else
+        doctor_add "copilot-cli" "providers" "info" \
+            "Copilot CLI not installed (optional)" "brew install copilot-cli — zero-cost research via GitHub subscription"
+    fi
+
     # v9.0: Check recent provider fallback history
     local fallback_log="${HOME}/.claude-octopus/provider-fallbacks.log"
     if [[ -f "$fallback_log" ]]; then

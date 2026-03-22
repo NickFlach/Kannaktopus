@@ -12,9 +12,31 @@ This file contains Ollama-specific instructions for Claude Octopus workflows.
 ## Detection
 
 - CLI: `command -v ollama`
-- Server health: `curl -s http://localhost:11434/api/tags`
+- Server health: `curl -sf http://localhost:11434/api/tags`
+- Available models: `ollama list`
 
 If the CLI is installed but the server is not running, suggest: `ollama serve`
+
+## Integration Paths
+
+### Primary: Direct CLI Dispatch (recommended)
+
+The orchestrator dispatches via `ollama run <model> "<prompt>"`. This gives full visibility
+into provider status, model selection, and error handling through the standard provider pipeline
+(doctor checks, circuit breaker, fallback history).
+
+### Secondary: Anthropic-Compatible API Bridge
+
+Ollama exposes an Anthropic-compatible endpoint. Set these environment variables to make
+Ollama act as a Claude drop-in (useful for tools that only speak the Anthropic API):
+
+```bash
+export ANTHROPIC_BASE_URL=http://localhost:11434
+export ANTHROPIC_AUTH_TOKEN=ollama
+```
+
+The MCP and OpenClaw adapters forward these env vars automatically. This path is user-configurable
+but not the primary integration — it hides Ollama's identity from the orchestrator's observability.
 
 ## Role Assignment
 

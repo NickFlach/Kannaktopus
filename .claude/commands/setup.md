@@ -113,6 +113,31 @@ source ~/.bashrc
 
 **Note:** Perplexity is fully optional. All workflows work without it. It simply adds an extra web search perspective (~$0.01-0.05/query).
 
+## Optional: Add GitHub Copilot CLI for Zero-Cost Research
+
+If you have a GitHub Copilot subscription (Pro, Pro+, Business, or Enterprise), the Copilot CLI adds another research perspective at zero additional API cost — prompts count against your existing subscription quota.
+
+**Install:**
+```bash
+brew install copilot-cli
+# Or: npm install -g @github/copilot
+```
+
+**Authenticate:**
+```bash
+# Option 1: Interactive login (recommended)
+copilot login
+
+# Option 2: Fine-grained PAT for automation
+# Create at: https://github.com/settings/personal-access-tokens/new
+# Enable "Copilot Requests" permission
+export COPILOT_GITHUB_TOKEN="github_pat_..."
+```
+
+**Note:** Copilot CLI also reuses `gh` CLI authentication automatically. If you already use `gh auth login`, Copilot may work with no additional setup.
+
+**Note:** Copilot is fully optional. Classic PATs (`ghp_*`) are NOT supported — use fine-grained PATs (`github_pat_*`) or OAuth login.
+
 ## If You See: CODEX_AUTH=none or GEMINI_AUTH=none
 
 The CLI is installed but not authenticated. Configure authentication:
@@ -146,6 +171,7 @@ You should see at least one provider with status:
 - ✓ Codex: Installed and authenticated (oauth or api-key)
 - ✓ Gemini: Installed and authenticated (oauth or api-key)
 - ✓ Perplexity: Configured (api-key) — optional, adds web search
+- ✓ Copilot: Installed and authenticated — optional, zero-cost research
 
 ### Quick Auth Check (Claude Code v2.1.41+)
 
@@ -228,6 +254,7 @@ No! You only need ONE provider (Codex or Gemini) to use Claude Octopus. Both pro
 - **Codex (OpenAI):** Best for code generation, refactoring, complex logic
 - **Gemini (Google):** Best for analysis, long-context understanding, multi-modal tasks
 - **Perplexity (optional):** Adds live web search with citations to research workflows
+- **Copilot (optional):** Zero-cost research via GitHub subscription — uses Claude/GPT/Gemini models
 
 Having both providers enables multi-AI workflows where different models review each other's work, but a single provider works great for most tasks. Perplexity is a bonus — it grounds research in live web data.
 
