@@ -18,6 +18,15 @@ set -euo pipefail
 POSTHOG_PROJECT_KEY="${POSTHOG_PROJECT_KEY:-}"
 POSTHOG_HOST="${POSTHOG_HOST:-https://us.i.posthog.com}"
 
+# If env var not set, read from plugin settings.json
+if [[ -z "$POSTHOG_PROJECT_KEY" && -n "${CLAUDE_PLUGIN_ROOT:-}" ]]; then
+    SETTINGS_FILE="${CLAUDE_PLUGIN_ROOT}/.claude-plugin/settings.json"
+    if [[ -f "$SETTINGS_FILE" ]]; then
+        POSTHOG_PROJECT_KEY=$(python3 -c "import json; print(json.load(open('$SETTINGS_FILE')).get('POSTHOG_PROJECT_KEY',''))" 2>/dev/null || \
+                              grep -o '"POSTHOG_PROJECT_KEY"[[:space:]]*:[[:space:]]*"[^"]*"' "$SETTINGS_FILE" 2>/dev/null | head -1 | grep -o 'phc_[^"]*' || true)
+    fi
+fi
+
 # Skip silently if not configured or opted out
 [[ -z "$POSTHOG_PROJECT_KEY" ]] && exit 0
 [[ "${OCTOPUS_TELEMETRY_OPT_OUT:-0}" == "1" ]] && exit 0
