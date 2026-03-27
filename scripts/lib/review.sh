@@ -273,7 +273,7 @@ Diff to review:
 ${diff_content}
 \`\`\`
 
-Return ONLY valid JSON. No prose, no markdown fences."
+CRITICAL OUTPUT FORMAT: Return ONLY a valid JSON object. No markdown, no prose, no explanations, no code blocks wrapping the JSON. Start with { and end with }. If you cannot parse the diff or find no issues, return: {\"findings\": []}"
 
     local round1_files=()
     local round1_agent_types=()
