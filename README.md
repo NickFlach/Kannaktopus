@@ -88,7 +88,7 @@ claude plugin install octo@nyldn-plugins
 
 ---
 
-## Top 8 Tentacles
+## 8 Commands That Matter Most
 
 🐙 Eight commands — one per arm. *A real octopus has eight arms, each with its own neurons that can act independently.* These eight tentacles work the same way: each orchestrates up to three AI providers, applies quality gates, and produces a deliverable.
 
@@ -117,7 +117,7 @@ The smart router parses your intent and selects the right workflow.
 
 ---
 
-## Which Tentacle?
+## Pick a Command by Goal
 
 Not sure which command to use? Pick by goal:
 
@@ -141,7 +141,7 @@ Or skip the table — type `/octo:auto <what you want>` or just say `octo <what 
 
 ## How It Works
 
-### Eight Tentacles, One Workflow
+### How 8 Providers Work Together
 
 Claude Octopus coordinates up to eight AI providers — one per tentacle:
 
@@ -158,7 +158,7 @@ Claude Octopus coordinates up to eight AI providers — one per tentacle:
 
 Providers run in parallel for research, sequentially for problem scoping, and adversarially for review. A 75% consensus quality gate prevents questionable work from shipping. Only Claude is required — all others are optional and auto-detected.
 
-### Double Diamond Phases
+### Four Phases: Discover, Define, Develop, Deliver
 
 Four structured phases adapted from the UK Design Council's methodology:
 
@@ -171,7 +171,7 @@ Four structured phases adapted from the UK Design Council's methodology:
 
 Run phases individually or all four with `/octo:embrace`. Configure autonomy: supervised (approve each phase), semi-autonomous (intervene on failures), or autonomous (run all four).
 
-### 32 Personas
+### 32 Specialist Personas
 
 Specialized agents that activate automatically based on your request. When you say "audit my API for vulnerabilities," security-auditor activates. When you say "design a dashboard," ui-ux-designer takes over.
 
@@ -179,7 +179,7 @@ Categories: Software Engineering (11), Specialized Development (6), Documentatio
 
 [Full persona reference](docs/AGENTS.md) | [All 50 skills](docs/COMMAND-REFERENCE.md)
 
-### Reaction Engine
+### Built-in Reaction Engine
 
 When agents create PRs, the reaction engine monitors what happens next — CI failures, review comments, stale agents — and responds automatically. No new commands to learn. It fires transparently inside workflows you already use:
 
@@ -212,7 +212,7 @@ Reactions track 13 agent lifecycle states: `running` → `pr_open` → `ci_pendi
 
 ---
 
-## Providers and Cost
+## Providers and What They Cost
 
 ### Authentication
 
@@ -223,13 +223,13 @@ Reactions track 13 agent lifecycle states: `running` → `pr_open` → `ci_pendi
 
 OAuth users pay nothing beyond their existing subscriptions.
 
-### What Works Without External Providers
+### What You Get With Just Claude
 
 Everything except multi-AI features. You get all 32 personas, structured workflows, smart routing, context detection, and every skill. Multi-AI orchestration (parallel analysis, debate, consensus) activates when external providers are configured.
 
 ---
 
-## Trust and Safety
+## Trust, Safety, and Limits
 
 **Namespace isolation** — Only `/octo:*` commands and `octo` natural language prefix activate the plugin. Your existing Claude Code setup is untouched.
 
@@ -243,7 +243,7 @@ Everything except multi-AI features. You get all 32 personas, structured workflo
 
 ---
 
-## OpenClaw Compatibility
+## Works With OpenClaw
 
 Claude Octopus ships with a compatibility layer for [OpenClaw](https://github.com/openclaw/openclaw), the open-source AI assistant framework. This lets you expose Octopus workflows to messaging platforms (Telegram, Discord, Signal, WhatsApp) without modifying the Claude Code plugin.
 
@@ -349,7 +349,7 @@ Join [r/ClaudeOctopus](https://www.reddit.com/r/ClaudeOctopus/) for help, workfl
 2. Submit PRs following existing code style
 3. `git clone https://github.com/nyldn/claude-octopus.git && make test`
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for details.
 
 ---
 

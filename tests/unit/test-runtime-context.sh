@@ -5,7 +5,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-TEMPLATE="$PROJECT_ROOT/templates/RUNTIME.md"
+TEMPLATE="$PROJECT_ROOT/config/templates/RUNTIME.md"
 DOCTOR="$PROJECT_ROOT/.claude/skills/skill-doctor.md"
 
 TEST_COUNT=0; PASS_COUNT=0; FAIL_COUNT=0
@@ -15,9 +15,9 @@ fail() { TEST_COUNT=$((TEST_COUNT+1)); FAIL_COUNT=$((FAIL_COUNT+1)); echo "FAIL:
 # ── Template existence ───────────────────────────────────────────────────────
 
 if [[ -f "$TEMPLATE" ]]; then
-    pass "RUNTIME.md template exists in templates/"
+    pass "RUNTIME.md template exists in config/templates/"
 else
-    fail "RUNTIME.md template exists in templates/" "not found at $TEMPLATE"
+    fail "RUNTIME.md template exists in config/templates/" "not found at $TEMPLATE"
 fi
 
 # ── Template has expected sections ───────────────────────────────────────────

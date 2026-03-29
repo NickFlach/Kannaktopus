@@ -390,7 +390,7 @@ run_yaml_workflow() {
     local prompt="$2"
     local task_group="${3:-$(date +%s)}"
 
-    local yaml_file="${PLUGIN_DIR}/workflows/${workflow_name}.yaml"
+    local yaml_file="${PLUGIN_DIR}/config/workflows/${workflow_name}.yaml"
 
     # Parse and validate
     if ! parse_yaml_workflow "$yaml_file"; then

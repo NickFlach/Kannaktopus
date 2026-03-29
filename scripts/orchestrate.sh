@@ -2259,7 +2259,7 @@ ${obs_ctx}"
     # If YAML workflow file exists and runtime is enabled, delegate to YAML runner
     # Otherwise fall through to hardcoded logic (backward compatibility)
     # ═══════════════════════════════════════════════════════════════════════════
-    local yaml_file="${PLUGIN_DIR}/workflows/embrace.yaml"
+    local yaml_file="${PLUGIN_DIR}/config/workflows/embrace.yaml"
     local use_yaml_runtime=false
 
     case "$OCTOPUS_YAML_RUNTIME" in
