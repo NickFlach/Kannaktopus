@@ -1,6 +1,6 @@
 # Claude Octopus
 
-Multi-LLM orchestration plugin for Claude Code — coordinates Codex, Gemini, Perplexity, OpenRouter, Copilot, Qwen, and Ollama with consensus gates. Eight tentacles, zero blind spots.
+Every AI model has blind spots. Claude Octopus puts up to eight of them on every task, so blind spots surface before you ship — not after. It orchestrates Codex, Gemini, Copilot, Qwen, Ollama, Perplexity, and OpenRouter alongside Claude Code, with consensus gates that flag any disagreements.
 
 <p align="center">
   <img src="docs/assets/social-preview.jpg" alt="Claude Octopus" width="640">
