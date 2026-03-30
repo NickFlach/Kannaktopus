@@ -72,6 +72,16 @@ This skill wraps the `code-reviewer` persona defined in:
 
 ---
 
+## Pre-Review: Scope Drift Check
+
+Before starting the code review pipeline, run the scope drift detection skill (`skill-scope-drift`) to compare the diff against stated intent. This surfaces scope creep and missing requirements before the multi-LLM review begins.
+
+See `skills/skill-scope-drift/SKILL.md` for the full detection process.
+
+**This is informational — it never blocks the review.** Display the scope drift report, then proceed with the full review pipeline. Include the drift findings in the final review synthesis if drift was detected.
+
+---
+
 ## Autonomous Implementation Review
 
 When the review context indicates `AI-assisted`, `Autonomous / Dark Factory`, or unclear provenance, raise the rigor bar. Do not treat generated code as trustworthy just because it is polished.

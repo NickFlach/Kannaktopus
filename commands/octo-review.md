@@ -94,6 +94,16 @@ AskUserQuestion({
 
 **WAIT for the user's answers before proceeding.**
 
+## Step 1b: Scope Drift Check (informational)
+
+Before building the review profile, run scope drift detection to compare the diff against stated intent. This gives reviewers early awareness of scope creep or missing requirements.
+
+Load `skills/skill-scope-drift/SKILL.md` and execute the drift analysis. Display the structured report (CLEAN / DRIFT DETECTED / REQUIREMENTS MISSING). **This never blocks the review** — proceed to Step 2 regardless.
+
+If no intent sources are found (no TODOS.md, no PR body, no commit messages), skip silently.
+
+---
+
 ## Step 2: Build Review Profile
 
 After receiving answers, map them to a JSON profile:
