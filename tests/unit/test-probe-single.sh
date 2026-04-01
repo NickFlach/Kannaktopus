@@ -135,6 +135,24 @@ assert_contains "$(grep -c 'Research Intensity' "$DISCOVER_CMD" 2>/dev/null || e
 assert_contains "$(grep -c 'intensity=' "$DISCOVER_CMD" 2>/dev/null || echo 0)" \
   "[1-9]" "discover.md: passes intensity in Skill args"
 
+# ── research report template structure ──────────────────────────────────────
+
+[[ $(grep -c 'Executive Summary' "$FLOW_DISCOVER") -gt 0 ]] && \
+  pass "flow-discover.md: synthesis template has Executive Summary section" || \
+  fail "flow-discover.md: synthesis template has Executive Summary section" "missing: Executive Summary"
+
+[[ $(grep -c 'Sources' "$FLOW_DISCOVER") -gt 0 ]] && \
+  pass "flow-discover.md: synthesis template has Sources section" || \
+  fail "flow-discover.md: synthesis template has Sources section" "missing: Sources"
+
+[[ $(grep -c 'Methodology' "$FLOW_DISCOVER") -gt 0 ]] && \
+  pass "flow-discover.md: synthesis template has Methodology section" || \
+  fail "flow-discover.md: synthesis template has Methodology section" "missing: Methodology"
+
+[[ $(grep -c 'inference' "$FLOW_DISCOVER") -gt 0 ]] && \
+  pass "flow-discover.md: quality rule requires source or inference marking" || \
+  fail "flow-discover.md: quality rule requires source or inference marking" "missing: inference rule"
+
 # ── backward compat: probe_discover still exists ─────────────────────────────
 
 assert_contains "$(grep -c 'probe_discover()' "$ALL_SRC" 2>/dev/null || echo 0)" \

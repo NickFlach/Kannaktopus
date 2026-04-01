@@ -1,6 +1,5 @@
 ---
 name: flow-discover
-effort: high
 aliases:
   - discover
   - discover-workflow
@@ -296,16 +295,20 @@ After the command completes, read the result file path that was printed and retu
 
 **You (Claude) synthesize the collected results directly in conversation.** This replaces the previous Gemini synthesis call that frequently timed out.
 
-**Use this exact structure** (matching the format from `synthesize_probe_results()` in orchestrate.sh):
+**Use this exact structure** (structured research report format):
 
-1. **Key Findings** — Top 3-5 actionable insights, ranked by relevance to the original question
-2. **Patterns & Consensus** — Where multiple sources agree
-3. **Conflicts & Trade-offs** — Where sources disagree, with your reasoned resolution
-4. **Gaps** — What's still unknown and needs more research
-5. **Priority Matrix** — Rank findings by impact (High/Medium/Low) and effort (Low/Medium/High) in a table
-6. **Recommended Approach** — Specific next steps based on findings
+1. **Executive Summary** — 2-3 sentence overview answering the original question directly
+2. **Key Findings** — Top 3-5 actionable insights, ranked by relevance to the original question
+3. **Themes & Patterns** — Where multiple sources agree, grouped by theme
+4. **Conflicts & Trade-offs** — Where sources disagree, with your reasoned resolution
+5. **Gaps** — What's still unknown and needs more research
+6. **Priority Matrix** — Rank findings by impact (High/Medium/Low) and effort (Low/Medium/High) in a table
+7. **Recommended Approach** — Specific next steps based on findings
+8. **Sources** — List each source with provider attribution and what it contributed
+9. **Methodology** — Brief note on providers used, intensity level, and research approach
 
 **Quality rules:**
+- Every claim MUST cite its source provider or be explicitly marked as `[inference]`
 - Short but specific findings may be MORE valuable than lengthy general analysis
 - Minority opinions and dissenting views MUST be preserved — they often contain critical insights
 - Concrete examples (code, file paths, commands) outweigh abstract discussion

@@ -763,6 +763,32 @@ function qualityGate(session) {
   return "";
 }
 
+// v9.19.0: Cost projection from session metrics
+function costProjection(session, inputCost) {
+  try {
+    const completed = session?.completed_phases || 0;
+    const total = session?.total_phases || 4;
+    const remaining = total - completed;
+    const spent = inputCost?.total_cost_usd ?? 0;
+    if (spent <= 0 || completed < 2) {
+      // Need 2+ data points to project
+      if (spent > 0) return `${C.green}$${spent.toFixed(2)}${C.reset}`;
+      return "";
+    }
+    const avg = spent / completed;
+    const projected = spent + avg * remaining;
+    const costColor = projected >= 5 ? C.red : projected >= 1 ? C.yellow : C.green;
+    let seg = `${costColor}$${spent.toFixed(2)}\u2192~$${projected.toFixed(2)}${C.reset}`;
+    const ceiling = process.env.OCTO_BUDGET_CEILING;
+    if (ceiling && projected > parseFloat(ceiling)) {
+      seg += ` ${C.red}\u26A0${C.reset}`;
+    }
+    return seg;
+  } catch {
+    return "";
+  }
+}
+
 function writeContextBridge(input) {
   try {
     const pct = Math.round(input?.context_window?.used_percentage || 0);
@@ -939,6 +965,8 @@ function render(input, session, usage, transcript, latestVersion, config) {
     octoParts.push(`${emoji} ${phase} ${C.dim}${completed}/${total}${C.reset}`);
     octoParts.push(providers);
     if (qg) octoParts.push(`QG: ${qg}`);
+    const costSeg = costProjection(session, cost);
+    if (costSeg) octoParts.push(`\u{1F4B0} ${costSeg}`);
     if (agents) {
       const agentSeg = runningAgent ? `Agents: ${agents} (${runningAgent})` : `Agents: ${agents}`;
       octoParts.push(agentSeg);

@@ -199,6 +199,19 @@ else
   fail "references flow-deliver integration" "not found"
 fi
 
+# ── flow-deliver actually wires doc-sync ───────────────────────────────────
+
+DELIVER_SKILL="$PROJECT_ROOT/skills/flow-deliver/SKILL.md"
+if [[ -f "$DELIVER_SKILL" ]]; then
+  if grep -qi 'doc.sync\|doc-sync\|sync docs' "$DELIVER_SKILL" 2>/dev/null; then
+    pass "flow-deliver references doc-sync step"
+  else
+    fail "flow-deliver references doc-sync step" "no doc-sync reference in flow-deliver"
+  fi
+else
+  fail "flow-deliver references doc-sync step" "flow-deliver SKILL.md not found"
+fi
+
 # ── Summary ──────────────────────────────────────────────────────────────────
 
 echo ""

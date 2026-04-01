@@ -1,6 +1,5 @@
 ---
 name: flow-deliver
-effort: high
 aliases:
   - deliver
   - deliver-workflow
@@ -278,10 +277,9 @@ validation_summary=$(head -30 "$VALIDATION_FILE" | grep -A 2 "## Summary\|Pass\|
 
 # Update final metrics (completion of full workflow)
 "${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "phases_completed" "1"
-# Track actual providers used (dynamic — from fleet output, not hardcoded)
-for _provider in $(echo "$FLEET_OUTPUT" | cut -d'|' -f1 | sort -u); do
-  "${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "$_provider"
-done
+"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "codex"
+"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "gemini"
+"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "claude"
 
 # Display final state summary
 echo ""
@@ -841,9 +839,33 @@ Ink workflows typically cost $0.02-0.08 per validation depending on codebase siz
 
 ---
 
+## Post-Validation: Documentation Sync
+
+After validation passes (go decision), run documentation synchronization to keep project docs current with shipped code. This step is **automatic** when running as part of `/octo:embrace` and **offered** when running standalone.
+
+**Invoke the doc-sync skill:**
+```
+Skill(skill: "octo:auto", args: "sync docs for the changes on this branch")
+```
+
+The doc-sync skill will:
+1. Read all `.md` files (max depth 2, cap 30 files)
+2. Cross-reference each against `git diff` to find stale content
+3. Auto-update factual corrections (paths, counts, version numbers)
+4. Ask about risky/narrative changes before editing
+5. Check cross-doc consistency and discoverability
+6. Commit doc changes to the branch
+
+**Skip conditions:** Skip doc-sync if:
+- No `.md` files exist in the project
+- The validation result was "no-go" (fix code first)
+- User explicitly requests to skip (`--no-docs` or declines when asked)
+
+---
+
 ## Post-Delivery: Route to Ship
 
-After delivery validation completes:
+After delivery validation and doc-sync complete:
 1. Update `.octo/STATE.md`:
    - status: "complete"
    - Add history entry: "All phases complete, ready to ship"

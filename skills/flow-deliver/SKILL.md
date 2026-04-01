@@ -860,9 +860,33 @@ Ink workflows typically cost $0.02-0.08 per validation depending on codebase siz
 
 ---
 
+## Post-Validation: Documentation Sync
+
+After validation passes (go decision), run documentation synchronization to keep project docs current with shipped code. This step is **automatic** when running as part of `/octo:embrace` and **offered** when running standalone.
+
+**Invoke the doc-sync skill:**
+```
+Skill(skill: "octo:auto", args: "sync docs for the changes on this branch")
+```
+
+The doc-sync skill will:
+1. Read all `.md` files (max depth 2, cap 30 files)
+2. Cross-reference each against `git diff` to find stale content
+3. Auto-update factual corrections (paths, counts, version numbers)
+4. Ask about risky/narrative changes before editing
+5. Check cross-doc consistency and discoverability
+6. Commit doc changes to the branch
+
+**Skip conditions:** Skip doc-sync if:
+- No `.md` files exist in the project
+- The validation result was "no-go" (fix code first)
+- User explicitly requests to skip (`--no-docs` or declines when asked)
+
+---
+
 ## Post-Delivery: Route to Ship
 
-After delivery validation completes:
+After delivery validation and doc-sync complete:
 1. Update `.octo/STATE.md`:
    - status: "complete"
    - Add history entry: "All phases complete, ready to ship"
