@@ -278,9 +278,10 @@ validation_summary=$(head -30 "$VALIDATION_FILE" | grep -A 2 "## Summary\|Pass\|
 
 # Update final metrics (completion of full workflow)
 "${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "phases_completed" "1"
-"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "codex"
-"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "gemini"
-"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "claude"
+# Track actual providers used (dynamic — from fleet output, not hardcoded)
+for _provider in $(echo "$FLEET_OUTPUT" | cut -d'|' -f1 | sort -u); do
+  "${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "$_provider"
+done
 
 # Display final state summary
 echo ""

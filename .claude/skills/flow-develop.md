@@ -316,9 +316,10 @@ fi
 
 # Update metrics
 "${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "phases_completed" "1"
-"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "codex"
-"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "gemini"
-"${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "claude"
+# Track actual providers used (dynamic — from fleet output, not hardcoded)
+for _provider in $(echo "$FLEET_OUTPUT" | cut -d'|' -f1 | sort -u); do
+  "${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" update_metrics "provider" "$_provider"
+done
 ```
 
 **DO NOT PROCEED TO STEP 7 until state updated.**
@@ -335,6 +336,17 @@ Read the synthesis file and present:
 - Request user confirmation before implementing
 
 **After user confirms, STEP 6: Implement the solution using Write/Edit tools**
+
+### Self-Regulation for Iterative Development
+
+When the develop phase runs iterative build-test cycles, self-regulation prevents infinite loops:
+
+- **WTF score**: Each iteration is scored for forward progress. Repeated failures, reverts, and stalls increase the score.
+- **Hard cap**: Maximum 50 iterations before forced stop — no exceptions.
+- **Configurable weights**: Tunable via `~/.claude-octopus/config/loop-config.conf` (WINDOW_SIZE, REVERT_PENALTY, WTF_THRESHOLD).
+- **Sliding window**: Only the last N iterations count toward the WTF score, so early struggles don't poison later progress.
+
+If the WTF score exceeds the threshold, the workflow stops and presents findings rather than continuing to loop.
 
 **Include attribution:**
 ```

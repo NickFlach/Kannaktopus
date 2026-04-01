@@ -314,12 +314,12 @@ echo ""
 echo "Test 15: Checking for provider availability check..."
 skills_with_provider_check=0
 for skill_file in "${ENFORCE_SKILLS[@]}"; do
-    if grep -q "command -v codex" "$skill_file" && \
-       grep -q "command -v gemini" "$skill_file"; then
+    if (grep -q "command -v codex" "$skill_file" && grep -q "command -v gemini" "$skill_file") || \
+       grep -q "check-providers\|build-fleet" "$skill_file"; then
         ((skills_with_provider_check++))
     else
         fail "$(basename "$skill_file") missing provider availability check" \
-             "Should check 'command -v codex' and 'command -v gemini'"
+             "Should check 'command -v codex/gemini' or reference check-providers.sh/build-fleet.sh"
     fi
 done
 if [[ $skills_with_provider_check -eq ${#ENFORCE_SKILLS[@]} ]]; then
