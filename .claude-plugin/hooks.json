@@ -129,6 +129,18 @@
   "PostToolUse": [
     {
       "matcher": {
+        "tool": "Bash|Read|WebFetch|Grep"
+      },
+      "hooks": [
+        {
+          "type": "command",
+          "command": "${CLAUDE_PLUGIN_ROOT}/hooks/output-compressor.sh",
+          "timeout": 10
+        }
+      ]
+    },
+    {
+      "matcher": {
         "tool": "Bash|Agent|Write|Edit"
       },
       "hooks": [

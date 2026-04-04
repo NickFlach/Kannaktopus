@@ -77,7 +77,7 @@ const C = {
 const ALL_COLUMNS = [
   "Octo", "5h Usage", "7d Usage", "Context", "Cost", "Cache", "Model",
   "Session", "Changes", "Tokens", "Output Tokens", "API Time", "Version",
-  "5h Reset", "7d Reset", "RTK",
+  "5h Reset", "7d Reset", "RTK", "Saved",
 ];
 
 // Default ON/OFF per column
@@ -86,7 +86,7 @@ const SECTION_DEFAULTS = {
   "5h Usage": true, "7d Usage": true, "Context": true, "Cost": true, "Model": true,
   "Cache": false, "Version": false,
   "Session": false, "Changes": false, "Tokens": false, "Output Tokens": false,
-  "API Time": false, "5h Reset": false, "7d Reset": false, "RTK": false,
+  "API Time": false, "5h Reset": false, "7d Reset": false, "RTK": false, "Saved": false,
 };
 
 // v9.10.2: Named presets for quick config switching
@@ -95,7 +95,7 @@ const PRESETS = {
   minimal: ["Octo", "Model", "Context"],
   developer: ["Octo", "Model", "5h Usage", "7d Usage", "Context", "Cost", "Changes"],
   full: ALL_COLUMNS,
-  performance: ["Octo", "Model", "Context", "Tokens", "Output Tokens", "Cache", "API Time", "Session", "RTK"],
+  performance: ["Octo", "Model", "Context", "Tokens", "Output Tokens", "Cache", "API Time", "Session", "RTK", "Saved"],
 };
 
 // Phase emoji mapping
@@ -981,6 +981,30 @@ function render(input, session, usage, transcript, latestVersion, config) {
       const pct = gain.avgSavingsPct;
       const color = pct >= 50 ? C.green : pct >= 20 ? C.yellow : C.slate600;
       return { label: lbl("RTK"), value: `${color}${saved}${C.reset} ${C.slate600}(${Math.round(pct)}%)${C.reset}` };
+    },
+    "Saved": () => {
+      // v9.20.0: Read compression analytics for current session
+      const analyticsPath = join(HOME, ".claude-octopus", "analytics", "compression.jsonl");
+      try {
+        if (!existsSync(analyticsPath)) return { label: lbl("Saved"), value: `${C.slate600}0${C.reset}` };
+        const lines = readFileSync(analyticsPath, "utf-8").trim().split("\n").filter(Boolean);
+        const sessionId = process.env.CLAUDE_SESSION_ID || "";
+        let totalSaved = 0, events = 0;
+        for (const line of lines) {
+          try {
+            const e = JSON.parse(line);
+            if (sessionId && e.session !== sessionId) continue;
+            totalSaved += e.saved || 0;
+            events++;
+          } catch { /* skip malformed */ }
+        }
+        if (events === 0) return { label: lbl("Saved"), value: `${C.slate600}0${C.reset}` };
+        const formatted = totalSaved >= 1000 ? `${(totalSaved / 1000).toFixed(1)}k` : `${totalSaved}`;
+        const color = totalSaved >= 5000 ? C.green : totalSaved >= 1000 ? C.yellow : C.slate600;
+        return { label: lbl("Saved"), value: `${color}~${formatted}${C.reset} ${C.slate600}(${events})${C.reset}` };
+      } catch {
+        return { label: lbl("Saved"), value: `${C.slate600}0${C.reset}` };
+      }
     },
   };
 

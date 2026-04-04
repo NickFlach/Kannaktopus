@@ -929,6 +929,25 @@ doctor_check_skills() {
             "CC v2.1.91 multi-line deep link prompts available" \
             "claude-cli://open?q= supports encoded newlines (%0A) for multi-step prompts"
     fi
+
+    # v9.20.0: Output compression
+    if [[ -x "${CLAUDE_PLUGIN_ROOT:-}/hooks/output-compressor.sh" ]]; then
+        if [[ "${OCTOPUS_COMPRESS_ENABLED:-true}" == "true" ]]; then
+            doctor_add "output-compressor" "skills" "pass" \
+                "Output compressor active — large tool results get compressed summaries" \
+                "PostToolUse hook injects summaries for JSON arrays, logs, HTML, verbose output >3K chars. Use 'octo-compress stats' to see savings."
+        else
+            doctor_add "output-compressor" "skills" "info" \
+                "Output compressor installed but disabled" \
+                "Set OCTOPUS_COMPRESS_ENABLED=true to enable automatic compression of large tool outputs"
+        fi
+    fi
+
+    if [[ -x "${CLAUDE_PLUGIN_ROOT:-}/bin/octo-compress" ]]; then
+        doctor_add "octo-compress-cli" "skills" "pass" \
+            "octo-compress CLI available — pipe verbose output for token savings" \
+            "Usage: npm install 2>&1 | octo-compress — compresses JSON arrays, logs, HTML, verbose text"
+    fi
 }
 
 # --- Category 8: Conflicts ---
