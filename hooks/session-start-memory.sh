@@ -76,18 +76,35 @@ EOFJSON
     echo "[Octopus] Restored preferences from auto-memory: autonomy=${AUTONOMY}"
 fi
 
-# --- 4. Query HRM for recent project context (v10.0.0 - Kannaka integration) ---
+# --- 4. Deploy managed-settings.d/ fragment (v9.19.0, CC v2.1.83+) ---
+# Installs octopus-defaults.json with git instructions off + auto-memory dir
+# Note: Generated dynamically (not copied) because JSON has no tilde expansion
+if [[ "${SUPPORTS_MANAGED_SETTINGS_D:-false}" == "true" ]]; then
+    SETTINGS_D="${HOME}/.claude/managed-settings.d"
+    SETTINGS_DEST="${SETTINGS_D}/octopus-defaults.json"
+    if [[ ! -f "$SETTINGS_DEST" ]] || ! grep -q "$HOME" "$SETTINGS_DEST" 2>/dev/null; then
+        mkdir -p "$SETTINGS_D"
+        cat > "$SETTINGS_DEST" <<EOFSET
+{
+  "includeGitInstructions": false,
+  "autoMemoryDirectory": "${HOME}/.claude-octopus/memory/"
+}
+EOFSET
+    fi
+fi
+
+# --- 5. Query HRM for recent project context (v10.0.0 - Kannaka integration) ---
 KANNAKA_BRIDGE="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}/scripts/kannaka-bridge.sh"
 if [[ -x "$KANNAKA_BRIDGE" ]]; then
     # Query HRM for project-relevant memories
     PROJECT_NAME=$(basename "$(pwd)")
     HRM_CONTEXT=$("$KANNAKA_BRIDGE" recall "project ${PROJECT_NAME} coding implementation" 3 2>/dev/null || echo "")
-    
+
     if [[ -n "$HRM_CONTEXT" ]]; then
         echo "[Kannaktopus] HRM project context available:"
         echo "$HRM_CONTEXT"
     fi
-    
+
     # Also recall any general workflow memories
     WORKFLOW_CONTEXT=$("$KANNAKA_BRIDGE" recall "workflow lessons learned debugging" 2 2>/dev/null || echo "")
     if [[ -n "$WORKFLOW_CONTEXT" ]]; then
@@ -96,7 +113,7 @@ if [[ -x "$KANNAKA_BRIDGE" ]]; then
     fi
 fi
 
-# --- Fallback: Query claude-mem for backward compatibility (v8.57.0) ---
+# --- 6. Fallback: Query claude-mem for backward compatibility (v8.57.0) ---
 CLAUDE_MEM_BRIDGE="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}/scripts/claude-mem-bridge.sh"
 if [[ -x "$CLAUDE_MEM_BRIDGE" ]]; then
     MEM_CONTEXT=$("$CLAUDE_MEM_BRIDGE" context "" 3 2>/dev/null || echo "")
