@@ -187,7 +187,7 @@ Kannaktopus is part of the Kannaka constellation of projects:
 
 ## Attribution
 
-AI Debate Hub by [wolverin0](https://github.com/wolverin0/AI-Debate-Hub) (MIT License) — four-way AI debate framework.
+AI Debate Hub by [wolverin0](https://github.com/wolverin0/claude-skills) (MIT License) — four-way AI debate framework.
 
 ## License
 

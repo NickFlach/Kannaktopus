@@ -1,6 +1,6 @@
 {
   "name": "kannaktopus",
-  "version": "9.18.1",
+  "version": "10.0.0",
   "description": "Multi-LLM orchestration with Double Diamond workflows, provider routing, safety gates, and automation. Dispatches to Codex, Gemini, Copilot, Qwen, Perplexity, OpenRouter, Ollama, and OpenCode from a single plugin.",
   "author": {
     "name": "Nick Flach"

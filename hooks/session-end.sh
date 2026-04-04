@@ -189,7 +189,7 @@ if [[ -x "${CLAUDE_PLUGIN_ROOT:-}/scripts/write-handoff.sh" ]]; then
     "${CLAUDE_PLUGIN_ROOT}/scripts/write-handoff.sh" 2>/dev/null || true
 fi
 
-# --- 6. Absorb session learnings into HRM (v9.18.1 - Kannaka integration) ---
+# --- 6. Absorb session learnings into HRM (v10.0.0 - Kannaka integration) ---
 KANNAKA_BRIDGE="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}/scripts/kannaka-bridge.sh"
 if [[ -x "$KANNAKA_BRIDGE" && -f "$SESSION_FILE" ]] && command -v jq &>/dev/null; then
     # Extract key session data for HRM absorption

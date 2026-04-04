@@ -2,7 +2,7 @@
   "name": "kannaktopus",
   "displayName": "Kannaktopus",
   "description": "Multi-LLM orchestration — up to 8 providers check each other's work. Research, build, review, and ship with consensus gates.",
-  "version": "9.18.1",
+  "version": "10.0.0",
   "author": {
     "name": "Nick Flach"
   },

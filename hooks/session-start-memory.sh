@@ -76,7 +76,7 @@ EOFJSON
     echo "[Octopus] Restored preferences from auto-memory: autonomy=${AUTONOMY}"
 fi
 
-# --- 4. Query HRM for recent project context (v9.18.1 - Kannaka integration) ---
+# --- 4. Query HRM for recent project context (v10.0.0 - Kannaka integration) ---
 KANNAKA_BRIDGE="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}/scripts/kannaka-bridge.sh"
 if [[ -x "$KANNAKA_BRIDGE" ]]; then
     # Query HRM for project-relevant memories

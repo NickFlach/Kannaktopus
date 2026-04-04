@@ -2,7 +2,7 @@
 # kannaka-bridge.sh — HRM integration bridge for Kannaktopus
 # Replaces claude-mem-bridge.sh with direct HRM binary calls
 # All operations are non-blocking and fault-tolerant — silently no-ops when HRM is unavailable.
-# v9.18.1
+# v10.0.0
 
 set -euo pipefail
 
