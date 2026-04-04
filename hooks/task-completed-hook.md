@@ -5,7 +5,7 @@ description: Triggers phase transitions and dependent task scheduling when workf
 
 # TaskCompleted Hook (Claude Code v2.1.33+)
 
-This hook enables automatic phase transitions in Claude Octopus Double Diamond workflows.
+This hook enables automatic phase transitions in Kannaktopus Double Diamond workflows.
 
 ## Purpose
 
@@ -19,14 +19,14 @@ When a task completes during an active workflow, this hook:
 ## Trigger Conditions
 
 - Event: `TaskCompleted` (v2.1.33+)
-- Active claude-octopus workflow detected (session file exists)
+- Active kannaktopus workflow detected (session file exists)
 - Task belongs to a tracked workflow phase
 
 ## Behavior
 
 ```bash
 # Read workflow state
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 if [[ -f "$SESSION_FILE" ]]; then
     CURRENT_PHASE=$(jq -r '.phase // empty' "$SESSION_FILE")
     TOTAL_TASKS=$(jq -r '.phase_tasks.total // 0' "$SESSION_FILE")
@@ -91,7 +91,7 @@ When the final task completes, triggering phase transition:
       "total_tasks": 3,
       "total_duration_ms": 125000,
       "total_tokens": 38000,
-      "synthesis_file": "~/.claude-octopus/results/probe-synthesis-20260207.md"
+      "synthesis_file": "~/.kannaktopus/results/probe-synthesis-20260207.md"
     }
   }
 }
@@ -118,7 +118,7 @@ ink TaskCompleted → workflow complete
 
 ## Metrics Collection
 
-Each TaskCompleted event records to `~/.claude-octopus/metrics/`:
+Each TaskCompleted event records to `~/.kannaktopus/metrics/`:
 
 - Agent type that completed the task
 - Wall-clock duration
@@ -136,7 +136,7 @@ This data feeds the smart routing optimizer for future task assignment.
 
 ## Related Files
 
-- `~/.claude-octopus/session.json` - Workflow state machine
-- `~/.claude-octopus/metrics/` - Per-task metrics for routing optimization
+- `~/.kannaktopus/session.json` - Workflow state machine
+- `~/.kannaktopus/metrics/` - Per-task metrics for routing optimization
 - `scripts/orchestrate.sh` - Phase transition logic
 - `hooks/teammate-idle-hook.md` - Companion hook for agent scheduling

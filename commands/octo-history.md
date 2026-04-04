@@ -7,7 +7,7 @@ allowed-tools: Bash, Read, Grep
 
 **Your first output line MUST be:** `🐙 Octopus History`
 
-Query structured records of past Claude Octopus workflow runs.
+Query structured records of past Kannaktopus workflow runs.
 
 ## EXECUTION CONTRACT (Mandatory)
 
@@ -18,7 +18,7 @@ When the user invokes `/octo:history`, follow these steps in order.
 Check for the run store file:
 
 ```bash
-RUN_STORE="${HOME}/.claude-octopus/runs/run-log.jsonl"
+RUN_STORE="${HOME}/.kannaktopus/runs/run-log.jsonl"
 if [[ -f "$RUN_STORE" ]]; then
     TOTAL=$(wc -l < "$RUN_STORE" | tr -d ' ')
     echo "Run store: $TOTAL entries"
@@ -72,7 +72,7 @@ Date         Workflow     Providers           Findings  Status   Duration
 Use the Bash tool to read the JSONL file and format:
 
 ```bash
-RUN_STORE="${HOME}/.claude-octopus/runs/run-log.jsonl"
+RUN_STORE="${HOME}/.kannaktopus/runs/run-log.jsonl"
 # Last 10 runs (default)
 tail -10 "$RUN_STORE" | while IFS= read -r line; do
     echo "$line"
@@ -86,7 +86,7 @@ If jq is available, use it for cleaner formatting. If not, use grep + sed.
 When `experiments` argument is passed, check for experiment iteration logs:
 
 ```bash
-EXPERIMENTS_DIR="${HOME}/.claude-octopus/runs/experiments"
+EXPERIMENTS_DIR="${HOME}/.kannaktopus/runs/experiments"
 if [[ -d "$EXPERIMENTS_DIR" ]]; then
     ls -la "$EXPERIMENTS_DIR"/*.jsonl 2>/dev/null
 else

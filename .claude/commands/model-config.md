@@ -1,6 +1,6 @@
 ---
 command: model-config
-description: Configure AI provider models for Claude Octopus workflows
+description: Configure AI provider models for Kannaktopus workflows
 version: 3.0.0
 category: configuration
 tags: [config, models, providers, codex, gemini, spark, routing, trace]
@@ -12,7 +12,7 @@ updated: 2026-03-09
 
 **Your first output line MUST be:** `🐙 Octopus Model Config`
 
-Configure which AI models are used by Claude Octopus workflows. This allows you to:
+Configure which AI models are used by Kannaktopus workflows. This allows you to:
 - Use premium models (GPT-5.4, Claude Opus 4.6) for complex tasks
 - Use fast models (GPT-5.4, Gemini Flash) for quick feedback
 - Use large-context models (GPT-4.1, 1M tokens) for big codebases
@@ -227,7 +227,7 @@ Phase routing supports both direct model names (`gpt-5.4`) and cross-provider re
 
 ## Configuration File
 
-Location: `~/.claude-octopus/config/providers.json`
+Location: `~/.kannaktopus/config/providers.json`
 
 ```json
 {
@@ -340,8 +340,8 @@ When the user invokes `/octo:model-config`, you MUST:
    env | grep OCTOPUS_ 2>/dev/null || echo "No OCTOPUS_ environment variables set"
 
    # Show config file contents
-   if [[ -f ~/.claude-octopus/config/providers.json ]]; then
-     cat ~/.claude-octopus/config/providers.json | jq '.'
+   if [[ -f ~/.kannaktopus/config/providers.json ]]; then
+     cat ~/.kannaktopus/config/providers.json | jq '.'
    else
      echo "No configuration file found (using defaults)"
    fi
@@ -355,9 +355,9 @@ When the user invokes `/octo:model-config`, you MUST:
 
 3. **Show Phases** (`show phases`):
    ```bash
-   if [[ -f ~/.claude-octopus/config/providers.json ]]; then
+   if [[ -f ~/.kannaktopus/config/providers.json ]]; then
      echo "Phase Routing Configuration:"
-     jq -r '.routing.phases // {} | to_entries[] | "  \(.key)\t→ \(.value)"' ~/.claude-octopus/config/providers.json 2>/dev/null
+     jq -r '.routing.phases // {} | to_entries[] | "  \(.key)\t→ \(.value)"' ~/.kannaktopus/config/providers.json 2>/dev/null
    fi
    ```
    Display as a formatted table with phase name, routed model, and rationale.
@@ -378,7 +378,7 @@ When the user invokes `/octo:model-config`, you MUST:
    - Write to `.providers.<provider>.<capability>` in the config file:
 
    ```bash
-   local config_file="${HOME}/.claude-octopus/config/providers.json"
+   local config_file="${HOME}/.kannaktopus/config/providers.json"
    jq --arg p "opencode" --arg c "research" --arg m "z-ai/glm-5.1" \
      '.providers[$p][$c] = $m' "$config_file" > "${config_file}.tmp.$$" && mv "${config_file}.tmp.$$" "$config_file"
    echo "✓ Set opencode.research → z-ai/glm-5.1"
@@ -390,7 +390,7 @@ When the user invokes `/octo:model-config`, you MUST:
    Validate phase name against known phases: `discover`, `define`, `develop`, `deliver`, `quick`, `debate`, `review`, `security`, `research`.
    ```bash
    # Update routing.phases in config file
-   local config_file="${HOME}/.claude-octopus/config/providers.json"
+   local config_file="${HOME}/.kannaktopus/config/providers.json"
    jq --arg phase "<phase>" --arg model "<model>" '.routing.phases[$phase] = $model' "$config_file" > "${config_file}.tmp.$$" && mv "${config_file}.tmp.$$" "$config_file"
    echo "✓ Set phase routing: $phase → $model"
    ```

@@ -1,6 +1,6 @@
 #!/bin/bash
 # tests/helpers/mock-helpers.sh
-# Mock infrastructure for Claude Octopus CLI testing
+# Mock infrastructure for Kannaktopus CLI testing
 # Provides utilities for mocking codex and gemini responses
 
 set -euo pipefail

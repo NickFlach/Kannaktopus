@@ -56,10 +56,10 @@ fi
 
 # ── Skill: experiments directory path ────────────────────────────────────────
 
-if echo "$SKILL_CONTENT" | grep -qc '\.claude-octopus/experiments' 2>/dev/null; then
-    pass "skill: specifies .claude-octopus/experiments/ directory"
+if echo "$SKILL_CONTENT" | grep -qc '\.kannaktopus/experiments' 2>/dev/null; then
+    pass "skill: specifies .kannaktopus/experiments/ directory"
 else
-    fail "skill: specifies .claude-octopus/experiments/ directory" "experiments directory path not found"
+    fail "skill: specifies .kannaktopus/experiments/ directory" "experiments directory path not found"
 fi
 
 # ── Skill: Direction parameter ───────────────────────────────────────────────

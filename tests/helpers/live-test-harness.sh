@@ -21,7 +21,7 @@ set -euo pipefail
 # Configuration
 #==============================================================================
 
-LIVE_TEST_DIR="${LIVE_TEST_DIR:-/tmp/claude-octopus-live-tests}"
+LIVE_TEST_DIR="${LIVE_TEST_DIR:-/tmp/kannaktopus-live-tests}"
 LIVE_TEST_TIMEOUT="${LIVE_TEST_TIMEOUT:-120}"
 LIVE_TEST_LOG_DIR="${LIVE_TEST_LOG_DIR:-$LIVE_TEST_DIR/logs}"
 CLAUDE_BIN="${CLAUDE_BIN:-claude}"
@@ -58,7 +58,7 @@ live_test_setup() {
     fi
     
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${BLUE}Claude Octopus Live Test Harness${NC}"
+    echo -e "${BLUE}Kannaktopus Live Test Harness${NC}"
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "Log directory: $LIVE_TEST_LOG_DIR"
     echo -e "Timeout: ${LIVE_TEST_TIMEOUT}s"

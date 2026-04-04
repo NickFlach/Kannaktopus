@@ -21,7 +21,7 @@ export_session_variables() {
     export OCTOPUS_CLAUDE_SESSION="claude-${OCTOPUS_SESSION_ID}"
 
     # Session directories
-    export OCTOPUS_SESSION_DIR="${HOME}/.claude-octopus/sessions/${OCTOPUS_SESSION_ID}"
+    export OCTOPUS_SESSION_DIR="${HOME}/.kannaktopus/sessions/${OCTOPUS_SESSION_ID}"
     export OCTOPUS_SESSION_RESULTS="${OCTOPUS_SESSION_DIR}/results"
     export OCTOPUS_SESSION_LOGS="${OCTOPUS_SESSION_DIR}/logs"
     export OCTOPUS_SESSION_PLANS="${OCTOPUS_SESSION_DIR}/plans"
@@ -67,7 +67,7 @@ get_session_info() {
 
 # Clean up old sessions (keep last 10)
 cleanup_old_sessions() {
-    local sessions_dir="${HOME}/.claude-octopus/sessions"
+    local sessions_dir="${HOME}/.kannaktopus/sessions"
     if [[ ! -d "$sessions_dir" ]]; then
         return 0
     fi

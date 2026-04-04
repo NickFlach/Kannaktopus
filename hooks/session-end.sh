@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — SessionEnd Hook (v8.41.0)
+# Kannaktopus — SessionEnd Hook (v8.41.0)
 # Fires when a Claude Code session ends. Finalizes metrics,
 # cleans up session artifacts, and persists key preferences
 # to auto-memory for cross-session continuity.
@@ -9,8 +9,8 @@
 
 set -euo pipefail
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
-METRICS_DIR="${HOME}/.claude-octopus/metrics"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
+METRICS_DIR="${HOME}/.kannaktopus/metrics"
 MEMORY_DIR="${HOME}/.claude/projects"
 
 # --- 1. Finalize session metrics ---
@@ -110,9 +110,9 @@ fi
 
 # --- 4. Cross-task learning extraction (v9.8.0) ---
 # Extracts structured learnings from the session and persists them as individual
-# JSON files in .claude-octopus/learnings/. Capped at 5 learnings per session
+# JSON files in .kannaktopus/learnings/. Capped at 5 learnings per session
 # to stay within budget. These are consumed at session start for relevance matching.
-LEARNINGS_DIR="${HOME}/.claude-octopus/learnings"
+LEARNINGS_DIR="${HOME}/.kannaktopus/learnings"
 if [[ -f "$SESSION_FILE" ]] && command -v jq &>/dev/null; then
     mkdir -p "$LEARNINGS_DIR"
 
@@ -189,10 +189,43 @@ if [[ -x "${CLAUDE_PLUGIN_ROOT:-}/scripts/write-handoff.sh" ]]; then
     "${CLAUDE_PLUGIN_ROOT}/scripts/write-handoff.sh" 2>/dev/null || true
 fi
 
-# --- 6. Clean up session artifacts ---
+# --- 6. Absorb session learnings into HRM (v9.18.1 - Kannaka integration) ---
+KANNAKA_BRIDGE="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}/scripts/kannaka-bridge.sh"
+if [[ -x "$KANNAKA_BRIDGE" && -f "$SESSION_FILE" ]] && command -v jq &>/dev/null; then
+    # Extract key session data for HRM absorption
+    SESSION_WORKFLOW=$(jq -r '.workflow // "unknown"' "$SESSION_FILE" 2>/dev/null)
+    SESSION_PHASE=$(jq -r '.current_phase // .phase // "none"' "$SESSION_FILE" 2>/dev/null)
+    SESSION_ERRORS=$(jq -r '.errors // [] | length' "$SESSION_FILE" 2>/dev/null) || SESSION_ERRORS=0
+    SESSION_AGENTS=$(jq -r '.total_agent_calls // 0' "$SESSION_FILE" 2>/dev/null)
+    
+    # Only absorb if there was meaningful activity
+    if [[ "$SESSION_AGENTS" -gt 0 || "$SESSION_ERRORS" -gt 0 ]]; then
+        PROJECT_NAME=$(basename "$(pwd)")
+        TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        
+        # Create a structured memory entry
+        MEMORY_CONTENT="Project: ${PROJECT_NAME} | Session: ${TIMESTAMP} | Workflow: ${SESSION_WORKFLOW} | Phase: ${SESSION_PHASE} | Agent calls: ${SESSION_AGENTS} | Errors: ${SESSION_ERRORS}"
+        
+        # Determine importance based on session outcome
+        if [[ "$SESSION_ERRORS" -gt 0 ]]; then
+            IMPORTANCE="0.8"  # High importance for error sessions (learning opportunity)
+        elif [[ "$SESSION_AGENTS" -gt 3 ]]; then
+            IMPORTANCE="0.7"  # Medium-high for complex multi-agent sessions
+        else
+            IMPORTANCE="0.5"  # Standard importance for regular sessions
+        fi
+        
+        # Absorb into HRM with project and workflow tags
+        "$KANNAKA_BRIDGE" absorb "$MEMORY_CONTENT" "$IMPORTANCE" "coding" "project:${PROJECT_NAME}" "workflow:${SESSION_WORKFLOW}" 2>/dev/null || true
+        
+        echo "[Kannaktopus] Session absorbed into HRM (importance: ${IMPORTANCE})"
+    fi
+fi
+
+# --- 7. Clean up session artifacts ---
 # Remove transient files but keep session.json for resume capability
-rm -f "${HOME}/.claude-octopus/.octo/pre-compact-snapshot.json" 2>/dev/null || true
-rm -f "${HOME}/.claude-octopus/.reload-signal" 2>/dev/null || true
+rm -f "${HOME}/.kannaktopus/.octo/pre-compact-snapshot.json" 2>/dev/null || true
+rm -f "${HOME}/.kannaktopus/.reload-signal" 2>/dev/null || true
 
 # Session manager cleanup: retain 10 most recent sessions
 if [[ -x "${CLAUDE_PLUGIN_ROOT:-}/scripts/session-manager.sh" ]]; then

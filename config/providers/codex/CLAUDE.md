@@ -1,6 +1,6 @@
 # Codex CLI Provider Configuration
 
-This file contains Codex-specific instructions for Claude Octopus workflows.
+This file contains Codex-specific instructions for Kannaktopus workflows.
 
 ## Provider Information
 

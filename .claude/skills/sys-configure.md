@@ -5,17 +5,17 @@ user-invocable: true
 aliases:
   - config
   - configure
-description: Configure Claude Octopus providers, models, and preferences — use for initial setup or provider changes
+description: Configure Kannaktopus providers, models, and preferences — use for initial setup or provider changes
 trigger: |
-  Use this skill when the user wants to "configure Claude Octopus", "setup octopus",
+  Use this skill when the user wants to "configure Kannaktopus", "setup octopus",
   "configure providers", "set up API keys for octopus", or mentions octopus configuration.
 ---
 
-# 🐙 Claude Octopus Configuration
+# 🐙 Kannaktopus Configuration
 
-🐙 **CLAUDE OCTOPUS SETUP** - Helping you configure multi-agent orchestration
+🐙 **KANNAKTOPUS SETUP** - Helping you configure multi-agent orchestration
 
-You are helping the user configure Claude Octopus, a multi-agent orchestration plugin.
+You are helping the user configure Kannaktopus, a multi-agent orchestration plugin.
 
 ## Your Task
 
@@ -38,7 +38,7 @@ You are helping the user configure Claude Octopus, a multi-agent orchestration p
    - Show the detected provider status
    - Provide next steps
 
-**IMPORTANT**: Always start your response with "🐙 **CLAUDE OCTOPUS SETUP**" so users know this is Claude Octopus responding, not generic Claude.
+**IMPORTANT**: Always start your response with "🐙 **KANNAKTOPUS SETUP**" so users know this is Kannaktopus responding, not generic Claude.
 
 ## Implementation Steps
 
@@ -96,7 +96,7 @@ After configuration, run status again and show the user:
 ## Example Flow
 
 ```
-🐙 Claude Octopus Configuration
+🐙 Kannaktopus Configuration
 
 Detecting current setup...
 ✓ Codex CLI installed

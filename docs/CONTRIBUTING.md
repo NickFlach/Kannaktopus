@@ -1,14 +1,14 @@
-# Contributing to Claude Octopus
+# Contributing to Kannaktopus
 
-Thanks for your interest in contributing to Claude Octopus! This document provides guidelines for contributing.
+Thanks for your interest in contributing to Kannaktopus! This document provides guidelines for contributing.
 
 ## Getting Started
 
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/claude-octopus.git
-   cd claude-octopus
+   git clone https://github.com/YOUR_USERNAME/kannaktopus.git
+   cd kannaktopus
    ```
 3. **Make scripts executable**:
    ```bash

@@ -1,7 +1,7 @@
 /**
  * Skill Loader
  *
- * Parses Claude Octopus skill Markdown files and extracts YAML frontmatter
+ * Parses Kannaktopus skill Markdown files and extracts YAML frontmatter
  * metadata to generate OpenClaw-compatible tool registrations.
  *
  * This is the bridge between Claude Code's Markdown-based skill format
@@ -78,7 +78,7 @@ function assertWithinDirectory(filePath, directory) {
     }
 }
 /**
- * Load all skill metadata from the Claude Octopus skills directory.
+ * Load all skill metadata from the Kannaktopus skills directory.
  */
 export async function loadSkills(pluginRoot) {
     const skillsDir = resolve(pluginRoot, ".claude/skills");
@@ -107,7 +107,7 @@ export async function loadSkills(pluginRoot) {
     return skills;
 }
 /**
- * Load command metadata from the Claude Octopus commands directory.
+ * Load command metadata from the Kannaktopus commands directory.
  */
 export async function loadCommands(pluginRoot) {
     const commandsDir = resolve(pluginRoot, ".claude/commands");

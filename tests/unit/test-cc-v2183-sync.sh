@@ -92,7 +92,7 @@ fi
 
 # Verify it's checked BEFORE the legacy fallback
 plugin_data_line=$(grep -n 'CLAUDE_PLUGIN_DATA' "$ORCH" | head -1 | cut -d: -f1)
-legacy_line=$(grep -n 'claude-octopus' "$ORCH" | grep WORKSPACE | head -1 | cut -d: -f1)
+legacy_line=$(grep -n 'kannaktopus' "$ORCH" | grep WORKSPACE | head -1 | cut -d: -f1)
 if [[ -n "$plugin_data_line" && -n "$legacy_line" && "$plugin_data_line" -lt "$legacy_line" ]]; then
   pass "CLAUDE_PLUGIN_DATA checked before legacy fallback"
 else

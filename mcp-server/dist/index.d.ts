@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Claude Octopus MCP Server
+ * Kannaktopus MCP Server
  *
- * Exposes Claude Octopus workflows (Double Diamond phases, debate, review)
+ * Exposes Kannaktopus workflows (Double Diamond phases, debate, review)
  * as MCP tools that any MCP client (OpenClaw, Claude.ai, Cursor, etc.) can consume.
  *
  * This server delegates to the existing orchestrate.sh infrastructure,
@@ -17,5 +17,8 @@
  *   octopus_debate   → grapple
  *   octopus_review   → codex-review
  *   octopus_security → squeeze
+ *
+ * IDE integration tools:
+ *   octopus_set_editor_context → Inject IDE state (file, selection, cursor) into orchestration
  */
 export {};

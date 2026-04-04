@@ -53,8 +53,8 @@ EOF
             -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
             -H "Content-Type: application/json" \
             -H "Connection: keep-alive" \
-            -H "HTTP-Referer: https://github.com/nyldn/claude-octopus" \
-            -H "X-Title: Claude Octopus" \
+            -H "HTTP-Referer: https://github.com/NickFlach/Kannaktopus" \
+            -H "X-Title: Kannaktopus" \
             -d "$payload") || {
             log ERROR "OpenRouter curl failed (timeout or network error, model=$model)"
             rm -f "$header_file"

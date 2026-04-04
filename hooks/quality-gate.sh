@@ -1,11 +1,11 @@
 #!/bin/bash
-# Claude Octopus Quality Gate Hook (v8.43.0)
+# Kannaktopus Quality Gate Hook (v8.43.0)
 # Validates tangle output before continuing workflow
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}
 # v8.43: Added reference integrity check for cross-file dependencies
 set -euo pipefail
 
-VALIDATION_FILE=$(ls -t ~/.claude-octopus/results/tangle-validation-*.md 2>/dev/null | head -1)
+VALIDATION_FILE=$(ls -t ~/.kannaktopus/results/tangle-validation-*.md 2>/dev/null | head -1)
 
 if [[ -f "$VALIDATION_FILE" ]]; then
     # Check if quality gate passed

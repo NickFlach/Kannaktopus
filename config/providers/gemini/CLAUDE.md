@@ -1,6 +1,6 @@
 # Gemini CLI Provider Configuration
 
-This file contains Gemini-specific instructions for Claude Octopus workflows.
+This file contains Gemini-specific instructions for Kannaktopus workflows.
 
 ## Provider Information
 

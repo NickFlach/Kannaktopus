@@ -12,7 +12,7 @@ description: "\"Two-stage review: spec compliance then code quality\""
 
 ---
 
-🐙 **CLAUDE OCTOPUS ACTIVATED** — Two-Stage Review Pipeline
+🐙 **KANNAKTOPUS ACTIVATED** — Two-Stage Review Pipeline
 
 ---
 

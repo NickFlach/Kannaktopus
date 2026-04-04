@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Sysadmin Safety Gate Hook
+# Kannaktopus Sysadmin Safety Gate Hook
 # PostToolUse hook for openclaw-admin persona
 # Blocks destructive system commands without explicit confirmation patterns
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}

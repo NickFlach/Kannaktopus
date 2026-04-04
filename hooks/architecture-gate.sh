@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Architecture Gate Hook (v8.6.0, enhanced v8.8.0)
+# Kannaktopus Architecture Gate Hook (v8.6.0, enhanced v8.8.0)
 # Domain-specific quality gate for backend-architect, database-architect, cloud-architect, deployment-engineer
 # Selects checks via OCTOPUS_AGENT_PERSONA env var
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}

@@ -376,14 +376,14 @@ TaskCreate({
 
 **Opt-out for users who prefer old system:**
 
-Create `.claude/claude-octopus.local.md` with:
+Create `.claude/kannaktopus.local.md` with:
 
 ```yaml
 ---
 use_native_tasks: false
 ---
 
-# Claude Octopus Local Configuration
+# Kannaktopus Local Configuration
 
 This project uses legacy TodoWrite tool instead of native Task management.
 ```

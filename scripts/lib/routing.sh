@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus - Task Routing Library (v8.21.0)
+# Kannaktopus - Task Routing Library (v8.21.0)
 # Provides: task classification, complexity estimation, persona recommendation, role mapping
 #
 # Sourced by orchestrate.sh. Extracted from orchestrate.sh to reduce monolith size.

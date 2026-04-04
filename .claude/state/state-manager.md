@@ -1,6 +1,6 @@
 ---
 name: octopus-state-manager
-description: Manage persistent state across sessions for Claude Octopus workflows
+description: Manage persistent state across sessions for Kannaktopus workflows
 triggers:
   - "state"
   - "session"
@@ -12,7 +12,7 @@ dependencies:
   - "${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh"
 ---
 
-# State Manager - Session Persistence for Claude Octopus
+# State Manager - Session Persistence for Kannaktopus
 
 Provides persistent state tracking across sessions, context resets, and workflow phases.
 
@@ -27,7 +27,7 @@ The state manager enables:
 
 ## State File Structure
 
-State is stored in `.claude-octopus/state.json`:
+State is stored in `.kannaktopus/state.json`:
 
 ```json
 {
@@ -97,10 +97,10 @@ Before running any workflow:
 ```
 
 This creates:
-- `.claude-octopus/state.json` (state file)
-- `.claude-octopus/context/` (phase context files)
-- `.claude-octopus/summaries/` (execution summaries)
-- `.claude-octopus/quick/` (quick mode outputs)
+- `.kannaktopus/state.json` (state file)
+- `.kannaktopus/context/` (phase context files)
+- `.kannaktopus/summaries/` (execution summaries)
+- `.kannaktopus/quick/` (quick mode outputs)
 
 **Safe to run multiple times** - validates existing state or recreates if corrupted.
 
@@ -220,7 +220,7 @@ To see current state at a glance:
 
 Output:
 ```
-=== Claude Octopus State Summary ===
+=== Kannaktopus State Summary ===
 
 Project ID: a3f2c8b9e1d4f7a6
 Session Start: 2026-01-28T14:30:00Z
@@ -311,8 +311,8 @@ The state manager includes built-in safety:
 - Graceful degradation if state missing
 
 ### Recovery
-- Backup saved to `.claude-octopus/state.json.backup`
-- Corrupted files moved to `.claude-octopus/state.json.corrupt.<timestamp>`
+- Backup saved to `.kannaktopus/state.json.backup`
+- Corrupted files moved to `.kannaktopus/state.json.corrupt.<timestamp>`
 - Can reinitialize at any time
 
 ## Best Practices
@@ -323,7 +323,7 @@ The state manager includes built-in safety:
 - ✅ Record decisions with clear rationale
 - ✅ Update context after each phase
 - ✅ Track meaningful metrics
-- ✅ Add `.claude-octopus/` to `.gitignore` (state may contain sensitive context)
+- ✅ Add `.kannaktopus/` to `.gitignore` (state may contain sensitive context)
 
 ### DON'T:
 - ❌ Store large content in state (use files)
@@ -336,7 +336,7 @@ The state manager includes built-in safety:
 
 ### Check if state exists:
 ```bash
-if [ -f .claude-octopus/state.json ]; then
+if [ -f .kannaktopus/state.json ]; then
   echo "State file exists"
 else
   echo "State file missing - run init_state"
@@ -345,7 +345,7 @@ fi
 
 ### Validate state JSON:
 ```bash
-if jq empty .claude-octopus/state.json 2>/dev/null; then
+if jq empty .kannaktopus/state.json 2>/dev/null; then
   echo "State file is valid JSON"
 else
   echo "State file is corrupted"
@@ -354,12 +354,12 @@ fi
 
 ### View raw state:
 ```bash
-cat .claude-octopus/state.json | jq .
+cat .kannaktopus/state.json | jq .
 ```
 
 ### Reset state:
 ```bash
-rm -rf .claude-octopus
+rm -rf .kannaktopus
 "${CLAUDE_PLUGIN_ROOT}/scripts/state-manager.sh" init_state
 ```
 
@@ -442,7 +442,7 @@ echo "Resuming from phase: $current_phase"
 State management creates this directory structure:
 
 ```
-.claude-octopus/
+.kannaktopus/
 ├── state.json                    # Main state file
 ├── state.json.backup             # Backup before last write
 ├── context/                      # Phase context files
@@ -476,7 +476,7 @@ See `state-manager.sh help` for full command reference.
 ### State file corrupted
 ```bash
 # State manager auto-recovers, but you can manually restore:
-cp .claude-octopus/state.json.backup .claude-octopus/state.json
+cp .kannaktopus/state.json.backup .kannaktopus/state.json
 ```
 
 ### State file missing
@@ -488,12 +488,12 @@ cp .claude-octopus/state.json.backup .claude-octopus/state.json
 ### Invalid JSON in state
 ```bash
 # Check validity:
-jq empty .claude-octopus/state.json
+jq empty .kannaktopus/state.json
 
 # If invalid, look for backups:
-ls -la .claude-octopus/*.backup .claude-octopus/*.corrupt.*
+ls -la .kannaktopus/*.backup .kannaktopus/*.corrupt.*
 ```
 
 ## Conclusion
 
-The state manager enables session persistence, decision tracking, and context preservation across Claude Octopus workflows. Integrate it into all flows to provide continuity across context resets and improve workflow efficiency.
+The state manager enables session persistence, decision tracking, and context preservation across Kannaktopus workflows. Integrate it into all flows to provide continuity across context resets and improve workflow efficiency.

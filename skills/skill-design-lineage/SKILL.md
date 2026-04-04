@@ -17,14 +17,14 @@ Persist design documents from brainstorming and planning sessions with branch tr
 All design documents are stored under:
 
 ```
-~/.claude-octopus/designs/<project-slug>/
+~/.kannaktopus/designs/<project-slug>/
 ```
 
 The project slug is derived from the current git repository name or working directory basename:
 
 ```bash
 SLUG=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
-DESIGNS_DIR="${HOME}/.claude-octopus/designs/${SLUG}"
+DESIGNS_DIR="${HOME}/.kannaktopus/designs/${SLUG}"
 mkdir -p "$DESIGNS_DIR"
 ```
 
@@ -115,7 +115,7 @@ After a brainstorm, planning, or define workflow produces design output, save it
 
 ```bash
 SLUG=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
-DESIGNS_DIR="${HOME}/.claude-octopus/designs/${SLUG}"
+DESIGNS_DIR="${HOME}/.kannaktopus/designs/${SLUG}"
 mkdir -p "$DESIGNS_DIR"
 
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null | tr '/' '-' || echo "no-branch")
@@ -160,7 +160,7 @@ Before writing a new design, search for related prior designs using keyword matc
 
 ```bash
 SLUG=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
-DESIGNS_DIR="${HOME}/.claude-octopus/designs/${SLUG}"
+DESIGNS_DIR="${HOME}/.kannaktopus/designs/${SLUG}"
 
 # Search for designs matching keywords (case-insensitive)
 KEYWORDS="auth refactor"
@@ -221,7 +221,7 @@ Downstream commands (deliver, review, develop) auto-discover design context by c
 
 ```bash
 SLUG=$(basename "$(git rev-parse --show-toplevel 2>/dev/null || pwd)")
-DESIGNS_DIR="${HOME}/.claude-octopus/designs/${SLUG}"
+DESIGNS_DIR="${HOME}/.kannaktopus/designs/${SLUG}"
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null | tr '/' '-' || echo "no-branch")
 
 # Find designs for current branch

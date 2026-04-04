@@ -1,12 +1,12 @@
 # Architecture: Models, Providers, and Execution Flow
 
-This document explains how Claude Octopus orchestrates multiple AI providers and the execution flow of each workflow.
+This document explains how Kannaktopus orchestrates multiple AI providers and the execution flow of each workflow.
 
 ---
 
 ## Overview
 
-Claude Octopus coordinates **eight AI providers** — one per tentacle to give you multi-perspective analysis:
+Kannaktopus coordinates **eight AI providers** — one per tentacle to give you multi-perspective analysis:
 
 ```
     +------------------+
@@ -14,7 +14,7 @@ Claude Octopus coordinates **eight AI providers** — one per tentacle to give y
     +--------+---------+
              |
     +--------v---------+
-    | Claude Octopus   |  <-- Plugin coordinates providers
+    | Kannaktopus   |  <-- Plugin coordinates providers
     +--------+---------+
              |
   +--+---+---+---+---+--+
@@ -68,7 +68,7 @@ User Request
      |
      v
 +--------------------+
-|   Claude Octopus   |
+|   Kannaktopus   |
 |    Orchestrator    |
 +---------+----------+
           |
@@ -116,7 +116,7 @@ User Request
      |
      v
 +--------------------+
-|   Claude Octopus   |
+|   Kannaktopus   |
 +---------+----------+
           |
           v
@@ -162,7 +162,7 @@ User Request
      |
      v
 +--------------------+
-|   Claude Octopus   |
+|   Kannaktopus   |
 +---------+----------+
           |
     +-----+-----+
@@ -219,7 +219,7 @@ User Request
      |
      v
 +--------------------+
-|   Claude Octopus   |
+|   Kannaktopus   |
 +---------+----------+
           |
     +-----+-----+
@@ -276,7 +276,7 @@ User Question
      |
      v
 +--------------------+
-|   Claude Octopus   |
+|   Kannaktopus   |
 +---------+----------+
           |
      Round 1
@@ -388,7 +388,7 @@ All four phases run sequentially. Each phase uses the output of the previous pha
 
 ## Provider Detection
 
-Claude Octopus auto-detects which providers are available:
+Kannaktopus auto-detects which providers are available:
 
 ```bash
 # Check status
@@ -417,14 +417,14 @@ When multi-AI mode is active, you'll see these indicators:
 
 | Indicator | Meaning |
 |-----------|---------|
-| 🐙 | Claude Octopus orchestration active |
+| 🐙 | Kannaktopus orchestration active |
 | 🔴 | Codex CLI executing (OpenAI) |
 | 🟡 | Gemini CLI executing (Google) |
 | 🔵 | Claude subagent processing |
 
 **Example output:**
 ```
-🐙 CLAUDE OCTOPUS ACTIVATED - Multi-provider research mode
+🐙 KANNAKTOPUS ACTIVATED - Multi-provider research mode
 🔍 Discover Phase: Researching authentication patterns
 
 🔴 Codex CLI: Analyzing implementation patterns...

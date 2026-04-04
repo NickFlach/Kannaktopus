@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Reaction Engine (v8.45.0)
+# Kannaktopus Reaction Engine (v8.45.0)
 # Configurable auto-response system for agent lifecycle events.
 # Fires transparently inside health checks, monitoring loops, and sentinel triage.
 #
@@ -16,7 +16,7 @@ set -eo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REGISTRY="${SCRIPT_DIR}/agent-registry.sh"
-REACTIONS_DIR="${HOME}/.claude-octopus/agents/reactions"
+REACTIONS_DIR="${HOME}/.kannaktopus/agents/reactions"
 CONFIG_OVERRIDE=".octo/reactions.conf"
 
 # Colors
@@ -318,7 +318,7 @@ _action_escalate() {
     echo ""
 
     # Write escalation to log
-    local log_dir="${HOME}/.claude-octopus/logs"
+    local log_dir="${HOME}/.kannaktopus/logs"
     mkdir -p "$log_dir"
     echo "[$(date -u +"%Y-%m-%dT%H:%M:%SZ")] ESCALATION: agent=${agent_id} event=${event} pr=${pr_num} elapsed=${minutes_elapsed}m" \
         >> "${log_dir}/escalations.log"

@@ -14,7 +14,7 @@ TEST_FILE="${1:-$SCRIPT_DIR/test-prd-skill.sh}"
 MAX_ITERATIONS="${2:-10}"
 
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${BLUE}Claude Octopus Fix Loop${NC}"
+echo -e "${BLUE}Kannaktopus Fix Loop${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "Test: $TEST_FILE"
 echo -e "Max iterations: $MAX_ITERATIONS"

@@ -1,6 +1,6 @@
 # Ollama Provider Configuration
 
-This file contains Ollama-specific instructions for Claude Octopus workflows.
+This file contains Ollama-specific instructions for Kannaktopus workflows.
 
 ## Provider Information
 

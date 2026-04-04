@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Provider Availability Check
+# Kannaktopus — Provider Availability Check
 # Single-source script for checking which AI providers are available.
 # Used by skills (via Bash tool) to populate the activation banner.
 #

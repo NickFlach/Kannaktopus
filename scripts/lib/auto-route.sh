@@ -122,7 +122,7 @@ auto_route() {
 
     echo ""
     echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
-    echo -e "${MAGENTA}  Claude Octopus - Smart Routing with Branching${NC}"
+    echo -e "${MAGENTA}  Kannaktopus - Smart Routing with Branching${NC}"
     echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
     echo ""
     # Cynefin domain classification
@@ -429,7 +429,7 @@ Focus on:
 
             # Create temp directory for audit results
             local audit_dir
-            audit_dir="${WORKSPACE:-$HOME/.claude-octopus}/results/audit-$(date +%Y%m%d-%H%M%S)"
+            audit_dir="${WORKSPACE:-$HOME/.kannaktopus}/results/audit-$(date +%Y%m%d-%H%M%S)"
             mkdir -p "$audit_dir"
             local pids=()
             local domain_files=()
@@ -527,7 +527,7 @@ Format as markdown. Be specific and actionable."
 
             # Phase 3: Generate final report
             echo -e "  ${CYAN}Phase 3/3: Generating Final Report${NC}"
-            local final_report="${WORKSPACE:-$HOME/.claude-octopus}/results/full-audit-$(date +%Y%m%d-%H%M%S).md"
+            local final_report="${WORKSPACE:-$HOME/.kannaktopus}/results/full-audit-$(date +%Y%m%d-%H%M%S).md"
             {
                 echo "# Full Site Optimization Audit"
                 echo ""

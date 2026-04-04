@@ -388,7 +388,7 @@ Automatic token type detection using:
 
 ### NPM Package
 ```bash
-npm install @claude-octopus/token-extraction
+npm install @kannaktopus/token-extraction
 ```
 
 ### CLI Tool
@@ -398,7 +398,7 @@ npx token-extraction --project ./my-app
 
 ### Library Import
 ```typescript
-import { runTokenExtraction } from '@claude-octopus/token-extraction';
+import { runTokenExtraction } from '@kannaktopus/token-extraction';
 ```
 
 ### CI/CD Integration
@@ -438,7 +438,7 @@ Uses modern Node.js features:
 
 ## License
 
-MIT License - Open source and free to use
+Space Child License v1.0 - Open source and free to use
 
 ## Support & Contribution
 
@@ -460,7 +460,7 @@ Areas particularly welcome:
 
 ### Installation
 ```bash
-cd /Users/chris/git/claude-octopus/plugin/scripts/token-extraction
+cd /Users/chris/git/kannaktopus/plugin/scripts/token-extraction
 npm install
 ```
 
@@ -491,10 +491,10 @@ console.log(`Extracted ${result.tokens.length} tokens`);
 
 All files located in:
 ```
-/Users/chris/git/claude-octopus/plugin/scripts/token-extraction/
+/Users/chris/git/kannaktopus/plugin/scripts/token-extraction/
 ```
 
-Ready for immediate use or integration into the Claude Octopus plugin ecosystem.
+Ready for immediate use or integration into the Kannaktopus plugin ecosystem.
 
 ## Conclusion
 

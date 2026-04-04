@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Freeze Mode Hook (v9.8.0)
+# Kannaktopus Freeze Mode Hook (v9.8.0)
 # PreToolUse hook on Edit/Write that blocks file operations outside a frozen boundary.
 # Activated by /octo:freeze command (writes directory to state file).
 # Read, Bash, Glob, Grep are unaffected — investigation stays unrestricted.

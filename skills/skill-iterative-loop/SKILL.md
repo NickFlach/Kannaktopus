@@ -439,7 +439,7 @@ Maintain a mental window of the **last 10 iterations** (or fewer if less than 10
 
 Track a cumulative score starting at 0%. Each event adds to the score.
 
-**Default weights** (override via `~/.claude-octopus/loop-config.conf`):
+**Default weights** (override via `~/.kannaktopus/loop-config.conf`):
 
 | Event | Score Impact |
 |-------|-------------|
@@ -458,7 +458,7 @@ Track a cumulative score starting at 0%. Each event adds to the score.
 
 ### Configurable Weights
 
-At loop start, check for `~/.claude-octopus/loop-config.conf`. If it exists, read the key=value pairs and use them instead of defaults. Format:
+At loop start, check for `~/.kannaktopus/loop-config.conf`. If it exists, read the key=value pairs and use them instead of defaults. Format:
 
 ```conf
 # Loop Self-Regulation Configuration
@@ -582,7 +582,7 @@ When the user specifies a **Metric** command, switch to mechanical metric verifi
 
 ### Experiment Log
 
-All results are logged as JSONL to `.claude-octopus/experiments/<YYYY-MM-DD>.jsonl`.
+All results are logged as JSONL to `.kannaktopus/experiments/<YYYY-MM-DD>.jsonl`.
 
 Each line is a JSON object:
 ```json
@@ -606,9 +606,9 @@ You MUST follow this exact sequence for each iteration. No steps may be skipped 
 
 1. Create the experiment log directory if it does not exist:
    ```bash
-   mkdir -p .claude-octopus/experiments
+   mkdir -p .kannaktopus/experiments
    ```
-2. **Check for existing experiment log** — if `.claude-octopus/experiments/<today>.jsonl` exists, read it to determine the current best metric value and iteration count. Resume from the next iteration number.
+2. **Check for existing experiment log** — if `.kannaktopus/experiments/<today>.jsonl` exists, read it to determine the current best metric value and iteration count. Resume from the next iteration number.
 3. Run the metric command and capture the output number. This is the **baseline**.
 4. Log the baseline:
    ```json
@@ -618,7 +618,7 @@ You MUST follow this exact sequence for each iteration. No steps may be skipped 
 
 #### Each Subsequent Iteration (1..N)
 
-**Step 1: Review state.** Read the experiment log (`.claude-octopus/experiments/<today>.jsonl`), review git history (`git log --oneline -10`), and identify what has been tried, what worked, and what failed.
+**Step 1: Review state.** Read the experiment log (`.kannaktopus/experiments/<today>.jsonl`), review git history (`git log --oneline -10`), and identify what has been tried, what worked, and what failed.
 
 **Step 2: Pick the next change.** Based on what worked/failed/is untried, decide on ONE focused change. Do NOT combine multiple unrelated changes.
 
@@ -651,7 +651,7 @@ This ensures every experiment is recorded in git history regardless of outcome.
   - Attempt a quick fix (one try only). If fix works, re-measure.
   - If still broken → **REVERT**: `git revert HEAD --no-edit`. Log status as `"error"`.
 
-**Step 7: Log the result.** Append a JSONL entry to `.claude-octopus/experiments/<today>.jsonl`.
+**Step 7: Log the result.** Append a JSONL entry to `.kannaktopus/experiments/<today>.jsonl`.
 
 **Step 8: Report iteration summary.** Display:
 ```

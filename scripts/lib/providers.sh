@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Provider Detection & Version Checking
+# Kannaktopus — Provider Detection & Version Checking
 # ═══════════════════════════════════════════════════════════════════════════════
 # Extracted from orchestrate.sh in v9.7.7 monolith decomposition.
 # Contains: version_compare, detect_claude_code_version, detect_enterprise_backend,
@@ -691,8 +691,8 @@ EOF
         -H "Authorization: Bearer ${OPENROUTER_API_KEY}" \
         -H "Content-Type: application/json" \
         -H "Connection: keep-alive" \
-        -H "HTTP-Referer: https://github.com/nyldn/claude-octopus" \
-        -H "X-Title: Claude Octopus" \
+        -H "HTTP-Referer: https://github.com/NickFlach/Kannaktopus" \
+        -H "X-Title: Kannaktopus" \
         -d "$payload")
 
     # Extract content from response (fast regex extraction)

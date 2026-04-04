@@ -24,7 +24,7 @@ cmd_detect_providers() {
         echo "  Current version: $claude_version"
         echo "  Required version: $min_version or higher"
         echo ""
-        echo "Claude Octopus requires Claude Code $min_version+ for full functionality."
+        echo "Kannaktopus requires Claude Code $min_version+ for full functionality."
         echo ""
         echo "How to update:"
         echo ""
@@ -269,14 +269,14 @@ EOF
 
     # Provide guidance based on results
     if [[ "$codex_status" == "missing" && "$gemini_status" == "missing" ]]; then
-        echo "⚠ No providers installed. You need at least ONE provider to use Claude Octopus."
+        echo "⚠ No providers installed. You need at least ONE provider to use Kannaktopus."
         echo ""
         echo "Next steps:"
         echo "  1. Install Codex CLI: npm install -g @openai/codex"
         echo "     OR"
         echo "  2. Install Gemini CLI: npm install -g @google/gemini-cli"
         echo ""
-        echo "Then configure authentication - see: /claude-octopus:setup"
+        echo "Then configure authentication - see: /kannaktopus:setup"
     elif [[ ("$codex_status" == "ok" && "$codex_auth" == "none") || ("$gemini_status" == "ok" && "$gemini_auth" == "none") ]]; then
         echo "⚠ Provider(s) installed but not authenticated."
         echo ""
@@ -288,7 +288,7 @@ EOF
             echo "  Gemini: export GEMINI_API_KEY=\"AIza...\" (or run: gemini)"
         fi
         echo ""
-        echo "See: /claude-octopus:setup for full instructions"
+        echo "See: /kannaktopus:setup for full instructions"
     else
         echo "✓ You're all set! At least one provider is ready to use."
         echo ""
@@ -362,7 +362,7 @@ preflight_check() {
         echo -e "${RED}║  ❌ NO AI PROVIDERS FOUND                                     ║${NC}"
         echo -e "${RED}╚═══════════════════════════════════════════════════════════════╝${NC}"
         echo ""
-        echo -e "Claude Octopus needs at least ${YELLOW}ONE${NC} external AI provider."
+        echo -e "Kannaktopus needs at least ${YELLOW}ONE${NC} external AI provider."
         echo ""
         echo -e "${CYAN}Option 1: Install Codex CLI (OpenAI)${NC}"
         echo -e "  npm install -g @openai/codex"
@@ -445,12 +445,12 @@ preflight_check() {
     fi
 
     # Legacy plugin name warning (Issue #196)
-    # Detect if user still has the old "claude-octopus" install alongside or instead of "octo"
+    # Detect if user still has the old "kannaktopus" install alongside or instead of "octo"
     local claude_plugins_dir="$HOME/.claude/plugins"
-    if [[ -d "$claude_plugins_dir/cache/nyldn-plugins/claude-octopus" ]]; then
-        log WARN "Legacy install detected: 'claude-octopus' (renamed to 'octo' in v9.0)"
-        echo -e "${YELLOW}⚠${NC}  You have a leftover 'claude-octopus' install that causes 'not found in marketplace'."
-        echo -e "   Fix: ${CYAN}claude plugin uninstall claude-octopus && claude plugin install octo@nyldn-plugins${NC}"
+    if [[ -d "$claude_plugins_dir/cache/kannaka-plugins/kannaktopus" ]]; then
+        log WARN "Legacy install detected: 'kannaktopus' (renamed to 'octo' in v9.0)"
+        echo -e "${YELLOW}⚠${NC}  You have a leftover 'kannaktopus' install that causes 'not found in marketplace'."
+        echo -e "   Fix: ${CYAN}claude plugin uninstall kannaktopus && claude plugin install octo@kannaka-plugins${NC}"
     fi
 
     # Check for potentially conflicting plugins (informational only)
@@ -473,7 +473,7 @@ preflight_check() {
 
     if [[ $conflicts -gt 0 ]]; then
         log INFO "Found $conflicts potentially overlapping orchestrator(s)"
-        log INFO "  Claude Octopus uses external CLIs, so conflicts are unlikely"
+        log INFO "  Kannaktopus uses external CLIs, so conflicts are unlikely"
     fi
 
     if [[ $errors -gt 0 ]]; then

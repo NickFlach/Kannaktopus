@@ -1,6 +1,6 @@
-# Claude Octopus - Plugin Development Guide
+# Kannaktopus - Plugin Development Guide
 
-This document is for **developers working on the Claude Octopus plugin itself**. For plugin usage, see the main README.md.
+This document is for **developers working on the Kannaktopus plugin itself**. For plugin usage, see the main README.md.
 
 ## 📁 File Organization
 

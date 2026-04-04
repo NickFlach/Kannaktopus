@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Performance Gate Hook (v8.6.0, enhanced v8.8.0)
+# Kannaktopus Performance Gate Hook (v8.6.0, enhanced v8.8.0)
 # Domain-specific quality gate for performance-engineer persona
 # Validates: Quantified metrics (ms/MB/req/s), before/after benchmarks
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}

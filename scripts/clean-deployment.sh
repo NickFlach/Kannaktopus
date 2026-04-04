@@ -19,9 +19,9 @@ echo ""
 files_removed=0
 
 # Remove runtime workspace
-if [ -d ".claude-octopus" ]; then
-    rm -rf .claude-octopus/
-    echo -e "${GREEN}✓${NC} Removed .claude-octopus/ (runtime workspace)"
+if [ -d ".kannaktopus" ]; then
+    rm -rf .kannaktopus/
+    echo -e "${GREEN}✓${NC} Removed .kannaktopus/ (runtime workspace)"
     ((files_removed++))
 fi
 

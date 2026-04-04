@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Scheduler - Cron Expression Parser (v8.15.0)
+# Kannaktopus Scheduler - Cron Expression Parser (v8.15.0)
 # Pure Bash/awk 5-field cron parser: minute hour day month weekday
 # Supports: wildcards (*), ranges (1-5), steps (*/15), lists (1,3,5)
 # Shortcuts: @hourly, @daily, @weekly, @monthly, @yearly

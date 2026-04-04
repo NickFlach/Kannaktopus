@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Statusline — 3-tier adaptive display
+# Kannaktopus Statusline — 3-tier adaptive display
 # ═══════════════════════════════════════════════════════════════════════════════
 #
 # Tier 1: Node.js 16+ HUD (octopus-hud.mjs) — smart columns, OAuth API,
@@ -42,7 +42,7 @@ fi
 # ═══════════════════════════════════════════════════════════════════════════════
 
 if command -v jq &>/dev/null; then
-    SESSION_FILE="${HOME}/.claude-octopus/session.json"
+    SESSION_FILE="${HOME}/.kannaktopus/session.json"
 
     MODEL=$(echo "$input" | jq -r '.model.display_name // "Claude"')
     PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)

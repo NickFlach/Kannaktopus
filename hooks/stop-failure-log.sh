@@ -11,7 +11,7 @@ INPUT=$(cat 2>/dev/null) || INPUT=""
 [[ -z "$INPUT" ]] && exit 0
 
 # Determine log directory
-LOG_DIR="${CLAUDE_PLUGIN_DATA:-${HOME}/.claude-octopus}"
+LOG_DIR="${CLAUDE_PLUGIN_DATA:-${HOME}/.kannaktopus}"
 mkdir -p "$LOG_DIR" 2>/dev/null || exit 0
 
 LOG_FILE="$LOG_DIR/error-log.jsonl"

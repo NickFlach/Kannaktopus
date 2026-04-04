@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Telemetry Webhook Hook
+# Kannaktopus Telemetry Webhook Hook
 # v8.29.0: PostToolUse hook that POSTs phase completion data to configured webhook URL
 # v8.41.0: HTTP hook alternative available — when SUPPORTS_HTTP_HOOKS=true (CC v2.1.63+),
 #   users can replace this shell hook with an HTTP hook entry in hooks.json:

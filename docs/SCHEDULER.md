@@ -2,7 +2,7 @@
 
 > **Version:** 8.15.0 | **Module:** `scripts/scheduler/` | **Dependencies:** `bash`, `jq`, `flock`, `setsid`, `mkfifo`
 
-The Scheduled Workflow Runner adds daemon mode to Claude Octopus, enabling recurring multi-AI workflows like nightly security scans, morning research summaries, and periodic code reviews — all without a user at the terminal.
+The Scheduled Workflow Runner adds daemon mode to Kannaktopus, enabling recurring multi-AI workflows like nightly security scans, morning research summaries, and periodic code reviews — all without a user at the terminal.
 
 ## Quick Start
 
@@ -80,7 +80,7 @@ The scheduler is a standalone module — it does not modify `orchestrate.sh`. It
 ### Daemon Lifecycle
 
 1. **Start** (`octopus-scheduler.sh start`)
-   - Writes PID to `~/.claude-octopus/scheduler/runtime/daemon.pid`
+   - Writes PID to `~/.kannaktopus/scheduler/runtime/daemon.pid`
    - Creates a named pipe (FIFO) at `runtime/control.fifo` for CLI-to-daemon communication
    - Registers signal handlers: SIGTERM for graceful shutdown, SIGINT for immediate stop
    - Enters the main tick loop
@@ -133,7 +133,7 @@ When the daemon dispatches a job, `runner.sh` handles execution:
 
 ## Job Definition Format
 
-Jobs are JSON files stored in `~/.claude-octopus/scheduler/jobs/`. Each file defines one recurring workflow.
+Jobs are JSON files stored in `~/.kannaktopus/scheduler/jobs/`. Each file defines one recurring workflow.
 
 ```json
 {
@@ -337,18 +337,18 @@ While a job is running:
 
 | Switch | Effect |
 |--------|--------|
-| `touch ~/.claude-octopus/scheduler/switches/KILL_ALL` | Daemon stops. All running jobs are killed. No new jobs can start until the file is removed. |
-| `touch ~/.claude-octopus/scheduler/switches/PAUSE_ALL` | No new jobs dispatch. Running jobs continue to completion. Remove the file to resume. |
+| `touch ~/.kannaktopus/scheduler/switches/KILL_ALL` | Daemon stops. All running jobs are killed. No new jobs can start until the file is removed. |
+| `touch ~/.kannaktopus/scheduler/switches/PAUSE_ALL` | No new jobs dispatch. Running jobs continue to completion. Remove the file to resume. |
 | `octopus-scheduler.sh emergency-stop` | Creates `KILL_ALL` and stops the daemon in one command. |
 
 ---
 
 ## Runtime State
 
-All scheduler state lives under `~/.claude-octopus/scheduler/`:
+All scheduler state lives under `~/.kannaktopus/scheduler/`:
 
 ```
-~/.claude-octopus/scheduler/
+~/.kannaktopus/scheduler/
   jobs/                          Job definitions (JSON files)
     nightly-security.json
     morning-research.json
@@ -430,7 +430,7 @@ While a job runs, `runner.sh` reads `metrics-session.json` from the workspace ev
 
 ### 3. Emergency Kill Switch (manual override)
 
-Creating `~/.claude-octopus/scheduler/switches/KILL_ALL` immediately terminates all running jobs and stops the daemon. This is the "big red button" for when something goes wrong.
+Creating `~/.kannaktopus/scheduler/switches/KILL_ALL` immediately terminates all running jobs and stops the daemon. This is the "big red button" for when something goes wrong.
 
 ### Cost Estimates per Provider
 
@@ -469,7 +469,7 @@ Daemon already running (PID 12345)
 A previous daemon is still running or left a stale PID file. Check with `kill -0 12345`. If the process doesn't exist, remove the stale PID file:
 
 ```bash
-rm ~/.claude-octopus/scheduler/runtime/daemon.pid
+rm ~/.kannaktopus/scheduler/runtime/daemon.pid
 ```
 
 ### Job won't dispatch
@@ -507,11 +507,11 @@ Common causes:
 octopus-scheduler.sh emergency-stop
 
 # Check what happened
-cat ~/.claude-octopus/scheduler/logs/daemon.log
-cat ~/.claude-octopus/scheduler/ledger/events.jsonl
+cat ~/.kannaktopus/scheduler/logs/daemon.log
+cat ~/.kannaktopus/scheduler/ledger/events.jsonl
 
 # Clear the kill switch when ready to resume
-rm ~/.claude-octopus/scheduler/switches/KILL_ALL
+rm ~/.kannaktopus/scheduler/switches/KILL_ALL
 
 # Restart
 octopus-scheduler.sh start

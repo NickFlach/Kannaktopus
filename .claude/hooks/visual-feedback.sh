@@ -1,5 +1,5 @@
 #!/bin/bash
-# Visual feedback hook for Claude Octopus
+# Visual feedback hook for Kannaktopus
 # Injects provider indicators when external CLIs execute
 # This hook is called before Bash tool executes orchestrate.sh
 # Returns additional context to inject into Claude's prompt

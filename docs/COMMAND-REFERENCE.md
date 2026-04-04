@@ -1,6 +1,6 @@
 # Command and Usage Reference
 
-Complete reference for all 49 Claude Octopus slash commands, plus activation rules, provider indicators, and the project-lifecycle features that are triggered by natural language rather than slash commands.
+Complete reference for all 49 Kannaktopus slash commands, plus activation rules, provider indicators, and the project-lifecycle features that are triggered by natural language rather than slash commands.
 
 ---
 
@@ -186,7 +186,7 @@ Check setup status and configure AI providers.
 
 **Example output:**
 ```
-Claude Octopus Setup Status
+Kannaktopus Setup Status
 
 Providers:
   Codex CLI: ready
@@ -195,7 +195,7 @@ Providers:
 You're all set! Try: /octo:auto research OAuth patterns
 ```
 
-**Troubleshooting:** If you see "Failed to update: Plugin 'octo' not found", run `/octo:setup` for reinstall instructions, or see [issue #17](https://github.com/nyldn/claude-octopus/issues/17).
+**Troubleshooting:** If you see "Failed to update: Plugin 'octo' not found", run `/octo:setup` for reinstall instructions, or see [issue #17](https://github.com/NickFlach/Kannaktopus/issues/17).
 
 ---
 
@@ -236,7 +236,7 @@ Run environment diagnostics across 9 check categories.
 
 ### `/octo:model-config`
 
-Configure which AI models are used across Claude Octopus workflows.
+Configure which AI models are used across Kannaktopus workflows.
 
 **Usage:**
 ```
@@ -497,7 +497,7 @@ Creative thought partner brainstorming session — Solo or Multi-AI Team mode.
 
 **Visual indicator (Team mode):**
 ```
-🐙 CLAUDE OCTOPUS ACTIVATED — Multi-AI Brainstorm
+🐙 KANNAKTOPUS ACTIVATED — Multi-AI Brainstorm
 🔴 Codex CLI — Technical feasibility and implementation angles
 🟡 Gemini CLI — Lateral thinking and ecosystem connections
 🔵 Claude — Synthesis, pattern naming, and moderation
@@ -1008,7 +1008,7 @@ Manage scheduled workflow jobs — add, list, enable, disable, remove, view logs
 
 ### `/octo:scheduler`
 
-Manage the Claude Octopus scheduled workflow runner daemon.
+Manage the Kannaktopus scheduled workflow runner daemon.
 
 **Aliases:** `sched`
 
@@ -1184,7 +1184,7 @@ Show a cost breakdown by provider and workflow for the current session.
 - Cumulative session total
 - Historical comparison when previous session data exists
 
-**Data sources:** `~/.claude-octopus/usage/`, `~/.claude-octopus/routing.log`
+**Data sources:** `~/.kannaktopus/usage/`, `~/.kannaktopus/routing.log`
 
 ---
 
@@ -1225,7 +1225,7 @@ Query past workflow results from the persistent run store.
 - Filterable by workflow name, time window, or count
 - Requires at least one previous multi-AI workflow run to populate the store
 
-**Data source:** `~/.claude-octopus/runs/run-log.jsonl`
+**Data source:** `~/.kannaktopus/runs/run-log.jsonl`
 
 ---
 
@@ -1249,7 +1249,7 @@ Resume a previously-running Claude agent by ID.
 - Agent Teams enabled
 - Agent must be a Claude agent (Codex/Gemini agents don't support transcripts)
 
-**Find agent IDs:** Check `/octo:sentinel` output or `~/.claude-octopus/results/` for recent result files.
+**Find agent IDs:** Check `/octo:sentinel` output or `~/.kannaktopus/results/` for recent result files.
 
 ---
 
@@ -1277,7 +1277,7 @@ Toggle discipline mode — automatic verification, brainstorming, and review gat
 | Decision | When comparing options | Structured comparison with criteria and scores |
 | Intent | Before creative/writing tasks | Locks in goal and audience first |
 
-**Persists across sessions** via `~/.claude-octopus/config/discipline.conf`.
+**Persists across sessions** via `~/.kannaktopus/config/discipline.conf`.
 
 ---
 
@@ -1363,7 +1363,7 @@ Roll back to a previous checkpoint via git.
 
 ## Visual Indicators
 
-When Claude Octopus activates external CLIs, you'll see visual indicators:
+When Kannaktopus activates external CLIs, you'll see visual indicators:
 
 | Indicator | Meaning | Provider |
 |-----------|---------|----------|
@@ -1380,7 +1380,7 @@ When Claude Octopus activates external CLIs, you'll see visual indicators:
 
 **Example:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 Discover Phase: Researching authentication patterns
 
 Providers:

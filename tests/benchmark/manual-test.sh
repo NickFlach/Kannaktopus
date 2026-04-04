@@ -119,7 +119,7 @@ EOF
     echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
     echo -e "${CYAN}1. VERIFY PLUGIN IS ENABLED${NC}"
-    echo "   Check: ls ~/.claude/plugins/claude-octopus"
+    echo "   Check: ls ~/.claude/plugins/kannaktopus"
     echo ""
     echo -e "${CYAN}2. COPY THE PROMPT ABOVE${NC}"
     echo "   Paste it into Claude Code (this session or a new one)"
@@ -144,7 +144,7 @@ EOF
         echo ""
         echo -e "${CYAN}Next step:${NC}"
         echo "  1. Disable the plugin:"
-        echo "     ${YELLOW}mv ~/.claude/plugins/claude-octopus{,.disabled}${NC}"
+        echo "     ${YELLOW}mv ~/.claude/plugins/kannaktopus{,.disabled}${NC}"
         echo ""
         echo "  2. Run without plugin:"
         echo "     ${YELLOW}./tests/benchmark/manual-test.sh without-plugin${NC}"
@@ -163,11 +163,11 @@ cmd_without_plugin() {
     show_header "MANUAL TEST: WITHOUT PLUGIN (BASELINE)            "
 
     # Verify plugin is disabled
-    if [ -d "$HOME/.claude/plugins/claude-octopus" ]; then
+    if [ -d "$HOME/.claude/plugins/kannaktopus" ]; then
         echo -e "${RED}⚠ WARNING: Plugin appears to still be enabled!${NC}"
         echo ""
         echo "Please disable it first:"
-        echo "  ${YELLOW}mv ~/.claude/plugins/claude-octopus{,.disabled}${NC}"
+        echo "  ${YELLOW}mv ~/.claude/plugins/kannaktopus{,.disabled}${NC}"
         echo ""
         echo "Then run this command again."
         exit 1
@@ -211,7 +211,7 @@ cmd_without_plugin() {
         echo ""
         echo -e "${CYAN}Next steps:${NC}"
         echo "  1. Re-enable the plugin:"
-        echo "     ${YELLOW}mv ~/.claude/plugins/claude-octopus{.disabled,}${NC}"
+        echo "     ${YELLOW}mv ~/.claude/plugins/kannaktopus{.disabled,}${NC}"
         echo ""
         echo "  2. Compare results:"
         echo "     ${YELLOW}./tests/benchmark/manual-test.sh compare${NC}"
@@ -330,7 +330,7 @@ $(head -100 "$RESULTS_DIR/without-plugin-response.md")
 **Suggested prompt for Claude:**
 
 \`\`\`
-I ran a benchmark test comparing your security analysis with and without the claude-octopus plugin.
+I ran a benchmark test comparing your security analysis with and without the kannaktopus plugin.
 
 Test case: Flask authentication with 12 known vulnerabilities
 
@@ -385,7 +385,7 @@ EOF
     echo ""
     echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     cat << 'PROMPT'
-I ran a benchmark test comparing your security analysis with and without the claude-octopus plugin.
+I ran a benchmark test comparing your security analysis with and without the kannaktopus plugin.
 
 Test case: Flask authentication with 12 known vulnerabilities
 
@@ -425,7 +425,7 @@ usage() {
     echo "Usage: $0 {with-plugin|without-plugin|compare|clean}"
     echo ""
     echo "Commands:"
-    echo "  with-plugin      - Run test WITH claude-octopus plugin enabled"
+    echo "  with-plugin      - Run test WITH kannaktopus plugin enabled"
     echo "  without-plugin   - Run test WITHOUT plugin (baseline)"
     echo "  compare          - Compare results and generate report"
     echo "  clean            - Remove all test results"

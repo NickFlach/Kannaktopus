@@ -141,7 +141,7 @@ assert_contains "$OCTO_MD" "routing.log" "references routing.log for analytics"
 
 # ── Visual indicators section ─────────────────────────────────────────────────
 
-assert_contains "$OCTO_MD" "CLAUDE OCTOPUS ACTIVATED" "has visual indicator banner template"
+assert_contains "$OCTO_MD" "KANNAKTOPUS ACTIVATED" "has visual indicator banner template"
 
 # ── Prohibited actions ────────────────────────────────────────────────────────
 

@@ -54,7 +54,7 @@ fi
 
 echo ""
 echo "=== Session File ==="
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 if [[ -f "$SESSION_FILE" ]]; then
     cat "$SESSION_FILE" 2>/dev/null | python3 -m json.tool 2>/dev/null || cat "$SESSION_FILE"
 else

@@ -1,6 +1,6 @@
 # IDE Integration Guide
 
-Claude Octopus can be used from any IDE that supports the Model Context Protocol (MCP). The existing MCP server exposes all Octopus workflows as tools — no extension code required.
+Kannaktopus can be used from any IDE that supports the Model Context Protocol (MCP). The existing MCP server exposes all Octopus workflows as tools — no extension code required.
 
 ## Quick Start
 
@@ -92,9 +92,9 @@ Create `.vscode/mcp.json` in your project:
 ```json
 {
   "servers": {
-    "claude-octopus": {
+    "kannaktopus": {
       "command": "npx",
-      "args": ["tsx", "/path/to/claude-octopus/mcp-server/src/index.ts"],
+      "args": ["tsx", "/path/to/kannaktopus/mcp-server/src/index.ts"],
       "env": {
         "OPENAI_API_KEY": "${env:OPENAI_API_KEY}",
         "GEMINI_API_KEY": "${env:GEMINI_API_KEY}"
@@ -121,8 +121,8 @@ Create `.vscode/mcp.json` in your project:
 **Option 1: Auto-setup (recommended)**
 
 ```bash
-git clone --depth 1 https://github.com/nyldn/claude-octopus.git ~/.cursor/claude-octopus
-cd ~/.cursor/claude-octopus && scripts/ide-attach.sh --ide cursor
+git clone --depth 1 https://github.com/NickFlach/Kannaktopus.git ~/.cursor/kannaktopus
+cd ~/.cursor/kannaktopus && scripts/ide-attach.sh --ide cursor
 ```
 
 **Option 2: Manual config**
@@ -132,9 +132,9 @@ Create `.cursor/mcp.json` in your project (per-project) or `~/.cursor/mcp.json` 
 ```json
 {
   "mcpServers": {
-    "claude-octopus": {
+    "kannaktopus": {
       "command": "npx",
-      "args": ["tsx", "${userHome}/.cursor/claude-octopus/mcp-server/src/index.ts"],
+      "args": ["tsx", "${userHome}/.cursor/kannaktopus/mcp-server/src/index.ts"],
       "env": {
         "OPENAI_API_KEY": "${env:OPENAI_API_KEY}",
         "GEMINI_API_KEY": "${env:GEMINI_API_KEY}"
@@ -157,10 +157,10 @@ Add to `.zed/settings.json` in your project:
 ```json
 {
   "context_servers": {
-    "claude-octopus": {
+    "kannaktopus": {
       "command": {
         "path": "npx",
-        "args": ["tsx", "/path/to/claude-octopus/mcp-server/src/index.ts"],
+        "args": ["tsx", "/path/to/kannaktopus/mcp-server/src/index.ts"],
         "env": {
           "OPENAI_API_KEY": "${env:OPENAI_API_KEY}",
           "GEMINI_API_KEY": "${env:GEMINI_API_KEY}"
@@ -178,9 +178,9 @@ Install the `mcp.nvim` community plugin, then add to your config:
 ```lua
 require('mcp').setup({
   servers = {
-    ['claude-octopus'] = {
+    ['kannaktopus'] = {
       command = 'npx',
-      args = { 'tsx', '/path/to/claude-octopus/mcp-server/src/index.ts' },
+      args = { 'tsx', '/path/to/kannaktopus/mcp-server/src/index.ts' },
     },
   },
 })
@@ -188,19 +188,19 @@ require('mcp').setup({
 
 ## Visual Studio (Windows)
 
-Visual Studio 2026 supports `.mcp.json` natively via its AI integration, but Claude Octopus has significant constraints on Windows:
+Visual Studio 2026 supports `.mcp.json` natively via its AI integration, but Kannaktopus has significant constraints on Windows:
 
 **The challenge:** `orchestrate.sh` is an 18K-line bash script using Linux-specific features (PIDs, signals, named pipes, GNU tools). It cannot run natively on Windows.
 
 **Options:**
 
-1. **WSL2 (Recommended if you must):** Install Claude Octopus inside WSL2. Visual Studio can invoke the MCP server through `wsl.exe`:
+1. **WSL2 (Recommended if you must):** Install Kannaktopus inside WSL2. Visual Studio can invoke the MCP server through `wsl.exe`:
    ```json
    {
      "servers": {
-       "claude-octopus": {
+       "kannaktopus": {
          "command": "wsl",
-         "args": ["npx", "tsx", "/home/user/claude-octopus/mcp-server/src/index.ts"]
+         "args": ["npx", "tsx", "/home/user/kannaktopus/mcp-server/src/index.ts"]
        }
      }
    }
@@ -218,10 +218,10 @@ Visual Studio 2026 supports `.mcp.json` natively via its AI integration, but Cla
 
 ```bash
 # Verify dependencies are installed
-cd /path/to/claude-octopus/mcp-server && npm install
+cd /path/to/kannaktopus/mcp-server && npm install
 
 # Test the server directly
-npx tsx /path/to/claude-octopus/mcp-server/src/index.ts
+npx tsx /path/to/kannaktopus/mcp-server/src/index.ts
 # Should hang waiting for stdio input (Ctrl+C to exit)
 ```
 

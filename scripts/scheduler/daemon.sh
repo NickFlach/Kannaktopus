@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Scheduler - Daemon (v8.15.0)
+# Kannaktopus Scheduler - Daemon (v8.15.0)
 # Main tick loop: PID management, heartbeat, signal handlers, FIFO IPC, cron dispatch
 
 set -euo pipefail

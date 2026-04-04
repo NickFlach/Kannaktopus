@@ -36,7 +36,7 @@ fi
 
 ## Native Plan Mode Compatibility (v7.23.0+)
 
-**IMPORTANT:** claude-octopus workflows are designed to persist across context clearing.
+**IMPORTANT:** kannaktopus workflows are designed to persist across context clearing.
 
 ### Detecting Native Plan Mode
 
@@ -47,7 +47,7 @@ Check if native plan mode is active:
 if [[ -n "${PLAN_MODE_ACTIVE}" ]] || claude-code plan status 2>/dev/null | grep -q "active"; then
     echo "⚠️  Native plan mode detected"
     echo ""
-    echo "   Claude Octopus uses file-based state (.claude-octopus/)"
+    echo "   Kannaktopus uses file-based state (.kannaktopus/)"
     echo "   State will persist across plan mode context clears"
     echo "   Multi-AI orchestration will continue normally"
     echo ""
@@ -58,7 +58,7 @@ fi
 
 **How it works:**
 - Native plan mode may clear Claude's memory via `ExitPlanMode`
-- claude-octopus state persists in `.claude-octopus/state.json`
+- kannaktopus state persists in `.kannaktopus/state.json`
 - Each workflow phase reads prior state at startup
 - Context is automatically restored from files
 
@@ -110,7 +110,7 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/helpers/check-providers.sh"
 
 **For Dev Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Dev] Discover Phase: [Brief description of technical research]
 
 Provider Availability:
@@ -127,7 +127,7 @@ Provider Availability:
 
 **For Knowledge Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Knowledge] Discover Phase: [Brief description of strategic research]
 
 Provider Availability:
@@ -282,7 +282,7 @@ After the command completes, read the result file path that was printed and retu
 **Write synthesis to file:**
 
 ```bash
-SYNTHESIS_FILE="${HOME}/.claude-octopus/results/probe-synthesis-$(date +%s).md"
+SYNTHESIS_FILE="${HOME}/.kannaktopus/results/probe-synthesis-$(date +%s).md"
 mkdir -p "$(dirname "$SYNTHESIS_FILE")"
 ```
 
@@ -335,7 +335,7 @@ done
 **Include attribution:**
 ```
 ---
-*Multi-AI Research powered by Claude Octopus*
+*Multi-AI Research powered by Kannaktopus*
 *Providers: 🔴 Codex | 🟡 Gemini | 🔵 Claude*
 *Full synthesis: $SYNTHESIS_FILE*
 ```
@@ -373,7 +373,7 @@ task_status=$("${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh" get-task-status 2>/
 
 **For Dev Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Dev] Discover Phase: [Brief description of technical research]
 📋 Session: ${CLAUDE_SESSION_ID}
 📝 Tasks: ${task_status}
@@ -386,7 +386,7 @@ Providers:
 
 **For Knowledge Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Knowledge] Discover Phase: [Brief description of strategic research]
 📋 Session: ${CLAUDE_SESSION_ID}
 
@@ -464,7 +464,7 @@ Use discover when you need:
 Before execution, you'll see:
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider orchestration
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider orchestration
 🔍 Discover Phase: Research and exploration mode
 
 Providers:
@@ -515,7 +515,7 @@ background_task(agent="librarian", prompt="Research external documentation for [
 
 Results are saved to:
 ```
-~/.claude-octopus/results/${SESSION_ID}/discover-synthesis-<timestamp>.md
+~/.kannaktopus/results/${SESSION_ID}/discover-synthesis-<timestamp>.md
 ```
 
 ### Step 4: Present Synthesis
@@ -638,7 +638,7 @@ After successful execution, present findings formatted for context:
 User: Research OAuth 2.0 authentication patterns for React apps
 
 Claude:
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 Discover Phase: Researching OAuth 2.0 patterns
 
 [Executes: ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh probe "OAuth 2.0 authentication patterns for React apps"]
@@ -677,7 +677,7 @@ Based on multi-provider analysis, the recommended approach for React apps in 202
 - Trade-offs between different approaches
 - Integration with existing React patterns
 
-Full research saved to: ~/.claude-octopus/results/abc-123/probe-synthesis-20250118-143022.md
+Full research saved to: ~/.kannaktopus/results/abc-123/probe-synthesis-20250118-143022.md
 ```
 
 ### Example 2: Technology Comparison
@@ -686,7 +686,7 @@ Full research saved to: ~/.claude-octopus/results/abc-123/probe-synthesis-202501
 User: Compare different state management options for my React app
 
 Claude:
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 Discover Phase: Comparing React state management options
 
 [Executes probe workflow]

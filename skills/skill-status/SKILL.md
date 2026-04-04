@@ -53,7 +53,7 @@ fi
 
 **Status:** Not initialized
 
-No Claude Octopus project found in this directory.
+No Kannaktopus project found in this directory.
 
 ### Get Started
 
@@ -232,7 +232,7 @@ Continue validation and delivery.
 
 **Status:** Not initialized
 
-No Claude Octopus project found in this directory.
+No Kannaktopus project found in this directory.
 
 ### Get Started
 
@@ -343,7 +343,7 @@ git tag --sort=-creatordate | head -5
 git branch --sort=-committerdate | head -5
 
 # Recent orchestration results (if any)
-ls -lt ~/.claude-octopus/results/ 2>/dev/null | head -10
+ls -lt ~/.kannaktopus/results/ 2>/dev/null | head -10
 ```
 
 #### Step 2: Summarize Activity

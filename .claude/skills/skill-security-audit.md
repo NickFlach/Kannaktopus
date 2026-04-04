@@ -18,7 +18,7 @@ invocation: human_only
 
 # Security Audit Skill
 
-**Your first output line MUST be:** `🐙 **CLAUDE OCTOPUS ACTIVATED** - Security Audit`
+**Your first output line MUST be:** `🐙 **KANNAKTOPUS ACTIVATED** - Security Audit`
 
 Invokes the security-auditor persona for thorough security analysis during the `ink` (deliver) phase. Supports both quick OWASP scanning and full adversarial red/blue team testing.
 

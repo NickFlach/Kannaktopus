@@ -21,7 +21,7 @@ bash "${CLAUDE_PLUGIN_ROOT}/scripts/helpers/check-providers.sh"
 **Display this banner BEFORE orchestrate.sh execution (list ALL providers from check output):**
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Architecture design mode
+🐙 **KANNAKTOPUS ACTIVATED** - Architecture design mode
 🏗️ Architecture: [Brief description of system to design]
 
 Provider Availability:
@@ -80,7 +80,7 @@ echo "✅ VALIDATION PASSED: Architecture design completed"
 
 **If validation fails:**
 1. Report error to user
-2. Show logs from `~/.claude-octopus/logs/`
+2. Show logs from `~/.kannaktopus/logs/`
 3. DO NOT proceed with presenting results
 4. DO NOT substitute with direct design
 
@@ -93,7 +93,7 @@ Present the architecture design from the persona execution.
 **Include attribution:**
 ```
 ---
-*Multi-AI Architecture Design powered by Claude Octopus*
+*Multi-AI Architecture Design powered by Kannaktopus*
 *Providers: 🔴 Codex | 🟡 Gemini | 🔵 Claude*
 ```
 

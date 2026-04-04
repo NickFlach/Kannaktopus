@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Claude Octopus Scheduler - State Store (v8.15.0)
+# Kannaktopus Scheduler - State Store (v8.15.0)
 # JSON state read/write utilities reusing atomic_write pattern from state-manager.sh
 
 set -euo pipefail
 
-SCHEDULER_DIR="${HOME}/.claude-octopus/scheduler"
+SCHEDULER_DIR="${HOME}/.kannaktopus/scheduler"
 JOBS_DIR="${SCHEDULER_DIR}/jobs"
 RUNS_DIR="${SCHEDULER_DIR}/runs"
 RUNTIME_DIR="${SCHEDULER_DIR}/runtime"

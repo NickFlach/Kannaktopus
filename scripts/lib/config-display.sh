@@ -8,7 +8,7 @@ show_config_summary() {
     load_providers_config
 
     echo ""
-    octopus_header "CLAUDE OCTOPUS CONFIGURATION SUMMARY" "$CYAN"
+    octopus_header "KANNAKTOPUS CONFIGURATION SUMMARY" "$CYAN"
     echo ""
 
     # Helper function to get tier detection indicator
@@ -272,7 +272,7 @@ setup_wizard() {
 
     echo ""
     echo -e "${PURPLE}═══════════════════════════════════════════════════════════════${NC}"
-    echo -e "${PURPLE}        🐙 Claude Octopus Configuration Wizard 🐙${NC}"
+    echo -e "${PURPLE}        🐙 Kannaktopus Configuration Wizard 🐙${NC}"
     echo -e "${PURPLE}═══════════════════════════════════════════════════════════════${NC}"
     echo ""
     echo -e "  Welcome! Let's get all 8 tentacles connected and ready to work."
@@ -797,7 +797,7 @@ setup_wizard() {
             echo
             if [[ ! $REPLY =~ ^[Nn]$ ]]; then
                 echo "" >> "$shell_profile"
-                echo "# Claude Octopus API Keys (added by configuration wizard)" >> "$shell_profile"
+                echo "# Kannaktopus API Keys (added by configuration wizard)" >> "$shell_profile"
                 echo -e "$keys_to_add" >> "$shell_profile"
                 echo -e "  ${GREEN}✓${NC} Added to $shell_profile"
                 echo -e "  ${CYAN}→${NC} Run 'source $shell_profile' or restart your terminal"

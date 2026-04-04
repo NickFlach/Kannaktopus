@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Project-level state management for Claude Octopus
+# Project-level state management for Kannaktopus
 # Manages .octo/ directory with STATE.md, PROJECT.md, ROADMAP.md, etc.
 
 set -eo pipefail
@@ -625,7 +625,7 @@ get_context_tier() {
 
 show_help() {
     cat <<EOF
-Octo State Manager - Project-level state management for Claude Octopus
+Octo State Manager - Project-level state management for Kannaktopus
 
 Usage: octo-state.sh <command> [options]
 

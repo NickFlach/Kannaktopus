@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/nyldn/claude-octopus/skill-schema/v1",
+  "$id": "https://github.com/NickFlach/Kannaktopus/skill-schema/v1",
   "title": "Universal Skill Metadata Schema",
   "description": "Common skill metadata format consumable by both Claude Code plugins and OpenClaw extensions. Skills are authored in Markdown with YAML frontmatter; this schema defines the portable metadata fields.",
   "type": "object",

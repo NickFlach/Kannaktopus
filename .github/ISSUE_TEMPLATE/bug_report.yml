@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in Claude Octopus
+description: Report a bug in Kannaktopus
 labels: ["bug"]
 body:
   - type: markdown
@@ -75,5 +75,5 @@ body:
     id: logs
     attributes:
       label: Relevant logs
-      description: "Run the command with `--verbose` or check `~/.claude-octopus/logs/`"
+      description: "Run the command with `--verbose` or check `~/.kannaktopus/logs/`"
       render: shell

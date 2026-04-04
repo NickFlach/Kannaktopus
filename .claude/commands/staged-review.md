@@ -16,7 +16,7 @@ aliases:
 
 ---
 
-🐙 **CLAUDE OCTOPUS ACTIVATED** — Two-Stage Review Pipeline
+🐙 **KANNAKTOPUS ACTIVATED** — Two-Stage Review Pipeline
 
 ---
 

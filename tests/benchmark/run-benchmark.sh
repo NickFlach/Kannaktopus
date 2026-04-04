@@ -108,8 +108,8 @@ Be comprehensive and list every vulnerability, even minor ones."
         echo -e "${GREEN}✓${NC} Plugin analysis completed in ${PLUGIN_TIME}s"
 
         # Extract results from probe output
-        # Results are in ~/.claude-octopus/results/
-        latest_results=$(find ~/.claude-octopus/results/ -name "*probe-*" -type f -mmin -5 | sort -t- -k3 -n | tail -4)
+        # Results are in ~/.kannaktopus/results/
+        latest_results=$(find ~/.kannaktopus/results/ -name "*probe-*" -type f -mmin -5 | sort -t- -k3 -n | tail -4)
 
         if [ -n "$latest_results" ]; then
             echo "$latest_results" | while read result_file; do

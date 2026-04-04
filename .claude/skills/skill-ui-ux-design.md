@@ -93,7 +93,7 @@ bash "${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(dirname "$0")")")}/scripts/h
 **Use the ACTUAL results below. PROHIBITED: Showing only "🔵 Claude: Available ✓" without listing all providers.**
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - UI/UX Design Mode
+🐙 **KANNAKTOPUS ACTIVATED** - UI/UX Design Mode
 🎨 Design: [Brief description from user prompt]
 
 Pipeline:
@@ -280,7 +280,7 @@ fi
 
 # 🔴 Codex — implementation-focused critique (font loading, CSS practicality, bundle impact)
 if [[ "$codex_available" == "true" ]]; then
-    codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
+    codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
 
 <critique prompt>" > /tmp/design-critique-codex.md &
 fi

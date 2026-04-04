@@ -16,11 +16,11 @@ Projects remaining workflow cost based on per-phase averages from completed work
 
 ## Step 1: Collect Completed Phase Costs
 
-Read cost data from `~/.claude-octopus/metrics/` or from metrics-tracker.sh output. Each completed phase/step should have an associated cost entry.
+Read cost data from `~/.kannaktopus/metrics/` or from metrics-tracker.sh output. Each completed phase/step should have an associated cost entry.
 
 ```bash
 # Read metrics from the session metrics directory
-METRICS_DIR="$HOME/.claude-octopus/metrics"
+METRICS_DIR="$HOME/.kannaktopus/metrics"
 SESSION_METRICS="$METRICS_DIR/session-$(date +%Y%m%d).jsonl"
 
 # Each line contains: {"phase": "discover", "cost": 0.42, "tokens_in": 12000, "tokens_out": 3400, "timestamp": "..."}
@@ -31,7 +31,7 @@ total_spent=$(jq -s '[.[].cost] | add' "$SESSION_METRICS")
 ```
 
 **Data sources (in priority order):**
-1. `~/.claude-octopus/metrics/session-*.jsonl` — structured per-phase cost entries
+1. `~/.kannaktopus/metrics/session-*.jsonl` — structured per-phase cost entries
 2. `metrics-tracker.sh` output — fallback for legacy sessions
 3. HUD accumulated cost counters — last resort
 

@@ -1,6 +1,6 @@
-# Claude Octopus Test Suite
+# Kannaktopus Test Suite
 
-This directory contains automated tests for the Claude Octopus plugin.
+This directory contains automated tests for the Kannaktopus plugin.
 
 ## Running Tests
 
@@ -144,4 +144,4 @@ These tests are designed to run in CI/CD pipelines:
 
 ---
 
-**Questions or issues?** See main README or file an issue at https://github.com/nyldn/claude-octopus/issues
+**Questions or issues?** See main README or file an issue at https://github.com/NickFlach/Kannaktopus/issues

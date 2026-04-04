@@ -10,7 +10,7 @@ trigger: |
   AUTOMATICALLY ACTIVATE when user mentions:
   - "resume" or "continue" or "pick up where I left off"
   - "what was I doing" or "restore session"
-  - Detecting .claude-octopus/state.json exists but no prior context in memory
+  - Detecting .kannaktopus/state.json exists but no prior context in memory
 ---
 
 # Session Restoration
@@ -507,18 +507,18 @@ When context is cleared (compaction, plan mode exit, new session), detect and re
 
 ```bash
 # Auto-detect context loss
-if [[ -f .claude-octopus/state.json ]] && [[ -z "${WORKFLOW_CONTEXT_LOADED}" ]]; then
+if [[ -f .kannaktopus/state.json ]] && [[ -z "${WORKFLOW_CONTEXT_LOADED}" ]]; then
     echo "⚠️  Context was cleared — reloading from persistent state..."
     NEEDS_RESUME=true
 fi
 ```
 
 **What survives context clearing:**
-- `.claude-octopus/state.json` (decisions, context, metrics)
-- `.claude-octopus/context/*.md` (phase outputs)
+- `.kannaktopus/state.json` (decisions, context, metrics)
+- `.kannaktopus/context/*.md` (phase outputs)
 - Native tasks (TaskList still works)
 - Git commits and WIP checkpoints
-- Multi-AI synthesis files in `~/.claude-octopus/results/`
+- Multi-AI synthesis files in `~/.kannaktopus/results/`
 
 After resume completes, set `export WORKFLOW_CONTEXT_LOADED=true` to prevent duplicate reloads.
 

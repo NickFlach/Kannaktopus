@@ -11,7 +11,7 @@ The `name` field in `plugin.json` controls **two things**:
 1. **Command namespace** — `/octo:discover`, `/octo:embrace`, etc.
 2. **Plugin identity in `/plugin` UI** — install, uninstall, update, enable/disable
 
-These names **MUST match** so that `/plugin uninstall octo` works correctly when the plugin was installed as `octo@nyldn-plugins`.
+These names **MUST match** so that `/plugin uninstall octo` works correctly when the plugin was installed as `octo@kannaka-plugins`.
 
 ```json
 // plugin.json
@@ -23,7 +23,7 @@ These names **MUST match** so that `/plugin uninstall octo` works correctly when
 ```json
 // marketplace.json plugins[].name
 {
-  "name": "octo"  // → install as octo@nyldn-plugins (matches plugin.json)
+  "name": "octo"  // → install as octo@kannaka-plugins (matches plugin.json)
 }
 ```
 
@@ -31,19 +31,19 @@ These names **MUST match** so that `/plugin uninstall octo` works correctly when
 
 ```json
 // ❌ WRONG — breaks /plugin UI (name mismatch)
-// plugin.json: "octo", marketplace.json: "claude-octopus"
-// → /plugin uninstall tries "octo" but installed as "claude-octopus"
+// plugin.json: "octo", marketplace.json: "kannaktopus"
+// → /plugin uninstall tries "octo" but installed as "kannaktopus"
 
 // ❌ WRONG — breaks command namespace
-// plugin.json: "claude-octopus"
-// → Commands become /claude-octopus:discover (too long!)
+// plugin.json: "kannaktopus"
+// → Commands become /kannaktopus:discover (too long!)
 ```
 
 ### Package vs Plugin Name
 
 | File | Name | Purpose |
 |------|------|---------|
-| `package.json` | `"claude-octopus"` | npm/repository identity |
+| `package.json` | `"kannaktopus"` | npm/repository identity |
 | `.claude-plugin/plugin.json` | `"octo"` | Command prefix + plugin identity |
 | `.claude-plugin/marketplace.json` | `"octo"` | Install name (must match plugin.json) |
 
@@ -56,7 +56,7 @@ These names **MUST match** so that `/plugin uninstall octo` works correctly when
 
 **Why it broke twice:**
 1. Someone changed plugin.json thinking it should match the package name
-2. marketplace.json was set to "claude-octopus" causing /plugin UI mismatch
+2. marketplace.json was set to "kannaktopus" causing /plugin UI mismatch
 
 ### Tests
 

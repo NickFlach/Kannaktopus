@@ -25,7 +25,7 @@ validation_gates:
 
 # Finishing a Development Branch
 
-**Your first output line MUST be:** `🐙 **CLAUDE OCTOPUS ACTIVATED** - Branch Completion`
+**Your first output line MUST be:** `🐙 **KANNAKTOPUS ACTIVATED** - Branch Completion`
 
 ## Overview
 
@@ -311,7 +311,7 @@ fi
 
 ---
 
-## Integration with Claude Octopus
+## Integration with Kannaktopus
 
 After completing octopus workflows, use this skill:
 

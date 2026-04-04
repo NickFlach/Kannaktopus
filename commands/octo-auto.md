@@ -4,7 +4,7 @@ description: "Smart router - Single entry point with natural language intent det
 
 # Smart Router (/octo:auto)
 
-Single entry point for all Claude Octopus workflows. Analyzes your natural language request and routes to the optimal workflow automatically.
+Single entry point for all Kannaktopus workflows. Analyzes your natural language request and routes to the optimal workflow automatically.
 
 ```
 /octo:auto research OAuth authentication patterns
@@ -154,7 +154,7 @@ Quick:
 For multi-AI workflows, display before executing:
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - [Workflow Type]
+🐙 **KANNAKTOPUS ACTIVATED** - [Workflow Type]
 [Phase Emoji] [Phase Name]: [Brief description]
 
 Providers:
@@ -167,7 +167,7 @@ Providers:
 
 After successful routing, append a log entry using the Bash tool:
 ```bash
-mkdir -p ~/.claude-octopus && echo "[$(date +%Y-%m-%d\ %H:%M:%S)] intent=<matched_intent> confidence=<HIGH|MEDIUM|LOW> routed_to=<command>" >> ~/.claude-octopus/routing.log
+mkdir -p ~/.kannaktopus && echo "[$(date +%Y-%m-%d\ %H:%M:%S)] intent=<matched_intent> confidence=<HIGH|MEDIUM|LOW> routed_to=<command>" >> ~/.kannaktopus/routing.log
 ```
 
 If the user **rejects** a routing suggestion or says "no, I meant X":

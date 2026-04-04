@@ -122,7 +122,7 @@ When you specify a `Metric:` command, the loop switches to mechanical metric ver
 
 1. Establishes baseline by running the metric command
 2. Each iteration: one change → git commit → measure → keep or revert
-3. Results logged to `.claude-octopus/experiments/<date>.jsonl`
+3. Results logged to `.kannaktopus/experiments/<date>.jsonl`
 4. Resumes from existing log if experiment was interrupted
 5. Reports improvement summary when complete
 

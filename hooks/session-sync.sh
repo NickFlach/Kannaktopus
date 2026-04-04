@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Session Sync Hook
+# Kannaktopus Session Sync Hook
 # Propagates Claude Code session ID to spawned agents
 # Enables session tracking and result aggregation
 

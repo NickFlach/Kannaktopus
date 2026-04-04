@@ -18,8 +18,8 @@ echo "======================================"
 # Mock Workspace and config for testing
 export CLAUDE_OCTOPUS_WORKSPACE="/tmp/octopus-test-v3"
 rm -rf "$CLAUDE_OCTOPUS_WORKSPACE"
-mkdir -p "$CLAUDE_OCTOPUS_WORKSPACE/.claude-octopus/config"
-CONFIG_FILE="$CLAUDE_OCTOPUS_WORKSPACE/.claude-octopus/config/providers.json"
+mkdir -p "$CLAUDE_OCTOPUS_WORKSPACE/.kannaktopus/config"
+CONFIG_FILE="$CLAUDE_OCTOPUS_WORKSPACE/.kannaktopus/config/providers.json"
 
 # Mock HOME so it picks up our config
 export HOME_ORIG="$HOME"

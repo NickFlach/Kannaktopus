@@ -97,7 +97,7 @@ test_mentions_hotspot_analysis() {
 test_mentions_json_snapshot() {
     test_case "retro.md specifies JSON snapshot output"
 
-    if grep -q "\.claude-octopus/retros/" "$COMMAND_FILE" && \
+    if grep -q "\.kannaktopus/retros/" "$COMMAND_FILE" && \
        grep -q "\.json" "$COMMAND_FILE"; then
         test_pass
     else

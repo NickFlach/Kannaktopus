@@ -244,7 +244,7 @@ main() {
   parse_args "$@"
 
   echo ""
-  log_info "🐙 Claude Octopus - /octo:extract v${EXTRACTION_VERSION}"
+  log_info "🐙 Kannaktopus - /octo:extract v${EXTRACTION_VERSION}"
   echo ""
 
   # Validate target

@@ -59,7 +59,7 @@ detect_windsurf() {
 }
 
 list_detected_ides() {
-  echo -e "${PURPLE}🐙 Claude Octopus — IDE Detection${NC}"
+  echo -e "${PURPLE}🐙 Kannaktopus — IDE Detection${NC}"
   echo ""
   local found=0
   if detect_vscode; then
@@ -116,7 +116,7 @@ generate_mcp_config() {
   cat <<EOF
 {
   "$top_key": {
-    "claude-octopus": {
+    "kannaktopus": {
       "command": "npx",
       "args": ["tsx", "$mcp_server_path"],
       "env": {
@@ -138,7 +138,7 @@ generate_zed_config() {
   cat <<EOF
 {
   "context_servers": {
-    "claude-octopus": {
+    "kannaktopus": {
       "command": {
         "path": "npx",
         "args": ["tsx", "$mcp_server_path"],
@@ -200,14 +200,14 @@ write_config() {
   # Check for existing config
   if [[ -f "$config_path" ]]; then
     # Check if octopus is already configured
-    if grep -q "claude-octopus" "$config_path" 2>/dev/null; then
-      log_warn "Claude Octopus already configured in $config_path"
+    if grep -q "kannaktopus" "$config_path" 2>/dev/null; then
+      log_warn "Kannaktopus already configured in $config_path"
       log_info "To reconfigure, remove the existing config first: ./scripts/ide-attach.sh --remove"
       return 0
     fi
-    log_warn "Existing config found at $config_path — merging claude-octopus entry"
+    log_warn "Existing config found at $config_path — merging kannaktopus entry"
     # For simplicity, warn and don't overwrite existing configs with other servers
-    log_info "Please manually add the claude-octopus server entry. Template:"
+    log_info "Please manually add the kannaktopus server entry. Template:"
     echo ""
     if [[ "$ide" == "zed" ]]; then
       generate_zed_config
@@ -238,8 +238,8 @@ remove_config() {
     return 0
   fi
 
-  if ! grep -q "claude-octopus" "$config_path" 2>/dev/null; then
-    log_warn "Config at $config_path doesn't contain claude-octopus"
+  if ! grep -q "kannaktopus" "$config_path" 2>/dev/null; then
+    log_warn "Config at $config_path doesn't contain kannaktopus"
     return 0
   fi
 
@@ -250,7 +250,7 @@ remove_config() {
     rm "$config_path"
     log_ok "Removed $config_path"
   else
-    log_warn "Multiple servers in $config_path — please remove claude-octopus entry manually"
+    log_warn "Multiple servers in $config_path — please remove kannaktopus entry manually"
   fi
 }
 
@@ -306,7 +306,7 @@ main() {
   # Verify MCP server exists
   if [[ ! -f "$MCP_SERVER_DIR/src/index.ts" ]]; then
     log_error "MCP server not found at $MCP_SERVER_DIR/src/index.ts"
-    log_error "Ensure you're running from the claude-octopus plugin directory"
+    log_error "Ensure you're running from the kannaktopus plugin directory"
     return 1
   fi
 
@@ -338,7 +338,7 @@ main() {
     log_info "Auto-detected IDE: $ide"
   fi
 
-  echo -e "${PURPLE}🐙 Claude Octopus — IDE Integration${NC}"
+  echo -e "${PURPLE}🐙 Kannaktopus — IDE Integration${NC}"
   echo ""
 
   if [[ "$action" == "remove" ]]; then

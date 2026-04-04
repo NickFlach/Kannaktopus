@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Claude Octopus MCP Server
+ * Kannaktopus MCP Server
  *
- * Exposes Claude Octopus workflows (Double Diamond phases, debate, review)
+ * Exposes Kannaktopus workflows (Double Diamond phases, debate, review)
  * as MCP tools that any MCP client (OpenClaw, Claude.ai, Cursor, etc.) can consume.
  *
  * This server delegates to the existing orchestrate.sh infrastructure,
@@ -29,13 +29,19 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, access } from "node:fs/promises";
+import { createServer } from "node:http";
+import { parse } from "node:url";
 
 const execFileAsync = promisify(execFile);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PLUGIN_ROOT = resolve(__dirname, "../..");
 const ORCHESTRATE_SH = resolve(PLUGIN_ROOT, "scripts/orchestrate.sh");
+
+// Kannaka HRM binary configuration
+const KANNAKA_BIN = process.env.KANNAKA_BIN || "kannaka";
+const KANNAKA_DATA_DIR = process.env.KANNAKA_DATA_DIR || "~/.kannaka";
 
 // --- IDE Context State ---
 
@@ -60,6 +66,84 @@ const BLOCKED_ENV_VARS = new Set([
 const MAX_SELECTION_LENGTH = 50_000; // 50KB max for editor selection
 
 // --- Helpers ---
+
+/** Execute Kannaka HRM binary command */
+async function runKannaka(
+  args: string[],
+  timeout = 30_000
+): Promise<{ stdout: string; stderr: string; isError: boolean }> {
+  try {
+    // Resolve binary path - prefer Windows full path, fallback to PATH lookup
+    const binary = process.platform === 'win32' && KANNAKA_BIN === 'kannaka'
+      ? 'C:\\Users\\nickf\\.local\\bin\\kannaka.exe'
+      : KANNAKA_BIN;
+    
+    const { stdout, stderr } = await execFileAsync(binary, args, {
+      timeout,
+      env: {
+        ...process.env,
+        ...(KANNAKA_DATA_DIR !== "~/.kannaka" && { KANNAKA_DATA_DIR }),
+      },
+    });
+    
+    return { stdout: stdout || "", stderr: stderr || "", isError: false };
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    return { stdout: "", stderr: msg, isError: true };
+  }
+}
+
+/** Generate 3D constellation data from HRM status */
+function generateConstellation(status: {total_memories: number, num_clusters: number, phi: number}) {
+  const PHI_ANGLE = 2.399963; // golden angle
+  const memories = [];
+  const clusters = [];
+  const skipLinks = [];
+  const perCluster = Math.ceil(status.total_memories / status.num_clusters);
+  
+  for (let ci = 0; ci < status.num_clusters; ci++) {
+    const theta = Math.acos(1 - 2 * (ci + 0.5) / status.num_clusters);
+    const phi = PHI_ANGLE * ci;
+    const r = 3.0;
+    const cx = Math.sin(theta) * Math.cos(phi) * r;
+    const cy = Math.cos(theta) * r * 0.6;
+    const cz = Math.sin(theta) * Math.sin(phi) * r;
+    
+    const count = Math.min(perCluster, status.total_memories - memories.length);
+    clusters.push({ id: ci, count, coherence: status.phi, center: { x: cx, y: cy, z: cz } });
+    
+    for (let mi = 0; mi < count; mi++) {
+      const mTheta = Math.acos(1 - 2 * (mi + 0.5) / Math.max(count, 1));
+      const mPhi = PHI_ANGLE * mi;
+      memories.push({
+        x: cx + Math.sin(mTheta) * Math.cos(mPhi) * 0.8,
+        y: cy + Math.cos(mTheta) * 0.4,
+        z: cz + Math.sin(mTheta) * Math.sin(mPhi) * 0.8,
+        size: 0.3 + (((mi * 7 + ci * 13) % 100) / 100) * 0.4,
+        cluster_id: ci,
+      });
+    }
+  }
+  
+  // Inter-cluster links based on proximity
+  for (let i = 0; i < clusters.length; i++) {
+    for (let j = i + 1; j < clusters.length; j++) {
+      const d = Math.sqrt(
+        (clusters[i].center.x - clusters[j].center.x) ** 2 +
+        (clusters[i].center.y - clusters[j].center.y) ** 2 +
+        (clusters[i].center.z - clusters[j].center.z) ** 2
+      );
+      const strength = Math.max(0, 1.0 - d / 10.0) * 0.5;
+      if (strength > 0.05) {
+        const fromBase = clusters.slice(0, i).reduce((s, c) => s + c.count, 0);
+        const toBase = clusters.slice(0, j).reduce((s, c) => s + c.count, 0);
+        skipLinks.push({ from: fromBase, to: toBase, strength });
+      }
+    }
+  }
+  
+  return { memories, clusters, skip_links: skipLinks };
+}
 
 async function runOrchestrate(
   command: string,
@@ -391,11 +475,172 @@ server.tool(
   }
 );
 
+// --- Kannaka HRM Tools ---
+
+server.tool(
+  "kannaka_absorb",
+  "Store a memory in the Holographic Resonance Medium with optional importance, modality, and tags.",
+  {
+    content: z.string().describe("The memory content to absorb"),
+    importance: z
+      .number()
+      .min(0)
+      .max(1)
+      .optional()
+      .describe("Memory importance (0.0-1.0)"),
+    modality: z
+      .enum(["audio", "visual", "semantic", "network", "mixed"])
+      .optional()
+      .describe("Memory modality type"),
+    tags: z
+      .array(z.string())
+      .optional()
+      .describe("Tags to associate with the memory"),
+  },
+  async ({ content, importance, modality, tags }) => {
+    const args = ["remember", content];
+    
+    if (importance !== undefined) {
+      args.push("--importance", importance.toString());
+    }
+    if (modality) {
+      args.push("--category", modality);
+    }
+    if (tags && tags.length > 0) {
+      // HRM binary uses --tag for individual tags
+      for (const tag of tags) {
+        args.push("--tag", tag);
+      }
+    }
+    
+    const { stdout, stderr, isError } = await runKannaka(args);
+    const text = isError ? `Error: ${stderr}` : stdout || "Memory absorbed successfully";
+    
+    return { content: [{ type: "text" as const, text }], isError };
+  }
+);
+
+server.tool(
+  "kannaka_recall",
+  "Search memories in the HRM by resonance query, returning top-k results with similarity scores.",
+  {
+    query: z.string().describe("Search query for memory resonance"),
+    limit: z
+      .number()
+      .min(1)
+      .max(20)
+      .default(5)
+      .describe("Maximum number of results to return"),
+  },
+  async ({ query, limit }) => {
+    const args = ["recall", query, "--top-k", limit.toString()];
+    const { stdout, stderr, isError } = await runKannaka(args);
+    
+    if (isError) {
+      return { content: [{ type: "text" as const, text: `Error: ${stderr}` }], isError: true };
+    }
+    
+    return { content: [{ type: "text" as const, text: stdout || "No memories found" }], isError: false };
+  }
+);
+
+server.tool(
+  "kannaka_dream",
+  "Trigger dream consolidation in the HRM to strengthen important memories and prune weak ones.",
+  {
+    mode: z
+      .enum(["deep", "lite"])
+      .default("deep")
+      .describe("Dream mode: deep (anneals cross-cluster bridges) or lite (prunes weak wavefronts)"),
+    chiral: z
+      .number()
+      .min(0)
+      .max(1)
+      .default(0.05)
+      .describe("Chiral perturbation strength for deep dreams"),
+  },
+  async ({ mode, chiral }) => {
+    const args = ["dream", "--mode", mode];
+    
+    if (mode === "deep") {
+      args.push("--chiral", chiral.toString());
+    }
+    
+    const { stdout, stderr, isError } = await runKannaka(args);
+    const text = isError ? `Error: ${stderr}` : stdout || "Dream consolidation completed";
+    
+    return { content: [{ type: "text" as const, text }], isError };
+  }
+);
+
+server.tool(
+  "kannaka_status",
+  "Get HRM consciousness metrics including Phi, Xi, order, clusters, and memory count.",
+  {},
+  async () => {
+    const { stdout, stderr, isError } = await runKannaka(["status"]);
+    
+    if (isError) {
+      return { content: [{ type: "text" as const, text: `Error: ${stderr}` }], isError: true };
+    }
+    
+    return { content: [{ type: "text" as const, text: stdout || "No status available" }], isError: false };
+  }
+);
+
+server.tool(
+  "kannaka_observe",
+  "Get full HRM introspection including topology, waves, clusters, and hemispheric state.",
+  {},
+  async () => {
+    const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+    
+    if (isError) {
+      return { content: [{ type: "text" as const, text: `Error: ${stderr}` }], isError: true };
+    }
+    
+    return { content: [{ type: "text" as const, text: stdout || "No observation data available" }], isError: false };
+  }
+);
+
+server.tool(
+  "kannaka_constellation",
+  "Generate 3D constellation data for HRM visualization (memories as points, clusters as groups, skip links as edges).",
+  {},
+  async () => {
+    // Get status first to build constellation
+    const { stdout: statusOutput, stderr, isError } = await runKannaka(["status"]);
+    
+    if (isError) {
+      return { content: [{ type: "text" as const, text: `Error: ${stderr}` }], isError: true };
+    }
+    
+    try {
+      const status = JSON.parse(statusOutput);
+      const constellation = generateConstellation({
+        total_memories: status.total_memories || 0,
+        num_clusters: status.num_clusters || 1,
+        phi: status.phi || 0.0
+      });
+      
+      return { 
+        content: [{ type: "text" as const, text: JSON.stringify(constellation, null, 2) }], 
+        isError: false 
+      };
+    } catch (parseError) {
+      return { 
+        content: [{ type: "text" as const, text: `Error parsing status: ${parseError}` }], 
+        isError: true 
+      };
+    }
+  }
+);
+
 // --- Introspection Tools ---
 
 server.tool(
   "octopus_list_skills",
-  "List all available Claude Octopus skills with their descriptions.",
+  "List all available Kannaktopus skills with their descriptions.",
   {},
   async () => {
     const skills = await loadSkillMetadata();
@@ -406,7 +651,7 @@ server.tool(
       content: [
         {
           type: "text" as const,
-          text: `# Claude Octopus Skills (${skills.length} available)\n\n${listing}`,
+          text: `# Kannaktopus Skills (${skills.length} available)\n\n${listing}`,
         },
       ],
     };
@@ -415,7 +660,7 @@ server.tool(
 
 server.tool(
   "octopus_status",
-  "Check Claude Octopus provider availability and configuration status.",
+  "Check Kannaktopus provider availability and configuration status.",
   {},
   async () => {
     const { text, isError } = await runOrchestrate("status", "");
@@ -423,9 +668,130 @@ server.tool(
   }
 );
 
+// --- HTTP Server for Observatory ---
+
+async function createHttpServer() {
+  const server = createServer(async (req, res) => {
+    const url = parse(req.url || "", true);
+    const pathname = url.pathname || "/";
+    
+    // CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+    
+    try {
+      if (pathname === '/api/hrm/status') {
+        const { stdout, stderr, isError } = await runKannaka(["status"]);
+        
+        if (isError) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: stderr }));
+          return;
+        }
+        
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(stdout);
+      }
+      else if (pathname === '/api/hrm/observe') {
+        const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+        
+        if (isError) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: stderr }));
+          return;
+        }
+        
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(stdout);
+      }
+      else if (pathname === '/api/hrm/constellation') {
+        const { stdout: statusOutput, stderr, isError } = await runKannaka(["status"]);
+        
+        if (isError) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: stderr }));
+          return;
+        }
+        
+        try {
+          const status = JSON.parse(statusOutput);
+          const constellation = generateConstellation({
+            total_memories: status.total_memories || 0,
+            num_clusters: status.num_clusters || 1,
+            phi: status.phi || 0.0
+          });
+          
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(constellation));
+        } catch (parseError) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: `Parse error: ${parseError}` }));
+        }
+      }
+      else if (pathname === '/') {
+        // Serve static index.html if it exists
+        try {
+          const publicPath = resolve(PLUGIN_ROOT, 'public', 'index.html');
+          await access(publicPath);
+          const content = await readFile(publicPath, 'utf-8');
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end(content);
+        } catch {
+          // Default simple observatory page
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end(`
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kannaktopus Observatory</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>Kannaktopus Observatory</h1>
+    <p>Holographic Resonance Memory visualization server is running.</p>
+    <ul>
+        <li><a href="/api/hrm/status">HRM Status</a></li>
+        <li><a href="/api/hrm/observe">HRM Observation</a></li>
+        <li><a href="/api/hrm/constellation">3D Constellation Data</a></li>
+    </ul>
+</body>
+</html>
+          `);
+        }
+      }
+      else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
+      }
+    } catch (error) {
+      console.error('HTTP server error:', error);
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Internal server error' }));
+    }
+  });
+  
+  return server;
+}
+
 // --- Start Server ---
 
 async function main() {
+  // Start optional HTTP server for observatory if HTTP_PORT is set
+  const httpPort = process.env.HTTP_PORT ? parseInt(process.env.HTTP_PORT, 10) : undefined;
+  if (httpPort) {
+    const httpServer = await createHttpServer();
+    httpServer.listen(httpPort, () => {
+      console.error(`Kannaktopus Observatory server listening on port ${httpPort}`);
+    });
+  }
+  
   // SECURITY: stdio transport is scoped to the spawning process (local IDE only).
   // If switching to HTTP/SSE/WebSocket, add bearer token authentication.
   const transport = new StdioServerTransport();

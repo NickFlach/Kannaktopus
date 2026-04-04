@@ -39,7 +39,7 @@ test_gate() {
 }
 
 echo "═══════════════════════════════════════════════════════════"
-echo "Claude Octopus v7.13.0 - Quality Gates"
+echo "Kannaktopus v7.13.0 - Quality Gates"
 echo "═══════════════════════════════════════════════════════════"
 echo ""
 

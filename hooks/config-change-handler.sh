@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus ConfigChange Hook Handler
+# Kannaktopus ConfigChange Hook Handler
 # Triggered when Claude Code configuration changes (v2.1.49+)
 # Detects Octopus setting changes and writes reload signal for orchestrate.sh
 # v8.29.0: Expanded from fast-mode-only to full Octopus settings hot-reload
@@ -11,7 +11,7 @@ fi
 
 SESSION_ID="${CLAUDE_SESSION_ID:-}"
 WORKFLOW_PHASE="${OCTOPUS_WORKFLOW_PHASE:-unknown}"
-SIGNAL_DIR="${HOME}/.claude-octopus"
+SIGNAL_DIR="${HOME}/.kannaktopus"
 
 # Log the change for debugging
 if [[ "${VERBOSE:-false}" == "true" ]]; then

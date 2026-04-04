@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Environment Doctor Diagnostics
+# Kannaktopus — Environment Doctor Diagnostics
 # Extracted from orchestrate.sh
 # Source-safe: no main execution block.
 
@@ -27,7 +27,7 @@ doctor_add() {
 # --- Category 1: Providers ---
 # v8.39.0: Update external CLI dependencies to latest versions
 cmd_update_clis() {
-    echo -e "${CYAN}🐙 Claude Octopus — CLI Update${NC}"
+    echo -e "${CYAN}🐙 Kannaktopus — CLI Update${NC}"
     echo ""
 
     local updated=0 failed=0
@@ -217,7 +217,7 @@ doctor_check_providers() {
     fi
 
     # v9.0: Check recent provider fallback history
-    local fallback_log="${HOME}/.claude-octopus/provider-fallbacks.log"
+    local fallback_log="${HOME}/.kannaktopus/provider-fallbacks.log"
     if [[ -f "$fallback_log" ]]; then
         local recent_failures=0 codex_failures=0 gemini_failures=0
         local cutoff
@@ -375,7 +375,7 @@ doctor_check_config() {
             fi
             if [[ -z "${CLAUDE_PLUGIN_DATA:-}" ]]; then
                 doctor_add "plugin-data-dir" "config" "info" \
-                    "CLAUDE_PLUGIN_DATA not set — using legacy ~/.claude-octopus/" \
+                    "CLAUDE_PLUGIN_DATA not set — using legacy ~/.kannaktopus/" \
                     "CC v2.1.78+ provides persistent plugin state via \${CLAUDE_PLUGIN_DATA}"
             fi
         fi
@@ -398,7 +398,7 @@ doctor_check_config() {
     fi
 
     # v9.13: Circuit breaker state check
-    local _cb_dir="${CLAUDE_PLUGIN_DATA:-${WORKSPACE_DIR:-${HOME}/.claude-octopus}}/provider-state"
+    local _cb_dir="${CLAUDE_PLUGIN_DATA:-${WORKSPACE_DIR:-${HOME}/.kannaktopus}}/provider-state"
     if [[ -d "$_cb_dir" ]]; then
         local _open_circuits=""
         for _sf in "$_cb_dir"/*.state; do
@@ -421,19 +421,19 @@ doctor_check_config() {
     fi
 
     # Legacy plugin name detection (Issue #196)
-    # Users who installed as "claude-octopus@nyldn-plugins" (pre-v9.0 name) get
-    # "Plugin claude-octopus not found in marketplace" because the marketplace
+    # Users who installed as "kannaktopus@kannaka-plugins" (pre-v9.0 name) get
+    # "Plugin kannaktopus not found in marketplace" because the marketplace
     # now lists the plugin as "octo". Detect this and provide the fix.
-    local legacy_cache_dir="$HOME/.claude/plugins/cache/nyldn-plugins/claude-octopus"
+    local legacy_cache_dir="$HOME/.claude/plugins/cache/kannaka-plugins/kannaktopus"
     if [[ -d "$legacy_cache_dir" ]]; then
         doctor_add "legacy-plugin-name" "config" "fail" \
-            "Legacy 'claude-octopus' install detected — causes 'not found in marketplace'" \
-            "Fix: claude plugin uninstall claude-octopus && claude plugin install octo@nyldn-plugins"
-    elif [[ "$PLUGIN_DIR" == *"/claude-octopus"* && "$PLUGIN_DIR" != *"/claude-octopus/"*"octo"* ]]; then
+            "Legacy 'kannaktopus' install detected — causes 'not found in marketplace'" \
+            "Fix: claude plugin uninstall kannaktopus && claude plugin install octo@kannaka-plugins"
+    elif [[ "$PLUGIN_DIR" == *"/kannaktopus"* && "$PLUGIN_DIR" != *"/kannaktopus/"*"octo"* ]]; then
         # Catch installs where the directory name contains the old name
         doctor_add "legacy-plugin-name" "config" "warn" \
-            "Plugin path contains legacy name 'claude-octopus'" \
-            "If you see 'not found in marketplace': claude plugin uninstall claude-octopus && claude plugin install octo@nyldn-plugins"
+            "Plugin path contains legacy name 'kannaktopus'" \
+            "If you see 'not found in marketplace': claude plugin uninstall kannaktopus && claude plugin install octo@kannaka-plugins"
     else
         doctor_add "legacy-plugin-name" "config" "pass" \
             "Plugin name: octo (correct)" ""
@@ -448,10 +448,10 @@ doctor_check_config() {
 # --- Category 4: State ---
 doctor_check_state() {
     # state.json integrity
-    if [[ -f ".claude-octopus/state.json" ]]; then
-        if jq empty ".claude-octopus/state.json" 2>/dev/null; then
+    if [[ -f ".kannaktopus/state.json" ]]; then
+        if jq empty ".kannaktopus/state.json" 2>/dev/null; then
             doctor_add "state-json" "state" "pass" \
-                "state.json valid" ".claude-octopus/state.json"
+                "state.json valid" ".kannaktopus/state.json"
         else
             doctor_add "state-json" "state" "fail" \
                 "state.json is invalid JSON" "File exists but cannot be parsed"
@@ -571,7 +571,7 @@ doctor_check_hooks() {
 
 # --- Category 6: Scheduler ---
 doctor_check_scheduler() {
-    local sched_dir="${HOME}/.claude-octopus/scheduler"
+    local sched_dir="${HOME}/.kannaktopus/scheduler"
     local runtime_dir="${sched_dir}/runtime"
     local pid_file="${runtime_dir}/daemon.pid"
     local jobs_dir="${sched_dir}/jobs"
@@ -1175,7 +1175,7 @@ do_doctor() {
         doctor_output_json
     else
         echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
-        echo -e "${MAGENTA}  Claude Octopus Doctor${NC}"
+        echo -e "${MAGENTA}  Kannaktopus Doctor${NC}"
         echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
         doctor_output_human "$verbose"
     fi

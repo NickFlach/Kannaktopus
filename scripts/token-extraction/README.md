@@ -197,7 +197,7 @@ const tokens = merger.applyCustomStrategy(allTokens, customStrategy);
         "$value": "#3b82f6",
         "$description": "Primary brand color",
         "$extensions": {
-          "com.claude-octopus": {
+          "com.kannaktopus": {
             "source": "tailwind.config",
             "originalKey": "colors.primary.500"
           }
@@ -520,7 +520,7 @@ Contributions welcome! Areas for improvement:
 
 ## License
 
-MIT License - See LICENSE file for details
+Space Child License v1.0 - See LICENSE file for details
 
 ## Resources
 

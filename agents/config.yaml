@@ -1,4 +1,4 @@
-# Claude Octopus Agent Configuration
+# Kannaktopus Agent Configuration
 # Maps curated agents to CLI preferences, phases, and complexity tiers
 #
 # CLI Options: codex (gpt-5.3-codex), codex-max, codex-mini, codex-spark, codex-reasoning,
@@ -38,7 +38,7 @@ phase_defaults:
     agents: [security-auditor, test-automator, performance-engineer, deployment-engineer]
 
 # v8.9.0: Phase-to-model routing defaults for Codex agents
-# These can be overridden per-user in ~/.claude-octopus/config/providers.json → phase_routing
+# These can be overridden per-user in ~/.kannaktopus/config/providers.json → phase_routing
 phase_model_routing:
   probe:   gpt-5.3-codex           # Deep research needs max reasoning
   grasp:   gpt-5.3-codex           # Requirements analysis needs precision

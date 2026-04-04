@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Claude Octopus - Multi-Agent Orchestrator
+# Kannaktopus - Multi-Agent Orchestrator
 # Coordinates multiple AI agents (Codex CLI, Gemini CLI) for parallel task execution
-# https://github.com/nyldn/claude-octopus
+# https://github.com/NickFlach/Kannaktopus
 
 set -eo pipefail
 
@@ -143,7 +143,7 @@ if [[ -n "${CLAUDE_PLUGIN_DATA:-}" ]]; then
 elif [[ -n "${CLAUDE_OCTOPUS_WORKSPACE:-}" ]]; then
     WORKSPACE_DIR=$(validate_workspace_path "$CLAUDE_OCTOPUS_WORKSPACE") || exit 1
 else
-    WORKSPACE_DIR="${HOME}/.claude-octopus"
+    WORKSPACE_DIR="${HOME}/.kannaktopus"
 fi
 
 # Re-derive SESSION_FILE now that WORKSPACE_DIR is known
@@ -381,7 +381,7 @@ init_session_workspace() {
 }
 
 # Secure temporary directory (cleaned up on exit)
-OCTOPUS_TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/claude-octopus.XXXXXX")
+OCTOPUS_TMP_DIR=$(mktemp -d "${TMPDIR:-/tmp}/kannaktopus.XXXXXX")
 trap 'rm -rf "$OCTOPUS_TMP_DIR"' EXIT INT TERM
 
 # Performance: Preflight check cache (avoids repeated CLI checks)
@@ -447,7 +447,7 @@ OCTOPUS_OPUS_MODE="${OCTOPUS_OPUS_MODE:-auto}"  # auto | fast | standard
 # exploits the skill system's precedence rules ("user instructions always take
 # precedence") to override the <EXTREMELY-IMPORTANT> skill activation block.
 # Defined once here to avoid drift between dispatch paths.
-CODEX_SUBAGENT_PREAMBLE="IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
+CODEX_SUBAGENT_PREAMBLE="IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
 
 "
 
@@ -710,7 +710,7 @@ ${MAGENTA}
  | (_) |__ \ | | | (_) | |_) | |_| \__ \\
   \___/|___/ |_|  \___/|____/ \___/|___/
 ${NC}
-${CYAN}Claude Octopus${NC} - Multi-agent AI orchestration made simple.
+${CYAN}Kannaktopus${NC} - Multi-agent AI orchestration made simple.
 
 ${YELLOW}Quick Start:${NC}
   ${GREEN}auto${NC} <prompt>           Let AI choose the best approach ${GREEN}(recommended)${NC}
@@ -733,7 +733,7 @@ ${YELLOW}Learn More:${NC}
   $(basename "$0") help --full        Show all commands and options
   $(basename "$0") help <command>     Get help for specific command
 
-${CYAN}https://github.com/nyldn/claude-octopus${NC}
+${CYAN}https://github.com/NickFlach/Kannaktopus${NC}
 EOF
     exit 0
 }
@@ -751,7 +751,7 @@ EOF
 list_available_skills() {
     echo ""
     echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
-    echo -e "${MAGENTA}  Available Claude Octopus Skills${NC}"
+    echo -e "${MAGENTA}  Available Kannaktopus Skills${NC}"
     echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
     echo ""
 
@@ -1012,7 +1012,7 @@ OCTOPUS_COMPACT_BANNERS="${OCTOPUS_COMPACT_BANNERS:-false}"
 # Functions: rotate_logs
 
 init_workspace() {
-    log INFO "Initializing Claude Octopus workspace at $WORKSPACE_DIR"
+    log INFO "Initializing Kannaktopus workspace at $WORKSPACE_DIR"
 
     # Claude Code v2.1.9: Include plans directory for plansDirectory alignment
     mkdir -p "$WORKSPACE_DIR" "$RESULTS_DIR" "$LOGS_DIR" "$PLANS_DIR"
@@ -1052,7 +1052,7 @@ TASKS_JSON
     fi
 
     cat > "${WORKSPACE_DIR}/.gitignore" << 'GITIGNORE'
-# Claude Octopus workspace - ephemeral data
+# Kannaktopus workspace - ephemeral data
 *
 !.gitignore
 GITIGNORE
@@ -1094,7 +1094,7 @@ ERROR_CODES=(
 # ═══════════════════════════════════════════════════════════════════════════════
 
 CI_MODE="${CI:-false}"
-AUDIT_LOG="${WORKSPACE_DIR:-$HOME/.claude-octopus}/audit.log"
+AUDIT_LOG="${WORKSPACE_DIR:-$HOME/.kannaktopus}/audit.log"
 
 # Initialize CI mode from environment
 
@@ -1110,7 +1110,7 @@ AUDIT_LOG="${WORKSPACE_DIR:-$HOME/.claude-octopus}/audit.log"
 # Manage pending reviews and batch approvals
 # ═══════════════════════════════════════════════════════════════════════════════
 
-REVIEW_QUEUE="${WORKSPACE_DIR:-$HOME/.claude-octopus}/review-queue.json"
+REVIEW_QUEUE="${WORKSPACE_DIR:-$HOME/.kannaktopus}/review-queue.json"
 
 # Add item to review queue
 
@@ -1132,7 +1132,7 @@ REVIEW_QUEUE="${WORKSPACE_DIR:-$HOME/.claude-octopus}/review-queue.json"
 # Intent-aware and resource-aware configuration for personalized routing
 # ═══════════════════════════════════════════════════════════════════════════════
 
-USER_CONFIG_FILE="${USER_CONFIG_FILE:-${WORKSPACE_DIR:-$HOME/.claude-octopus}/.user-config}"
+USER_CONFIG_FILE="${USER_CONFIG_FILE:-${WORKSPACE_DIR:-$HOME/.kannaktopus}/.user-config}"
 
 # User config variables (loaded from file)
 USER_INTENT_PRIMARY=""
@@ -1501,7 +1501,7 @@ load_user_config() {
 check_config_reload() {
     [[ "$SUPPORTS_CONFIG_CHANGE_HOOK" != "true" ]] && return 0
 
-    local signal_file="${HOME}/.claude-octopus/.config-reload-signal"
+    local signal_file="${HOME}/.kannaktopus/.config-reload-signal"
     [[ ! -f "$signal_file" ]] && return 0
 
     local signal_time
@@ -1905,7 +1905,7 @@ init_step_resources() {
 reconfigure_preferences() {
     echo ""
     echo -e "${CYAN}╔═══════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${CYAN}║     🐙 Claude Octopus Configuration Wizard 🐙                 ║${NC}"
+    echo -e "${CYAN}║     🐙 Kannaktopus Configuration Wizard 🐙                 ║${NC}"
     echo -e "${CYAN}║     Update your preferences without full setup                ║${NC}"
     echo -e "${CYAN}╚═══════════════════════════════════════════════════════════════╝${NC}"
 
@@ -2050,7 +2050,7 @@ do_release() {
     local tag="v$version"
 
     echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
-    echo -e "${MAGENTA}  Claude Octopus Release: $tag${NC}"
+    echo -e "${MAGENTA}  Kannaktopus Release: $tag${NC}"
     echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
 
     # Step 1: Validate
@@ -2206,7 +2206,7 @@ ${obs_ctx}"
     _write_embrace_session_state() {
         local phase="$1"
         local status="$2"
-        local session_dir="${HOME}/.claude-octopus"
+        local session_dir="${HOME}/.kannaktopus"
         mkdir -p "$session_dir"
         if command -v jq &> /dev/null; then
             jq -n \
@@ -2589,7 +2589,7 @@ sentinel_watch() {
 show_status() {
     echo ""
     echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
-    echo -e "${MAGENTA}  Claude Octopus Status${NC}"
+    echo -e "${MAGENTA}  Kannaktopus Status${NC}"
     echo -e "${MAGENTA}═══════════════════════════════════════════════════════════${NC}"
     echo ""
 
@@ -2641,24 +2641,24 @@ show_status() {
     fi
 
     # v8.14.0: Show persistent project state
-    if [[ -f ".claude-octopus/state.json" ]]; then
+    if [[ -f ".kannaktopus/state.json" ]]; then
         echo ""
         echo -e "${BLUE}Project State:${NC}"
         local wf ph pc dc ab
-        wf=$(jq -r '.current_workflow // "none"' .claude-octopus/state.json 2>/dev/null)
-        ph=$(jq -r '.current_phase // "none"' .claude-octopus/state.json 2>/dev/null)
-        pc=$(jq -r '.metrics.phases_completed // 0' .claude-octopus/state.json 2>/dev/null)
-        dc=$(jq -r '.decisions | length // 0' .claude-octopus/state.json 2>/dev/null)
+        wf=$(jq -r '.current_workflow // "none"' .kannaktopus/state.json 2>/dev/null)
+        ph=$(jq -r '.current_phase // "none"' .kannaktopus/state.json 2>/dev/null)
+        pc=$(jq -r '.metrics.phases_completed // 0' .kannaktopus/state.json 2>/dev/null)
+        dc=$(jq -r '.decisions | length // 0' .kannaktopus/state.json 2>/dev/null)
         echo -e "  Workflow: ${CYAN}${wf}${NC} | Phase: ${CYAN}${ph}${NC}"
         echo -e "  Phases completed: $pc | Decisions: $dc"
-        ab=$(jq -r '[.blockers[] | select(.status == "active")] | length // 0' .claude-octopus/state.json 2>/dev/null)
+        ab=$(jq -r '[.blockers[] | select(.status == "active")] | length // 0' .kannaktopus/state.json 2>/dev/null)
         if [[ "$ab" -gt 0 ]] 2>/dev/null; then
             echo -e "  ${YELLOW}Active blockers: $ab${NC}"
         fi
     fi
 
     # Recent debates (v8.13.0)
-    local debate_base="$HOME/.claude-octopus/debates"
+    local debate_base="$HOME/.kannaktopus/debates"
     if [[ -d "$debate_base" ]]; then
         local recent_debates
         recent_debates=$(find "$debate_base" -name "synthesis.md" -mtime -7 2>/dev/null | head -5)
@@ -2971,7 +2971,7 @@ if [[ "$COMMAND" != "help" && "$COMMAND" != "setup" && "$COMMAND" != "preflight"
     init_state 2>/dev/null || true
 
     # v8.29.0: Check if ConfigChange hook signaled settings were modified
-    RELOAD_SIGNAL="${HOME}/.claude-octopus/.config-reload-signal"
+    RELOAD_SIGNAL="${HOME}/.kannaktopus/.config-reload-signal"
     if [[ -f "$RELOAD_SIGNAL" ]]; then
         log "INFO" "ConfigChange detected — settings reloaded from environment"
         rm -f "$RELOAD_SIGNAL"
@@ -3502,9 +3502,9 @@ case "$COMMAND" in
         echo "📄 Document Delivery"
         echo ""
         echo "Convert knowledge work outputs to professional office formats:"
-        echo "  • Recent results: ls -lht ~/.claude-octopus/results/ | head -5"
+        echo "  • Recent results: ls -lht ~/.kannaktopus/results/ | head -5"
         echo ""
-        ls -lht ~/.claude-octopus/results/ 2>/dev/null | head -5 || echo "  No results found yet. Run empathize/advise/synthesize first."
+        ls -lht ~/.kannaktopus/results/ 2>/dev/null | head -5 || echo "  No results found yet. Run empathize/advise/synthesize first."
         echo ""
         echo "To convert, just ask naturally:"
         echo "  - 'Export the latest synthesis to Word'"
@@ -3531,7 +3531,7 @@ case "$COMMAND" in
         fi
 
         log INFO "🗣️  AI Debate Hub (by wolverin0)"
-        log INFO "   Enhanced with claude-octopus quality gates and session management"
+        log INFO "   Enhanced with kannaktopus quality gates and session management"
 
         # Set integration environment variables
         export CLAUDE_OCTOPUS_DEBATE_MODE="true"
@@ -3695,7 +3695,7 @@ case "$COMMAND" in
         _has_octo_config="false"; [[ -f ".octo/config.json" ]] && _has_octo_config="true"
 
         # Session
-        _session_file="${HOME}/.claude-octopus/session.json"
+        _session_file="${HOME}/.kannaktopus/session.json"
         _has_session="false"; [[ -f "$_session_file" ]] && _has_session="true"
 
         cat <<INIT_JSON
@@ -3725,8 +3725,8 @@ case "$COMMAND" in
     "session": $_has_session
   },
   "paths": {
-    "workspace": "${OCTOPUS_WORKSPACE:-${HOME}/.claude-octopus}",
-    "results": "${RESULTS_DIR:-${HOME}/.claude-octopus/results}"
+    "workspace": "${OCTOPUS_WORKSPACE:-${HOME}/.kannaktopus}",
+    "results": "${RESULTS_DIR:-${HOME}/.kannaktopus/results}"
   },
   "ts": $_init_ts
 }

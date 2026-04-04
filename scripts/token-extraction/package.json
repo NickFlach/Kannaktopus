@@ -1,5 +1,5 @@
 {
-  "name": "@claude-octopus/token-extraction",
+  "name": "@kannaktopus/token-extraction",
   "version": "1.0.0",
   "description": "Design token extraction pipeline with W3C Design Tokens format support",
   "main": "index.ts",
@@ -27,7 +27,7 @@
     "tokens",
     "theming"
   ],
-  "author": "Claude Octopus",
+  "author": "Kannaktopus",
   "license": "MIT",
   "dependencies": {
     "@types/tinycolor2": "^1.4.6",

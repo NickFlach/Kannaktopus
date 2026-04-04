@@ -1,6 +1,6 @@
 #!/bin/bash
-# test-claude-octopus.sh - Comprehensive test suite for Claude Octopus
-# Run with: ./scripts/test-claude-octopus.sh
+# test-kannaktopus.sh - Comprehensive test suite for Kannaktopus
+# Run with: ./scripts/test-kannaktopus.sh
 
 set -o pipefail
 
@@ -81,7 +81,7 @@ test_output() {
 
 echo ""
 echo "========================================"
-echo "  Claude Octopus Test Suite"
+echo "  Kannaktopus Test Suite"
 echo "========================================"
 echo ""
 
@@ -292,7 +292,7 @@ test_cmd "Help audit command" "$SCRIPT help audit" 0
 
 # Test GitHub Actions workflow exists
 echo -n "  Testing: GitHub Actions template exists... "
-if [[ -f "$SCRIPT_DIR/../.github/workflows/claude-octopus.yml" ]]; then
+if [[ -f "$SCRIPT_DIR/../.github/workflows/kannaktopus.yml" ]]; then
     echo -e "${GREEN}PASS${NC}"
     ((PASS++))
 else

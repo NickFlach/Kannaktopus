@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-DISCIPLINE_CONF="${HOME}/.claude-octopus/config/discipline.conf"
+DISCIPLINE_CONF="${HOME}/.kannaktopus/config/discipline.conf"
 
 # Check if discipline mode is enabled
 if [[ ! -f "$DISCIPLINE_CONF" ]] || ! grep -q "OCTOPUS_DISCIPLINE=on" "$DISCIPLINE_CONF" 2>/dev/null; then

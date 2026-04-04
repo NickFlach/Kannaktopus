@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# build-openclaw.sh — Generate OpenClaw extension artifacts from Claude Octopus skills
+# build-openclaw.sh — Generate OpenClaw extension artifacts from Kannaktopus skills
 #
 # This script reads .claude/skills/*.md and .claude/commands/*.md,
 # extracts YAML frontmatter, and generates OpenClaw-compatible tool

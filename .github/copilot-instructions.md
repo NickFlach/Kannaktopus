@@ -1,4 +1,4 @@
-# Copilot Instructions for Claude Octopus
+# Copilot Instructions for Kannaktopus
 
 This repository is a Claude Code plugin that orchestrates multiple AI providers
 (Codex, Gemini, Claude, Perplexity, OpenRouter, and optionally Ollama) through

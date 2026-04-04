@@ -1,4 +1,4 @@
-# Claude Octopus Agents
+# Kannaktopus Agents
 
 This file describes the autonomous agents available in this repository for
 AI coding tools that support agent discovery (e.g., GitHub Copilot coding agent).
@@ -36,6 +36,6 @@ Both formats describe the same 10 agents with platform-native tool mappings:
 
 ## MCP Integration
 
-The MCP server (`mcp-server/`) exposes Claude Octopus workflows as MCP tools.
+The MCP server (`mcp-server/`) exposes Kannaktopus workflows as MCP tools.
 For MCP-aware coding agents, connect to the MCP server rather than invoking
 agents directly.

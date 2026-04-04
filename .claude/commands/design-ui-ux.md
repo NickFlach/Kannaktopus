@@ -47,7 +47,7 @@ If unavailable, fall back to Claude's built-in design knowledge with a note to t
 ### Step 3: Display Banner
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - UI/UX Design Mode
+🐙 **KANNAKTOPUS ACTIVATED** - UI/UX Design Mode
 🎨 Design: [Brief description of what's being designed]
 
 Tools:

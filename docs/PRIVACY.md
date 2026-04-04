@@ -1,18 +1,18 @@
 # Privacy Policy
 
-**Claude Octopus** is an open-source Claude Code plugin. This policy describes how the plugin handles data.
+**Kannaktopus** is an open-source Claude Code plugin. This policy describes how the plugin handles data.
 
 ## What the plugin collects
 
-**Nothing.** Claude Octopus does not collect, transmit, or store any personal data, telemetry, analytics, or usage metrics. There is no phone-home, no tracking, and no remote data collection of any kind.
+**Nothing.** Kannaktopus does not collect, transmit, or store any personal data, telemetry, analytics, or usage metrics. There is no phone-home, no tracking, and no remote data collection of any kind.
 
 ## What stays on your machine
 
 All plugin data is stored locally:
 
-- **Session state**: `~/.claude-octopus/` — workflow progress, provider cache, HUD config
-- **Results**: `~/.claude-octopus/results/` — research synthesis, quality gate outputs
-- **Logs**: `~/.claude-octopus/logs/` — diagnostic logs (never transmitted)
+- **Session state**: `~/.kannaktopus/` — workflow progress, provider cache, HUD config
+- **Results**: `~/.kannaktopus/results/` — research synthesis, quality gate outputs
+- **Logs**: `~/.kannaktopus/logs/` — diagnostic logs (never transmitted)
 
 ## Third-party API calls
 
@@ -37,10 +37,10 @@ The HUD statusline optionally calls the Anthropic OAuth usage API (`api.anthropi
 
 ## Open source
 
-The complete source code is available at [github.com/nyldn/claude-octopus](https://github.com/nyldn/claude-octopus) under the MIT license. You can audit every line.
+The complete source code is available at [github.com/NickFlach/Kannaktopus](https://github.com/NickFlach/Kannaktopus) under the MIT license. You can audit every line.
 
 ## Contact
 
-For privacy questions, open an issue at [github.com/nyldn/claude-octopus/issues](https://github.com/nyldn/claude-octopus/issues).
+For privacy questions, open an issue at [github.com/NickFlach/Kannaktopus/issues](https://github.com/NickFlach/Kannaktopus/issues).
 
 *Last updated: March 2026*

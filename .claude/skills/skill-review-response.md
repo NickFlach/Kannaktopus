@@ -74,7 +74,7 @@ Provide:
 
 ## Multi-Provider Review Context
 
-In Claude Octopus workflows, review feedback comes from multiple sources:
+In Kannaktopus workflows, review feedback comes from multiple sources:
 
 - **Codex review** — tends toward enterprise patterns, may over-engineer
 - **Gemini review** — tends toward ecosystem conformity, may suggest unnecessary deps

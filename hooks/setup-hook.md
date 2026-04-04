@@ -1,6 +1,6 @@
 ---
 event: Setup
-description: Auto-initialize Claude Octopus workspace and verify providers on --init
+description: Auto-initialize Kannaktopus workspace and verify providers on --init
 ---
 
 # Setup Hook (Claude Code v2.1.10)
@@ -32,16 +32,16 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh detect-providers
 
 On successful setup:
 ```
-Claude Octopus workspace initialized
+Kannaktopus workspace initialized
 Session: ${CLAUDE_SESSION_ID}
-Results: ~/.claude-octopus/results/${CLAUDE_SESSION_ID}/
-Plans: ~/.claude-octopus/plans/${CLAUDE_SESSION_ID}/
+Results: ~/.kannaktopus/results/${CLAUDE_SESSION_ID}/
+Plans: ~/.kannaktopus/plans/${CLAUDE_SESSION_ID}/
 ```
 
 ## Workspace Structure
 
 ```
-~/.claude-octopus/
+~/.kannaktopus/
 ├── results/
 │   └── ${SESSION_ID}/           # Session-specific results
 │       ├── .session-id

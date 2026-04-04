@@ -118,7 +118,7 @@ check_readme_structure() {
 
   # Check required sections exist
   local required_sections=(
-    "# Claude Octopus"
+    "# Kannaktopus"
     "## Quickstart"
     "## 8 Commands That Matter Most"
     "## How It Works"
@@ -129,7 +129,7 @@ check_readme_structure() {
   )
 
   for section in "${required_sections[@]}"; do
-    # Allow emoji prefixes in section headers (e.g., "# 🐙 Claude Octopus")
+    # Allow emoji prefixes in section headers (e.g., "# 🐙 Kannaktopus")
     local section_text="${section#\#* }"
     if grep -q "^${section}" "$readme" || grep -qE "^#+ .*${section_text}" "$readme"; then
       pass "README has section: $section"

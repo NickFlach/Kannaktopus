@@ -12,7 +12,7 @@ resolve_octopus_model() {
     local agent_type="$2"
     local phase="${3:-}"
     local role="${4:-}"
-    local config_file="${HOME}/.claude-octopus/config/providers.json"
+    local config_file="${HOME}/.kannaktopus/config/providers.json"
     local resolved_model=""
 
     # 0. Session Cache (v8.53.0)

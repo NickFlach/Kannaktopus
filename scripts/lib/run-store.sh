@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Run Store — Structured JSONL storage for workflow results (v9.8.0)
-# Canonical location: ~/.claude-octopus/runs/run-log.jsonl
+# Canonical location: ~/.kannaktopus/runs/run-log.jsonl
 # Schema: {date, workflow, providers, timestamp, findings_count, status, duration_ms, metadata}
 # Uses octo_db_append from intelligence.sh for capped JSONL writes
 #
 # Kill switch: OCTO_RUN_STORE=off
 # ═══════════════════════════════════════════════════════════════════════════════
 
-_RUN_STORE_DIR="${HOME}/.claude-octopus/runs"
+_RUN_STORE_DIR="${HOME}/.kannaktopus/runs"
 _RUN_STORE_FILE="${_RUN_STORE_DIR}/run-log.jsonl"
 _RUN_STORE_MAX_ENTRIES=1000
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Integration Test: Value Proposition Validation
-# Quick smoke test to verify Claude Octopus adds value over single-agent execution
+# Quick smoke test to verify Kannaktopus adds value over single-agent execution
 # This test runs quickly and doesn't require Claude CLI
 
 # Use relaxed error handling - grep commands may not find patterns
@@ -336,7 +336,7 @@ main() {
     echo -e "${YELLOW}║  Value Proposition Validation Tests                      ║${NC}"
     echo -e "${YELLOW}╚═══════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo "Verifying Claude Octopus provides quality, speed, or cost benefits"
+    echo "Verifying Kannaktopus provides quality, speed, or cost benefits"
     echo ""
 
     # Run all tests
@@ -363,7 +363,7 @@ main() {
     if [[ $TESTS_FAILED -eq 0 ]]; then
         echo -e "${GREEN}✓ All value proposition tests passed!${NC}"
         echo ""
-        echo "Claude Octopus provides:"
+        echo "Kannaktopus provides:"
         echo "  • Multi-agent parallel execution (faster)"
         echo "  • Quality gates and validation (better quality)"
         echo "  • Multi-perspective research (comprehensive)"
@@ -377,7 +377,7 @@ main() {
     else
         echo -e "${RED}✗ Some value proposition tests failed${NC}"
         echo ""
-        echo "This indicates Claude Octopus may not be providing"
+        echo "This indicates Kannaktopus may not be providing"
         echo "sufficient value over single-agent execution."
         echo ""
         exit 1

@@ -1,11 +1,11 @@
 ---
 command: setup
-description: Check Claude Octopus setup status and get configuration instructions
+description: Check Kannaktopus setup status and get configuration instructions
 aliases:
   - sys-setup
 ---
 
-# Claude Octopus Setup
+# Kannaktopus Setup
 
 This command checks your current setup and provides instructions for any missing dependencies.
 
@@ -167,7 +167,7 @@ After running provider detection, if you detect new providers (Copilot, Qwen, Ol
   ⚫ Ollama — local LLM (fully offline, zero cost)
 
 These will automatically join your workflows. No configuration needed —
-Claude Octopus detects and uses them when running /octo:research,
+Kannaktopus detects and uses them when running /octo:research,
 /octo:review, /octo:debate, and other multi-provider commands.
 ```
 
@@ -219,7 +219,7 @@ This confirms your Claude session is active and authenticated. Octopus uses this
 
 ## Ready to Use
 
-Once at least ONE provider is configured, you're ready! Claude Octopus automatically activates when you need multi-AI collaboration.
+Once at least ONE provider is configured, you're ready! Kannaktopus automatically activates when you need multi-AI collaboration.
 
 ### Just Talk Naturally
 
@@ -253,7 +253,7 @@ Claude coordinates multiple AI models behind the scenes and provides comprehensi
 
 ## Choosing Your Work Mode
 
-Claude Octopus has two work modes optimized for different tasks. Both use the same AI providers (Codex + Gemini) but with different personas:
+Kannaktopus has two work modes optimized for different tasks. Both use the same AI providers (Codex + Gemini) but with different personas:
 
 ### Dev Work Mode 🔧 (Default)
 **Best for:** Building features, debugging code, implementing APIs
@@ -284,7 +284,7 @@ This adds support for PDF analysis, DOCX/PPTX/XLSX generation, and professional 
 
 ## Do I Need Both Providers?
 
-No! You only need ONE provider (Codex or Gemini) to use Claude Octopus. Both providers give you access to powerful workflows:
+No! You only need ONE provider (Codex or Gemini) to use Kannaktopus. Both providers give you access to powerful workflows:
 
 - **Codex (OpenAI):** Best for code generation, refactoring, complex logic
 - **Gemini (Google):** Best for analysis, long-context understanding, multi-modal tasks
@@ -329,23 +329,23 @@ Add the export statement to your shell profile (~/.zshrc or ~/.bashrc) so it loa
 
 The plugin update UI is currently broken — "Failed to update: Plugin 'octo' not found" is a known issue. Manual cleanup is required:
 
-**Step 1:** Edit `~/.claude/settings.json` → remove `"octo@nyldn-plugins"` from the `enabledPlugins` array.
+**Step 1:** Edit `~/.claude/settings.json` → remove `"octo@kannaka-plugins"` from the `enabledPlugins` array.
 
 **Step 2:** Remove plugin files:
 ```bash
-rm -rf ~/.claude/plugins/octo@nyldn-plugins
-rm -rf ~/.claude/installed-plugins/octo@nyldn-plugins
+rm -rf ~/.claude/plugins/octo@kannaka-plugins
+rm -rf ~/.claude/installed-plugins/octo@kannaka-plugins
 ```
 
 **Step 3:** Reinstall:
 ```
-/plugin marketplace add https://github.com/nyldn/claude-octopus.git
-/plugin install octo@nyldn-plugins
+/plugin marketplace add https://github.com/NickFlach/Kannaktopus.git
+/plugin install octo@kannaka-plugins
 ```
 
 ## Getting Help
 
 If you encounter issues:
 1. Run `${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh preflight` for a detailed system check
-2. Check the logs in `~/.claude-octopus/logs/`
-3. Report issues at: https://github.com/nyldn/claude-octopus/issues
+2. Check the logs in `~/.kannaktopus/logs/`
+3. Report issues at: https://github.com/NickFlach/Kannaktopus/issues

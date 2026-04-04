@@ -18,7 +18,7 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 # Task state file (stores task IDs for the current session)
-TASK_STATE_FILE="${HOME}/.claude-octopus/task-state-${CLAUDE_SESSION_ID:-default}.json"
+TASK_STATE_FILE="${HOME}/.kannaktopus/task-state-${CLAUDE_SESSION_ID:-default}.json"
 
 # Initialize task state
 init_task_state() {

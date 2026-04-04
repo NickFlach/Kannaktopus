@@ -156,7 +156,7 @@ bash "${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(dirname "$0")")")}/scripts/h
 
 **For Dev Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider implementation mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider implementation mode
 🛠️ [Dev] Develop Phase: [Brief description of what you're building]
 
 Provider Availability:
@@ -170,7 +170,7 @@ Provider Availability:
 
 **For Knowledge Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider implementation mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider implementation mode
 🛠️ [Knowledge] Develop Phase: [Brief description of deliverable]
 
 Provider Availability:
@@ -270,7 +270,7 @@ These spinner verb updates happen automatically - orchestrate.sh calls `update_t
 
 ```bash
 # Find the latest synthesis file (created within last 10 minutes)
-SYNTHESIS_FILE=$(find ~/.claude-octopus/results -name "tangle-synthesis-*.md" -mmin -10 2>/dev/null | head -n1)
+SYNTHESIS_FILE=$(find ~/.kannaktopus/results -name "tangle-synthesis-*.md" -mmin -10 2>/dev/null | head -n1)
 
 if [[ -z "$SYNTHESIS_FILE" ]]; then
   echo "❌ VALIDATION FAILED: No synthesis file found"
@@ -284,7 +284,7 @@ cat "$SYNTHESIS_FILE"
 
 **If validation fails:**
 1. Report error to user
-2. Show logs from `~/.claude-octopus/logs/`
+2. Show logs from `~/.kannaktopus/logs/`
 3. DO NOT proceed with presenting results
 4. DO NOT substitute with direct implementation — fallback to single-model implementation skips the multi-provider synthesis that catches design flaws early
 
@@ -338,7 +338,7 @@ Read the synthesis file and present:
 **Include attribution:**
 ```
 ---
-*Multi-AI Implementation powered by Claude Octopus*
+*Multi-AI Implementation powered by Kannaktopus*
 *Providers: 🔴 Codex | 🟡 Gemini | 🔵 Claude*
 *Full implementation plan: $SYNTHESIS_FILE*
 ```
@@ -371,7 +371,7 @@ Analyze the user's prompt and project to determine context:
 
 **For Dev Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider implementation mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider implementation mode
 🛠️ [Dev] Develop Phase: [Brief description of what you're building]
 📋 Session: ${CLAUDE_SESSION_ID}
 
@@ -383,7 +383,7 @@ Providers:
 
 **For Knowledge Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider implementation mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider implementation mode
 🛠️ [Knowledge] Develop Phase: [Brief description of deliverable]
 📋 Session: ${CLAUDE_SESSION_ID}
 
@@ -456,7 +456,7 @@ Use develop when you need:
 Before execution, you'll see:
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider implementation
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider implementation
 🛠️ Develop Phase: Building and developing solutions
 
 Providers:
@@ -496,7 +496,7 @@ The tangle phase includes automatic quality validation:
 When orchestrate.sh output contains `AGENT_TEAMS_RESUME:${agent_id}:${task_id}:${role}:${phase}`:
 
 1. Send a message to the existing agent using `SendMessage({to: "${agent_id}", message: "<iteration prompt>"})` — this auto-resumes a stopped agent automatically (CC v2.1.77+)
-2. Read the iteration prompt from the resume instruction JSON at `~/.claude-octopus/agent-teams/${task_id}.json`
+2. Read the iteration prompt from the resume instruction JSON at `~/.kannaktopus/agent-teams/${task_id}.json`
 3. If SendMessage returns an error (agent GC'd or not found), fall back to creating a new agent with the full prompt from the instruction file
 4. After the agent responds, store its agentId via: `bridge_store_agent_id(task_id, agent_id)` in the bridge ledger
 
@@ -506,7 +506,7 @@ Note: The `Agent(resume: ...)` parameter was removed in CC v2.1.77. Always use `
 
 Results are saved to:
 ```
-~/.claude-octopus/results/${SESSION_ID}/tangle-synthesis-<timestamp>.md
+~/.kannaktopus/results/${SESSION_ID}/tangle-synthesis-<timestamp>.md
 ```
 
 ### Step 5: Implement Solution
@@ -606,7 +606,7 @@ After successful execution, present implementation plan with:
 User: Build a user authentication system with JWT
 
 Claude:
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider implementation mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider implementation mode
 🛠️ Develop Phase: Building authentication system
 
 [Executes: ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh develop "Build a user authentication system with JWT"]
@@ -670,7 +670,7 @@ Would you like me to proceed with implementation?
 User: Create an API endpoint for fetching user notifications
 
 Claude:
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider implementation mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider implementation mode
 🛠️ Develop Phase: Creating API endpoint
 
 [Executes tangle workflow]

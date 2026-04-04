@@ -52,7 +52,7 @@ npm run test:coverage
 ### 4. Use in Your Code
 
 ```typescript
-import { runTokenExtraction } from '@claude-octopus/token-extraction';
+import { runTokenExtraction } from '@kannaktopus/token-extraction';
 
 const result = await runTokenExtraction('./my-app', {
   // Enable accessibility audit

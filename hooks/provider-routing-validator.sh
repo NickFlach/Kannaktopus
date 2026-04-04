@@ -74,7 +74,7 @@ parse_workflow_command() {
 # v8.19: Check smoke test cache status (Issue #34)
 # Non-blocking: warns only, does not prevent execution
 check_smoke_test_status() {
-    local workspace_dir="${CLAUDE_OCTOPUS_WORKSPACE:-${HOME}/.claude-octopus}"
+    local workspace_dir="${CLAUDE_OCTOPUS_WORKSPACE:-${HOME}/.kannaktopus}"
     local cache_file="${workspace_dir}/.smoke-test-cache"
 
     [[ -f "$cache_file" ]] || return 0

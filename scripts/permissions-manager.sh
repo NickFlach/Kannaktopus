@@ -140,7 +140,7 @@ log_background_start() {
     local providers="$2"
     local session_id="${OCTOPUS_SESSION_ID:-unknown}"
 
-    local log_file="${HOME}/.claude-octopus/background-operations.log"
+    local log_file="${HOME}/.kannaktopus/background-operations.log"
     mkdir -p "$(dirname "$log_file")"
 
     echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] START workflow=$workflow session=$session_id providers=$providers" >> "$log_file"
@@ -152,7 +152,7 @@ log_background_end() {
     local status="$2"
     local session_id="${OCTOPUS_SESSION_ID:-unknown}"
 
-    local log_file="${HOME}/.claude-octopus/background-operations.log"
+    local log_file="${HOME}/.kannaktopus/background-operations.log"
 
     echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] END workflow=$workflow session=$session_id status=$status" >> "$log_file"
 }

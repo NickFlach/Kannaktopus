@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Cost Tracking & Usage Reporting
+# Kannaktopus — Cost Tracking & Usage Reporting
 # Extracted from orchestrate.sh
 # Source-safe: no main execution block.
 
@@ -732,7 +732,7 @@ generate_analytics_report() {
 
     cat <<EOF
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🐙 Claude Octopus Agent Usage Report (Last $period Days)
+🐙 Kannaktopus Agent Usage Report (Last $period Days)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Top 10 Most Used Agents:

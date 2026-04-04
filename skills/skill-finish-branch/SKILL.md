@@ -6,7 +6,7 @@ description: "Wrap up a branch — run tests, create PR, merge or discard — us
 
 # Finishing a Development Branch
 
-**Your first output line MUST be:** `🐙 **CLAUDE OCTOPUS ACTIVATED** - Branch Completion`
+**Your first output line MUST be:** `🐙 **KANNAKTOPUS ACTIVATED** - Branch Completion`
 
 ## Overview
 
@@ -242,7 +242,7 @@ fi
 
 ---
 
-## Integration with Claude Octopus
+## Integration with Kannaktopus
 
 After completing octopus workflows, use this skill:
 

@@ -50,15 +50,15 @@ When **on**, you MUST follow these rules automatically — no user prompt needed
 When the user runs `/octo:discipline on`, persist the setting:
 
 ```bash
-mkdir -p ~/.claude-octopus/config
-echo "OCTOPUS_DISCIPLINE=on" > ~/.claude-octopus/config/discipline.conf
+mkdir -p ~/.kannaktopus/config
+echo "OCTOPUS_DISCIPLINE=on" > ~/.kannaktopus/config/discipline.conf
 ```
 
 The SessionStart hook reads this file and injects the discipline directive into the session context. The directive is ~30 lines (not 200+) — lightweight enough to not bloat context.
 
 When off:
 ```bash
-echo "OCTOPUS_DISCIPLINE=off" > ~/.claude-octopus/config/discipline.conf
+echo "OCTOPUS_DISCIPLINE=off" > ~/.kannaktopus/config/discipline.conf
 ```
 
 ## What Discipline Mode Does NOT Do
@@ -79,7 +79,7 @@ When the user invokes `/octo:discipline`:
 5. No args: show status
 
 ```bash
-DISCIPLINE_CONF="${HOME}/.claude-octopus/config/discipline.conf"
+DISCIPLINE_CONF="${HOME}/.kannaktopus/config/discipline.conf"
 mkdir -p "$(dirname "$DISCIPLINE_CONF")"
 
 case "${1:-status}" in

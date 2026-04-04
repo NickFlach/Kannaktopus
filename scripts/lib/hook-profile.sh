@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Intensity Profile System — unified profile for Claude Octopus (v9.8.0)
+# Intensity Profile System — unified profile for Kannaktopus (v9.8.0)
 # Single knob: OCTO_PROFILE=budget|balanced|quality (default: balanced)
 # Controls: hook gating, model selection hints, phase skipping, context verbosity
 #

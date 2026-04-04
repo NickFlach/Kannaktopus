@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Scheduler - Policy Engine (v8.15.0)
+# Kannaktopus Scheduler - Policy Engine (v8.15.0)
 # Pre-dispatch admission checks: budget, security, workspace, workflow allowlist, kill switches
 
 set -euo pipefail
@@ -36,11 +36,11 @@ policy_check() {
 # Kill switch: KILL_ALL or PAUSE_ALL
 policy_check_kill_switches() {
     if [[ -f "${SWITCHES_DIR}/KILL_ALL" ]]; then
-        echo '{"allowed":false,"reason":"KILL_ALL switch is active. Remove ~/.claude-octopus/scheduler/switches/KILL_ALL to resume."}'
+        echo '{"allowed":false,"reason":"KILL_ALL switch is active. Remove ~/.kannaktopus/scheduler/switches/KILL_ALL to resume."}'
         return 1
     fi
     if [[ -f "${SWITCHES_DIR}/PAUSE_ALL" ]]; then
-        echo '{"allowed":false,"reason":"PAUSE_ALL switch is active. Remove ~/.claude-octopus/scheduler/switches/PAUSE_ALL to resume."}'
+        echo '{"allowed":false,"reason":"PAUSE_ALL switch is active. Remove ~/.kannaktopus/scheduler/switches/PAUSE_ALL to resume."}'
         return 1
     fi
     return 0

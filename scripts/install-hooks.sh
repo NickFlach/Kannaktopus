@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install git hooks for claude-octopus development
+# Install git hooks for kannaktopus development
 
 set -e
 
@@ -8,7 +8,7 @@ REPO_DIR="$(dirname "$SCRIPT_DIR")"
 HOOKS_DIR="$REPO_DIR/hooks"
 GIT_HOOKS_DIR="$REPO_DIR/.git/hooks"
 
-echo "🐙 Installing Claude Octopus git hooks..."
+echo "🐙 Installing Kannaktopus git hooks..."
 
 # Ensure hooks directory exists
 mkdir -p "$GIT_HOOKS_DIR"

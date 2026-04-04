@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Agent Teams Bridge for Claude Octopus v8.7.0
+# Agent Teams Bridge for Kannaktopus v8.7.0
 # Unified task-ledger that bridges orchestrate.sh's bash-spawned agents
 # with Claude Code's native Agent Teams task management
 #
@@ -9,7 +9,7 @@
 OCTOPUS_AGENT_TEAMS_BRIDGE="${OCTOPUS_AGENT_TEAMS_BRIDGE:-auto}"
 
 # Bridge state directory
-_BRIDGE_DIR="${HOME}/.claude-octopus/bridge"
+_BRIDGE_DIR="${HOME}/.kannaktopus/bridge"
 _BRIDGE_LEDGER="${_BRIDGE_DIR}/task-ledger.json"
 _BRIDGE_LOCKFILE="${_BRIDGE_DIR}/.ledger.lock"
 

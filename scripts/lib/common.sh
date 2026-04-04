@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Common utility functions for Claude Octopus scripts
+# Common utility functions for Kannaktopus scripts
 # Provides standardized output helpers for consistent terminal UX.
 
 # ── Standard Box Width ───────────────────────────────────────────────────────

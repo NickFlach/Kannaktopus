@@ -4,7 +4,7 @@
 
 set -eo pipefail
 
-CONFIG_FILE="${HOME}/.claude-octopus/config/providers.json"
+CONFIG_FILE="${HOME}/.kannaktopus/config/providers.json"
 CACHE_FILE="/tmp/octo-model-cache-${USER:-${USERNAME:-unknown}}-${CLAUDE_CODE_SESSION:-global}.json"
 
 # Known providers and phases for validation

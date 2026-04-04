@@ -213,7 +213,7 @@ execute_workflow_phase() {
     local agent_idx=0
 
     # Update session state for hooks
-    local session_dir="${HOME}/.claude-octopus"
+    local session_dir="${HOME}/.kannaktopus"
     mkdir -p "$session_dir"
 
     # Count total agents for this phase
@@ -432,7 +432,7 @@ run_yaml_workflow() {
         export OCTOPUS_COMPLETED_PHASES=$((phase_num - 1))
 
         # Update session.json for hooks
-        local session_dir="${HOME}/.claude-octopus"
+        local session_dir="${HOME}/.kannaktopus"
         if command -v jq &>/dev/null && [[ -f "$session_dir/session.json" ]]; then
             jq --arg phase "$phase_name" --arg status "running" \
                --argjson completed "$((phase_num - 1))" \

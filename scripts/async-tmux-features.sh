@@ -6,7 +6,7 @@
 # Global variables for async/tmux modes
 ASYNC_MODE="${ASYNC_MODE:-false}"
 TMUX_MODE="${TMUX_MODE:-false}"
-TMUX_SESSION="claude-octopus-$$"
+TMUX_SESSION="kannaktopus-$$"
 TMUX_PANE_MAP=()  # Maps agent PIDs to tmux pane IDs
 
 # ═══════════════════════════════════════════════════════════════════════════════

@@ -33,7 +33,7 @@ trigger: |
 **BEFORE starting ANY debate, you MUST output this banner:**
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - AI Debate Hub
+🐙 **KANNAKTOPUS ACTIVATED** - AI Debate Hub
 🐙 Debate: [Topic/question being debated]
 
 Participants:
@@ -57,7 +57,7 @@ Participants:
 
 **Codex CLI** (non-interactive headless mode):
 ```bash
-codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
+codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
 
 YOUR PROMPT HERE"
 ```
@@ -209,13 +209,13 @@ This is a **four-way debate** with three distinct advisor voices plus you as mod
 
 ## Claude-Octopus Enhancements
 
-When running debates in claude-octopus, the following enhancements are automatically applied:
+When running debates in kannaktopus, the following enhancements are automatically applied:
 
 ### 1. Session-Aware Storage
 
 **Enhanced behavior** (when `CLAUDE_CODE_SESSION` is set):
 ```
-~/.claude-octopus/debates/${SESSION_ID}/
+~/.kannaktopus/debates/${SESSION_ID}/
 └── NNN-topic-slug/
     ├── context.md
     ├── state.json
@@ -227,7 +227,7 @@ When running debates in claude-octopus, the following enhancements are automatic
 - Debates organized by Claude Code session
 - Easy to find debates from specific conversations
 - Automatic cleanup when sessions expire
-- Integration with claude-octopus analytics
+- Integration with kannaktopus analytics
 
 ### 2. Quality Gates for Debate Responses
 
@@ -249,7 +249,7 @@ When running debates in claude-octopus, the following enhancements are automatic
 
 ### 3. Cost Tracking & Analytics
 
-Track token usage and cost for each debate, integrated with claude-octopus analytics.
+Track token usage and cost for each debate, integrated with kannaktopus analytics.
 
 ### 4. Document Export
 
@@ -276,7 +276,7 @@ bash "${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(dirname "$0")")")}/scripts/h
 
 Then display the banner with real provider status:
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - AI Debate Hub
+🐙 **KANNAKTOPUS ACTIVATED** - AI Debate Hub
 🐙 Debate: [Topic/question being debated]
 
 Provider Availability:
@@ -370,7 +370,7 @@ ADVISORS=$(echo "$DEBATE_FLEET" | grep '|Debater|' | cut -d'|' -f1 | paste -sd',
 ### Step 4: Setup Debate Folder
 ```bash
 # Create debate directory structure
-DEBATE_BASE_DIR="${HOME}/.claude-octopus/debates/${CLAUDE_CODE_SESSION:-./debates}"
+DEBATE_BASE_DIR="${HOME}/.kannaktopus/debates/${CLAUDE_CODE_SESSION:-./debates}"
 DEBATE_ID="042-redis-vs-memcached"
 DEBATE_DIR="${DEBATE_BASE_DIR}/${DEBATE_ID}"
 
@@ -430,7 +430,7 @@ printf '%s' "${QUESTION}" | gemini -p "" -o text --approval-mode yolo > "${DEBAT
 
 #### 5.2: Consult Codex
 ```bash
-codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
+codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
 
 ${QUESTION}" > "${DEBATE_DIR}/rounds/r001_codex.md"
 ```
@@ -582,7 +582,7 @@ IMPORTANT: The deliverable is a PROPOSAL. Never auto-apply changes without user 
 User: /debate Should we use Redis or in-memory cache?
 
 Claude:
-1. Creates debate folder at ~/.claude-octopus/debates/${SESSION_ID}/042-redis-vs-memcached/
+1. Creates debate folder at ~/.kannaktopus/debates/${SESSION_ID}/042-redis-vs-memcached/
 2. Writes context.md with question
 3. Round 1:
    - Launches Sonnet via Agent(model: sonnet, run_in_background: true) — pragmatic implementer
@@ -627,7 +627,7 @@ Before completing a debate, ensure:
 - [ ] Your independent analysis (Opus) written for each round (not just summaries)
 - [ ] Synthesis.md includes all four perspectives
 - [ ] Quality scores recorded for advisor responses
-- [ ] Cost tracking updated (if in claude-octopus context)
+- [ ] Cost tracking updated (if in kannaktopus context)
 - [ ] Results presented to user in chat
 - [ ] Debate folder path provided to user
 
@@ -671,7 +671,7 @@ Typical costs (default word limits):
 - Thorough (3 rounds): $0.10 - $0.20
 - Adversarial (5 rounds): $0.25 - $0.50
 
-Cost tracking integrates with `~/.claude-octopus/analytics/` logs.
+Cost tracking integrates with `~/.kannaktopus/analytics/` logs.
 
 ## Export
 

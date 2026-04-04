@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — DONE Criteria Injection Hook
+# Kannaktopus — DONE Criteria Injection Hook
 # UserPromptSubmit hook that detects compound tasks and injects
 # completion criteria requirements to prevent partial execution.
 #

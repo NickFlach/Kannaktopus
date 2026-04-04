@@ -177,7 +177,7 @@ token-extraction/
 **Purpose**: Package configuration
 
 **Key Fields**:
-- Name: `@claude-octopus/token-extraction`
+- Name: `@kannaktopus/token-extraction`
 - Version: 1.0.0
 - Main: `index.ts`
 - Bin: `cli.ts`
@@ -695,7 +695,7 @@ Total unique content: ~5,000 lines
 
 All files located at:
 ```
-/Users/chris/git/claude-octopus/plugin/scripts/token-extraction/
+/Users/chris/git/kannaktopus/plugin/scripts/token-extraction/
 ```
 
 Ready for immediate use, testing, or integration.

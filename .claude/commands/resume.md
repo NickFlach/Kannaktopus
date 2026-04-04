@@ -13,7 +13,7 @@ Resume a previously-running Claude agent by ID. Picks up the agent's transcript 
 
 If you don't have the agent ID:
 - Check `/octo:sentinel` output for running agent IDs
-- Look in `~/.claude-octopus/results/` for recent result files (filename prefix contains agent type + task ID)
+- Look in `~/.kannaktopus/results/` for recent result files (filename prefix contains agent type + task ID)
 - The agent ID was shown when the agent was originally spawned
 
 ## Step 2: Resume

@@ -4,7 +4,7 @@ version: 1.0.0
 description: "Multi-tentacled orchestration using Double Diamond methodology. Use when: PRIORITY TRIGGERS (always invoke immediately):. \"/octo:multi\" (explicit command). \"run this with all providers\", \"run with all providers\""
 ---
 
-# Claude Octopus - Multi-Tentacled Orchestrator
+# Kannaktopus - Multi-Tentacled Orchestrator
 
 ## MANDATORY COMPLIANCE — DO NOT SKIP
 
@@ -92,7 +92,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh auto "review the auth code"        
 
 ## Visual Indicators - Know What's Running
 
-Claude Octopus uses **visual indicators** so you always know which AI is responding:
+Kannaktopus uses **visual indicators** so you always know which AI is responding:
 
 | Indicator | Meaning | Uses |
 |-----------|---------|------|
@@ -119,7 +119,7 @@ Claude Octopus uses **visual indicators** so you always know which AI is respond
 
 **Why this matters:** External CLIs use your OpenAI/Google API quotas and incur costs. Claude subagents are included with Claude Code at no additional charge.
 
-When you see 🐙 **CLAUDE OCTOPUS ACTIVATED**, external CLI providers (Codex/Gemini) will be invoked for multi-perspective analysis.
+When you see 🐙 **KANNAKTOPUS ACTIVATED**, external CLI providers (Codex/Gemini) will be invoked for multi-perspective analysis.
 
 ---
 
@@ -184,7 +184,7 @@ Use forced parallel mode judiciously for tasks where multiple perspectives genui
 When you force parallel mode, you'll see this banner:
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider mode
 Force parallel execution
 
 Providers:
@@ -212,7 +212,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh detect-providers
 **IMPORTANT - First Time Setup Detection:**
 If the detect-providers command shows BOTH providers are missing (CODEX_STATUS=missing AND GEMINI_STATUS=missing), this is likely a first-time user. Before showing error messages, provide a friendly welcome message:
 
-> "👋 Welcome to Claude Octopus! I see this is your first time using the plugin.
+> "👋 Welcome to Kannaktopus! I see this is your first time using the plugin.
 >
 > To get started, you need to install **one** AI provider (you don't need both):
 >
@@ -232,7 +232,7 @@ If the detect-providers command shows BOTH providers are missing (CODEX_STATUS=m
 > Or set API key: `export GEMINI_API_KEY="AIza..."`
 > Get key from: https://aistudio.google.com/app/apikey
 >
-> Once you've installed one provider, you can start using Claude Octopus by just talking naturally:
+> Once you've installed one provider, you can start using Kannaktopus by just talking naturally:
 > - 'Research OAuth authentication patterns'
 > - 'Build a user authentication system'
 > - 'Review this code for security issues'
@@ -279,7 +279,7 @@ CLAUDE_CODE_MINIMUM=2.1.9
 
 > "⚠️ **Claude Code Update Required**
 >
-> Your current Claude Code version (2.1.8) is outdated. Claude Octopus requires version 2.1.9 or higher for full functionality.
+> Your current Claude Code version (2.1.8) is outdated. Kannaktopus requires version 2.1.9 or higher for full functionality.
 >
 > **How to update:**
 >
@@ -310,7 +310,7 @@ GEMINI_AUTH=none
 
 **Action:** STOP and tell the user:
 
-> "Claude Octopus needs at least one AI provider (Codex or Gemini) to work.
+> "Kannaktopus needs at least one AI provider (Codex or Gemini) to work.
 >
 > You have two options:
 >
@@ -359,7 +359,7 @@ You do NOT need both providers to proceed. One is sufficient for most tasks.
 
 ### Step 4: Cache Results (Optional Optimization)
 
-The detect-providers command writes results to `~/.claude-octopus/.provider-cache` with a timestamp. This cache is valid for 1 hour.
+The detect-providers command writes results to `~/.kannaktopus/.provider-cache` with a timestamp. This cache is valid for 1 hour.
 
 If the cache exists and is fresh (<1 hour old), you can skip re-detection.
 
@@ -603,7 +603,7 @@ The `tangle` phase enforces quality gates:
 
 ## Provider-Aware Routing (v4.8)
 
-Claude Octopus now intelligently routes tasks based on your subscription tiers and costs.
+Kannaktopus now intelligently routes tasks based on your subscription tiers and costs.
 
 ### Provider Subscription Tiers
 
@@ -653,7 +653,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh setup
 ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh status
 ```
 
-Configuration file: `~/.claude-octopus/.providers-config`
+Configuration file: `~/.kannaktopus/.providers-config`
 
 ```yaml
 version: "2.0"
@@ -693,7 +693,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh setup
 ## Workspace Structure
 
 ```
-~/.claude-octopus/
+~/.kannaktopus/
 ├── results/
 │   ├── probe-synthesis-*.md      # Research findings
 │   ├── grasp-consensus-*.md      # Problem definitions
@@ -713,7 +713,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh probe "Authentication patterns for 
 
 # 2. Define the approach (with probe context)
 ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh grasp "OAuth2 with JWT for our API" \
-  --context ~/.claude-octopus/results/probe-synthesis-*.md
+  --context ~/.kannaktopus/results/probe-synthesis-*.md
 
 # 3. Implement with validation
 ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh tangle "Implement OAuth2 authentication"
@@ -755,7 +755,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh preflight
 Tangle phase requires 75% success rate. If failing:
 - Break task into smaller subtasks
 - Increase timeout with `-t 600`
-- Check individual agent logs in `~/.claude-octopus/logs/`
+- Check individual agent logs in `~/.kannaktopus/logs/`
 
 ### Reset workspace
 ```bash

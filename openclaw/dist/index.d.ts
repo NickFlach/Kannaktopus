@@ -1,7 +1,7 @@
 /**
- * Claude Octopus — OpenClaw Extension
+ * Kannaktopus — OpenClaw Extension
  *
- * Registers Claude Octopus workflows as native OpenClaw tools.
+ * Registers Kannaktopus workflows as native OpenClaw tools.
  * Delegates execution to orchestrate.sh (via Claude CLI or MCP server)
  * to preserve exact behavioral parity with the Claude Code plugin.
  *

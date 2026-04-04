@@ -1,4 +1,4 @@
-# Workflow-as-Code Schema for Claude Octopus v8.3.0
+# Workflow-as-Code Schema for Kannaktopus v8.3.0
 # Declarative YAML schema for defining multi-agent workflows
 #
 # Usage: Workflows define phases, agents, transitions, and quality gates

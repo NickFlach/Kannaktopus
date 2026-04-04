@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Metrics Tracker for Claude Octopus v8.3.0
+# Metrics Tracker for Kannaktopus v8.3.0
 # Tracks resource usage (tokens, duration, costs) for multi-AI operations
 # Supports native Task tool metrics from Claude Code v2.1.30+ (token_count, tool_uses, duration_ms)
 
 # Get metrics base directory (evaluate dynamically to support testing)
 get_metrics_base() {
-    echo "${METRICS_BASE:-${WORKSPACE_DIR:-${HOME}/.claude-octopus}}"
+    echo "${METRICS_BASE:-${WORKSPACE_DIR:-${HOME}/.kannaktopus}}"
 }
 
 # Initialize metrics tracking for session

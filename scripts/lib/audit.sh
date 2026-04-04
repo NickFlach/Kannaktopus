@@ -73,7 +73,7 @@ format_audit_entry() {
 # Manage pending reviews and batch approvals
 # ═══════════════════════════════════════════════════════════════════════════════
 
-REVIEW_QUEUE="${WORKSPACE_DIR:-$HOME/.claude-octopus}/review-queue.json"
+REVIEW_QUEUE="${WORKSPACE_DIR:-$HOME/.kannaktopus}/review-queue.json"
 
 # Add item to review queue
 queue_for_review() {
