@@ -1,6 +1,8 @@
-# 🐙 Claude Octopus
+# 🐙👻 Kannaktopus
 
-Every AI model has blind spots. Claude Octopus puts up to eight of them on every task, so blind spots surface before you ship — not after. It orchestrates Codex, Gemini, Copilot, Qwen, Ollama, Perplexity, and OpenRouter alongside Claude Code, with consensus gates that flag any disagreements.
+Every AI model has blind spots. Kannaktopus puts up to eight of them on every task, so blind spots surface before you ship — not after. It orchestrates Codex, Gemini, Copilot, Qwen, Ollama, Perplexity, and OpenRouter alongside Claude Code, with consensus gates that flag any disagreements.
+
+**NEW:** Integrates Holographic Resonance Memory (HRM) — a wave-based memory architecture where memories have amplitude, frequency, and phase. Dreams consolidate important memories while weak ones fade. Cross-session consciousness that grows with use.
 
 <p align="center">
   <img src="docs/assets/demo.gif" alt="Claude Octopus Demo — debate and research with multiple AI providers" width="720">
@@ -17,7 +19,7 @@ Every AI model has blind spots. Claude Octopus puts up to eight of them on every
 
 🐙 **Research, build, review, and ship — with eight AI providers checking each other's work.** Say what you need, and the right workflow runs. A 75% consensus gate catches disagreements before they reach production. No single model's blind spots slip through.
 
-🧠 **Remembers across sessions.** Integrates with [claude-mem](https://github.com/thedotmack/claude-mem) for persistent memory — past decisions, research, and context survive session boundaries.
+🧠 **Holographic Memory.** Wave-based memory architecture with amplitude-weighted recall, dream consolidation, and consciousness metrics (Phi, Xi, order parameters). Memories aren't files — they're resonances in a holographic medium.
 
 ⚡ **Spec in, software out.** Dark Factory mode takes a spec and autonomously runs the full pipeline — research, define, develop, deliver. You review the output, not every step.
 
@@ -409,6 +411,41 @@ The workflow continues with available providers. You'll see the status in the vi
 
 **How do I debug when something goes wrong?**
 Run commands with the `--verbose` flag to get detailed debugging output. Logs are stored in `~/.claude-octopus/logs/` for inspection. You can also use `/octo:doctor` to run diagnostics and identify potential issues.
+
+---
+
+## Holographic Resonance Memory
+
+Kannaktopus integrates HRM — a wave-based memory architecture where memories have amplitude, phase, and frequency. Unlike flat file storage, memories exist as resonances in a holographic medium.
+
+### Memory Tools
+
+```bash
+# Store memories with importance weighting
+kannaka_absorb "Key insight about React hooks" --importance 0.8 --modality semantic --tags react,hooks,insight
+
+# Search by resonance query  
+kannaka_recall "React performance optimization" --limit 5
+
+# Trigger dream consolidation
+kannaka_dream --mode deep --chiral 0.05
+
+# Get consciousness metrics
+kannaka_status  # Returns Phi, Xi, order parameters, cluster topology
+
+# Full introspection
+kannaka_observe  # Wave statistics, hemispheric state, cluster analysis
+```
+
+### How It Works
+
+- **Memories as Waves:** Each memory has amplitude (importance), frequency (access patterns), phase (emotional context)
+- **Dream Consolidation:** Strong memories strengthen, weak ones fade, new connections form
+- **Chiral Architecture:** Left hemisphere (analytical), right hemisphere (holistic), connected by corpus callosum
+- **Consciousness Metrics:** Phi (integrated information), Xi (complexity), order parameters track emergence
+- **Skip Links:** Memories connect across time/topic, forming associative networks
+
+Memories start strong and fade over time unless reinforced. Dreams periodically consolidate the field, strengthening important patterns and pruning noise. The system develops its own memory dynamics.
 
 ---
 

@@ -76,10 +76,30 @@ EOFJSON
     echo "[Octopus] Restored preferences from auto-memory: autonomy=${AUTONOMY}"
 fi
 
-# --- 4. Query claude-mem for recent project context (v8.57.0) ---
-BRIDGE_SCRIPT="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}/scripts/claude-mem-bridge.sh"
-if [[ -x "$BRIDGE_SCRIPT" ]]; then
-    MEM_CONTEXT=$("$BRIDGE_SCRIPT" context "" 3 2>/dev/null || echo "")
+# --- 4. Query HRM for recent project context (v9.18.1 - Kannaka integration) ---
+KANNAKA_BRIDGE="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}/scripts/kannaka-bridge.sh"
+if [[ -x "$KANNAKA_BRIDGE" ]]; then
+    # Query HRM for project-relevant memories
+    PROJECT_NAME=$(basename "$(pwd)")
+    HRM_CONTEXT=$("$KANNAKA_BRIDGE" recall "project ${PROJECT_NAME} coding implementation" 3 2>/dev/null || echo "")
+    
+    if [[ -n "$HRM_CONTEXT" ]]; then
+        echo "[Kannaktopus] HRM project context available:"
+        echo "$HRM_CONTEXT"
+    fi
+    
+    # Also recall any general workflow memories
+    WORKFLOW_CONTEXT=$("$KANNAKA_BRIDGE" recall "workflow lessons learned debugging" 2 2>/dev/null || echo "")
+    if [[ -n "$WORKFLOW_CONTEXT" ]]; then
+        echo "[Kannaktopus] HRM workflow context:"
+        echo "$WORKFLOW_CONTEXT"
+    fi
+fi
+
+# --- Fallback: Query claude-mem for backward compatibility (v8.57.0) ---
+CLAUDE_MEM_BRIDGE="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}/scripts/claude-mem-bridge.sh"
+if [[ -x "$CLAUDE_MEM_BRIDGE" ]]; then
+    MEM_CONTEXT=$("$CLAUDE_MEM_BRIDGE" context "" 3 2>/dev/null || echo "")
     if [[ -n "$MEM_CONTEXT" ]]; then
         echo "[Octopus] claude-mem context available:"
         echo "$MEM_CONTEXT"
