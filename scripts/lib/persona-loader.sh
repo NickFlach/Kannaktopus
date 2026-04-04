@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus - Persona Loader Library
+# Kannaktopus - Persona Loader Library
 # Extracted from orchestrate.sh
 #
 # Provides: select_opus_mode, get_persona_instruction

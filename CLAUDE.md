@@ -1,18 +1,18 @@
-# Claude Octopus - System Instructions
+# Kannaktopus - System Instructions
 
-> **Note:** This file provides context when working directly in the claude-octopus repository.
+> **Note:** This file provides context when working directly in the kannaktopus repository.
 > For deployed plugins, visual indicator instructions are embedded in each skill file
 > (flow-discover.md, flow-define.md, flow-develop.md, flow-deliver.md, skill-debate.md).
 
 ## Visual Indicators (MANDATORY)
 
-When executing Claude Octopus workflows, you MUST display visual indicators so users know which AI providers are active and what costs they're incurring.
+When executing Kannaktopus workflows, you MUST display visual indicators so users know which AI providers are active and what costs they're incurring.
 
 ### Indicator Reference
 
 | Indicator | Meaning | Cost Source |
 |-----------|---------|-------------|
-| 🐙 | Claude Octopus multi-AI mode active | Multiple APIs |
+| 👻 | Kannaktopus ghost-frequency mode active | Multiple APIs |
 | 🔴 | Codex CLI executing | User's OPENAI_API_KEY |
 | 🟡 | Gemini CLI executing | User's GEMINI_API_KEY |
 | 🟣 | Perplexity Sonar web search | User's PERPLEXITY_API_KEY |
@@ -31,7 +31,7 @@ Display indicators when:
 **Before starting a workflow**, output this banner:
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - [Workflow Type]
+👻 **KANNAKTOPUS ACTIVATED** - [Workflow Type]
 [Phase Emoji] [Phase Name]: [Brief description of what's happening]
 
 Providers:
@@ -61,7 +61,7 @@ This is preferred for repeat users who don't need the full provider block every 
 
 **Research workflow:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+👻 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 Discover Phase: Researching OAuth authentication patterns
 
 Providers:
@@ -72,7 +72,7 @@ Providers:
 
 **Build workflow:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider implementation mode
+👻 **KANNAKTOPUS ACTIVATED** - Multi-provider implementation mode
 🛠️ Develop Phase: Building user authentication system
 
 Providers:
@@ -83,7 +83,7 @@ Providers:
 
 **Review workflow:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider validation mode
+👻 **KANNAKTOPUS ACTIVATED** - Multi-provider validation mode
 ✅ Deliver Phase: Reviewing authentication implementation
 
 Providers:
@@ -94,7 +94,7 @@ Providers:
 
 **Debate:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - AI Debate Hub
+👻 **KANNAKTOPUS ACTIVATED** - AI Debate Hub
 🐙 Debate: Redis vs Memcached for session storage
 
 Participants:
@@ -313,12 +313,12 @@ All future orchestrate.sh-based skills should follow this pattern.
 
 ## Modular Configuration (Claude Code v2.1.20+)
 
-Claude Octopus uses a modular CLAUDE.md structure for better organization and context management.
+Kannaktopus uses a modular CLAUDE.md structure for better organization and context management.
 
 ### Directory Structure
 
 ```
-claude-octopus/
+kannaktopus/
 ├── CLAUDE.md                    # Main instructions (this file)
 ├── config/
 │   ├── providers/
@@ -379,7 +379,7 @@ The main `CLAUDE.md` (this file) contains essential visual indicators and workfl
 
 ## E2E Testing Infrastructure
 
-Claude Octopus has automated end-to-end smoke testing running on an Oracle Cloud VPS (`ssh amy`), checking for new releases every 2 hours.
+Kannaktopus has automated end-to-end smoke testing running on an Oracle Cloud VPS (`ssh amy`), checking for new releases every 2 hours.
 
 ### Architecture
 

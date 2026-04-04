@@ -1,6 +1,6 @@
 #!/bin/bash
 # tests/integration/test-plugin-expert-review.sh
-# Expert review of claude-octopus as a Claude Code plugin
+# Expert review of kannaktopus as a Claude Code plugin
 # Reviews: plugin structure, skills quality, commands, hooks, marketplace readiness
 
 set -euo pipefail
@@ -362,7 +362,7 @@ main() {
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${BLUE}Claude Code Plugin Expert Review${NC}"
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo "Reviewing: claude-octopus v7.1.0"
+    echo "Reviewing: kannaktopus v7.1.0"
     echo ""
 
     # Run all test suites

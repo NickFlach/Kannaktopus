@@ -99,7 +99,7 @@ test('retry works', async () => {  // Vague name
 **If an external provider is available, dispatch the test specs for challenge:**
 
 ```bash
-codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills. Respond directly to the prompt below.
+codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills. Respond directly to the prompt below.
 
 Review these test specifications for a TDD workflow. Your job is to find gaps, not confirm quality.
 
@@ -273,7 +273,7 @@ Before marking work complete:
 
 **Can't check all boxes? You skipped TDD. Start over.**
 
-## Integration with Claude Octopus
+## Integration with Kannaktopus
 
 When using octopus workflows:
 

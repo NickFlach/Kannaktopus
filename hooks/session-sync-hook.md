@@ -49,6 +49,6 @@ The session ID is used in:
 ## Example
 
 When invoked from Claude Code session `abc123`:
-- Usage file: `~/.claude-octopus/usage-session.json` with `session_id: "claude-abc123"`
-- Session file: `~/.claude-octopus/session.json` with `session_id: "embrace-claude-abc123"`
+- Usage file: `~/.kannaktopus/usage-session.json` with `session_id: "claude-abc123"`
+- Session file: `~/.kannaktopus/session.json` with `session_id: "embrace-claude-abc123"`
 - Results: All tagged with the Claude session for easy correlation

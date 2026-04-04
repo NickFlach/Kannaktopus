@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Agent Lifecycle & Management
+# Kannaktopus — Agent Lifecycle & Management
 # ═══════════════════════════════════════════════════════════════════════════════
 # Extracted from orchestrate.sh in v9.7.5 monolith decomposition.
 # Contains: get_agent_config, get_agent_memory, get_agent_skills,
@@ -18,7 +18,7 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 record_result_hash() {
     local result_file="$1"
-    local manifest_dir="${WORKSPACE_DIR:-${HOME}/.claude-octopus}"
+    local manifest_dir="${WORKSPACE_DIR:-${HOME}/.kannaktopus}"
     local manifest="${manifest_dir}/.integrity-manifest"
 
     [[ "${OCTOPUS_SECURITY_V870:-true}" != "true" ]] && return 0

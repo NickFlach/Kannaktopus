@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# State management utilities for Claude Octopus
+# State management utilities for Kannaktopus
 # Provides persistent state tracking across sessions
 
 # v9.7.8: Use -eo (not -euo) to match orchestrate.sh's strictness level.
@@ -8,7 +8,7 @@
 set -eo pipefail
 
 # Configuration
-STATE_DIR=".claude-octopus"
+STATE_DIR=".kannaktopus"
 STATE_FILE="$STATE_DIR/state.json"
 BACKUP_FILE="$STATE_DIR/state.json.backup"
 
@@ -330,7 +330,7 @@ show_summary() {
         error "State file not found. Run 'init_state' first."
     fi
 
-    echo "=== Claude Octopus State Summary ==="
+    echo "=== Kannaktopus State Summary ==="
     echo ""
     echo "Project ID: $(jq -r '.project_id' "$STATE_FILE")"
     echo "Session Start: $(jq -r '.session_start' "$STATE_FILE")"
@@ -459,7 +459,7 @@ main() {
             ;;
         help)
             cat <<EOF
-Claude Octopus State Manager
+Kannaktopus State Manager
 
 Usage: state-manager.sh <command> [args]
 

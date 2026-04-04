@@ -1,7 +1,7 @@
 {
-  "name": "nyldn-plugins",
+  "name": "kannaka-plugins",
   "owner": {
-    "name": "nyldn"
+    "name": "Nick Flach"
   },
   "metadata": {
     "description": "Multi-tentacled orchestration plugin for Factory AI Droid",
@@ -9,14 +9,14 @@
   },
   "plugins": [
     {
-      "name": "claude-octopus",
+      "name": "kannaktopus",
       "source": "./",
       "description": "v8.38.3 - Multi-AI orchestration with Double Diamond workflow. 32 personas, 49 commands, 44 skills. Run /setup after install.",
       "version": "8.38.3",
       "author": {
-        "name": "nyldn"
+        "name": "Nick Flach"
       },
-      "repository": "https://github.com/nyldn/claude-octopus",
+      "repository": "https://github.com/NickFlach/Kannaktopus",
       "license": "MIT",
       "keywords": [
         "factory-ai",

@@ -61,7 +61,7 @@ echo ""
 echo "Checking for absolute git repository paths..."
 git_paths=$(git ls-files | grep -E "\.(md|sh)$" | \
   grep -v "validate-no-hardcoded-paths.sh" | \
-  xargs grep -n "git/claude-octopus\|/claude-octopus/plugin/" 2>/dev/null || true)
+  xargs grep -n "git/kannaktopus\|/kannaktopus/plugin/" 2>/dev/null || true)
 
 if [ -n "$git_paths" ]; then
     echo -e "${RED}✗ Found absolute git repository paths:${NC}"
@@ -75,7 +75,7 @@ fi
 # Check for hardcoded workspace paths (should be relative or ~/...)
 echo ""
 echo "Checking for hardcoded workspace paths..."
-workspace_paths=$(grep -rn "\.claude-octopus" \
+workspace_paths=$(grep -rn "\.kannaktopus" \
   --include="*.sh" --include="*.js" \
   --exclude-dir=.git --exclude-dir=tests \
   . 2>/dev/null | \

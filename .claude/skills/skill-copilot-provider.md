@@ -13,7 +13,7 @@ trigger: |
 
 ## Overview
 
-GitHub Copilot CLI (GA since Feb 2026) serves as an optional provider in the Claude Octopus
+GitHub Copilot CLI (GA since Feb 2026) serves as an optional provider in the Kannaktopus
 multi-LLM ecosystem. Integration uses the official `copilot -p` programmatic mode, not
 reverse-engineered API endpoints.
 
@@ -139,7 +139,7 @@ When missing: `ℹ Copilot CLI not installed (optional)`
 ### Research with Copilot
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 Discover Phase: Researching WebSocket authentication patterns
 
 Providers:
@@ -152,7 +152,7 @@ Providers:
 ### Copilot Unavailable (Graceful Degradation)
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 Discover Phase: Researching WebSocket authentication patterns
 
 Providers:

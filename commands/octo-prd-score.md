@@ -91,7 +91,7 @@ AskUserQuestion({
 
 **If Rigorous mode selected:**
 
-🐙 **CLAUDE OCTOPUS ACTIVATED** — Multi-AI PRD Scoring
+🐙 **KANNAKTOPUS ACTIVATED** — Multi-AI PRD Scoring
 
 Providers:
 🔴 Codex CLI — Implementation feasibility bias (catches vague technical specs)

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Scheduler - Job Runner (v8.15.0)
+# Kannaktopus Scheduler - Job Runner (v8.15.0)
 # Executes a scheduled job: lock acquisition, process group management,
 # timeout enforcement, cost monitoring, and run metadata recording.
 
@@ -165,7 +165,7 @@ runner_kill_process_group() {
 # Read current cost from metrics-session.json in workspace
 runner_get_current_cost() {
     local workspace="$1"
-    local metrics_file="${workspace}/.claude-octopus/metrics-session.json"
+    local metrics_file="${workspace}/.kannaktopus/metrics-session.json"
 
     if [[ -f "$metrics_file" ]]; then
         jq -r '.totals.estimated_cost_usd // 0' "$metrics_file" 2>/dev/null || echo "0"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# validate-release.sh - Pre-release validation for claude-octopus
+# validate-release.sh - Pre-release validation for kannaktopus
 # Prevents common release issues like version mismatches and missing registrations
 
 set -euo pipefail
@@ -15,7 +15,7 @@ NC='\033[0m' # No Color
 errors=0
 warnings=0
 
-echo "🐙 Claude Octopus Release Validation"
+echo "🐙 Kannaktopus Release Validation"
 echo "======================================"
 echo ""
 
@@ -37,7 +37,7 @@ fi
 
 if [[ "$MARKETPLACE_PLUGIN_NAME" != "octo" ]]; then
     echo -e "  ${RED}CRITICAL ERROR: marketplace.json plugin name is '$MARKETPLACE_PLUGIN_NAME' - MUST be 'octo'${NC}"
-    echo -e "  ${RED}This controls install command (octo@nyldn-plugins) and must match plugin.json name${NC}"
+    echo -e "  ${RED}This controls install command (octo@kannaka-plugins) and must match plugin.json name${NC}"
     ((errors++))
 else
     echo -e "  ${GREEN}✓ marketplace.json plugin name: octo (matches plugin.json for /plugin UI)${NC}"

@@ -1,7 +1,7 @@
 /**
- * Claude Octopus — OpenClaw Extension
+ * Kannaktopus — OpenClaw Extension
  *
- * Registers Claude Octopus workflows as native OpenClaw tools.
+ * Registers Kannaktopus workflows as native OpenClaw tools.
  * Delegates execution to orchestrate.sh (via Claude CLI or MCP server)
  * to preserve exact behavioral parity with the Claude Code plugin.
  *
@@ -333,7 +333,7 @@ export default function register(api: OpenClawPluginApi) {
     "security",
   ];
 
-  api.logger.info(`Claude Octopus OpenClaw extension loading...`);
+  api.logger.info(`Kannaktopus OpenClaw extension loading...`);
   api.logger.info(`Plugin root: ${PLUGIN_ROOT}`);
 
   // Register workflow tools
@@ -356,7 +356,7 @@ export default function register(api: OpenClawPluginApi) {
   api.registerTool({
     name: "octopus_list_skills",
     label: "Octopus List Skills",
-    description: "List all available Claude Octopus skills.",
+    description: "List all available Kannaktopus skills.",
     parameters: Type.Object({}),
     execute: async () => {
       const skills = await loadSkills(PLUGIN_ROOT);
@@ -368,6 +368,6 @@ export default function register(api: OpenClawPluginApi) {
   });
 
   api.logger.info(
-    `Claude Octopus extension loaded: ${enabledWorkflows.length} workflows registered.`
+    `Kannaktopus extension loaded: ${enabledWorkflows.length} workflows registered.`
   );
 }

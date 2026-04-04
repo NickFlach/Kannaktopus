@@ -70,7 +70,7 @@ command -v gemini &> /dev/null && gemini_status="Available" || gemini_status="No
 **Display this banner BEFORE orchestrate.sh execution:**
 
 ```
-🐙 CLAUDE OCTOPUS ACTIVATED - NLSpec Authoring Mode
+🐙 KANNAKTOPUS ACTIVATED - NLSpec Authoring Mode
 Spec Phase: Generating structured specification for [project name]
 
 Provider Availability:
@@ -151,7 +151,7 @@ Incorporate the user's answers from Step 1 into the probe query to focus the res
 
 ```bash
 # Find the latest synthesis file (created within last 10 minutes)
-SYNTHESIS_FILE=$(find ~/.claude-octopus/results -name "probe-synthesis-*.md" -mmin -10 2>/dev/null | head -n1)
+SYNTHESIS_FILE=$(find ~/.kannaktopus/results -name "probe-synthesis-*.md" -mmin -10 2>/dev/null | head -n1)
 
 if [[ -z "$SYNTHESIS_FILE" ]]; then
   echo "VALIDATION FAILED: No synthesis file found"
@@ -165,7 +165,7 @@ cat "$SYNTHESIS_FILE"
 
 **If validation fails:**
 1. Report error to user
-2. Show logs from `~/.claude-octopus/logs/`
+2. Show logs from `~/.kannaktopus/logs/`
 3. DO NOT proceed with generating NLSpec
 4. DO NOT substitute with direct research — fallback to single-model analysis skips the multi-provider synthesis that surfaces edge cases and alternative approaches
 
@@ -253,7 +253,7 @@ Synthesize into the NLSpec template below. This is YOUR (Claude's) synthesis rol
 
 If Codex is available:
 ```bash
-codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
+codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
 
 Challenge this specification. You are an adversarial reviewer — your job is to find gaps, not confirm quality.
 
@@ -397,7 +397,7 @@ Next steps:
 **Include attribution:**
 ```
 ---
-Multi-AI Research powered by Claude Octopus
+Multi-AI Research powered by Kannaktopus
 Providers: Codex | Gemini | Claude
 ```
 

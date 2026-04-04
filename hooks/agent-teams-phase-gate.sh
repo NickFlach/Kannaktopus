@@ -1,12 +1,12 @@
 #!/bin/bash
-# Claude Octopus Agent Teams Phase Gate Hook (v8.7.0)
+# Kannaktopus Agent Teams Phase Gate Hook (v8.7.0)
 # TaskCompleted hook that checks bridge ledger for phase completion
 # Triggers quality gate evaluation and phase transition
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}
 set -euo pipefail
 
 # Bridge configuration
-BRIDGE_DIR="${HOME}/.claude-octopus/bridge"
+BRIDGE_DIR="${HOME}/.kannaktopus/bridge"
 BRIDGE_LEDGER="${BRIDGE_DIR}/task-ledger.json"
 
 # Read hook input from stdin
@@ -95,7 +95,7 @@ jq --arg phase "$current_phase" \
    "$BRIDGE_LEDGER" > "$tmp" 2>/dev/null && mv "$tmp" "$BRIDGE_LEDGER" || rm -f "$tmp"
 
 # Update session.json if it exists
-session_file="${HOME}/.claude-octopus/session.json"
+session_file="${HOME}/.kannaktopus/session.json"
 if [[ -f "$session_file" ]]; then
     tmp="${session_file}.tmp.$$"
     jq --arg phase "$current_phase" \

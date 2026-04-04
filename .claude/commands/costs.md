@@ -19,19 +19,19 @@ When the user invokes `/octo:costs`, you MUST follow these steps in order.
 Search for session usage data in these locations (check all, use whichever exist):
 
 ```
-~/.claude-octopus/usage/           # Per-session usage logs
-~/.claude-octopus/routing.log      # Routing decisions with timestamps
-~/.claude-octopus/sessions/        # Session state files
-.claude-octopus/                   # Project-local usage data
+~/.kannaktopus/usage/           # Per-session usage logs
+~/.kannaktopus/routing.log      # Routing decisions with timestamps
+~/.kannaktopus/sessions/        # Session state files
+.kannaktopus/                   # Project-local usage data
 ```
 
 Use the Bash tool to list and read files:
 
 ```bash
-ls -la ~/.claude-octopus/usage/ 2>/dev/null || echo "No usage directory"
-ls -la ~/.claude-octopus/routing.log 2>/dev/null || echo "No routing log"
-ls -la ~/.claude-octopus/sessions/ 2>/dev/null || echo "No sessions directory"
-ls -la .claude-octopus/ 2>/dev/null || echo "No project-local usage data"
+ls -la ~/.kannaktopus/usage/ 2>/dev/null || echo "No usage directory"
+ls -la ~/.kannaktopus/routing.log 2>/dev/null || echo "No routing log"
+ls -la ~/.kannaktopus/sessions/ 2>/dev/null || echo "No sessions directory"
+ls -la .kannaktopus/ 2>/dev/null || echo "No project-local usage data"
 ```
 
 ### STEP 2: Parse Provider Usage
@@ -103,9 +103,9 @@ If no usage data exists at all, display:
 ```
 No usage data found.
 
-Claude Octopus tracks provider usage in:
-  ~/.claude-octopus/usage/     (per-session logs)
-  ~/.claude-octopus/routing.log (routing decisions)
+Kannaktopus tracks provider usage in:
+  ~/.kannaktopus/usage/     (per-session logs)
+  ~/.kannaktopus/routing.log (routing decisions)
 
 Usage data is recorded automatically when you run workflows like:
   /octo:discover   - Multi-AI research

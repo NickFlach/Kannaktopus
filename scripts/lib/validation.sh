@@ -234,7 +234,7 @@ EOF
 
 verify_result_integrity() {
     local result_file="$1"
-    local manifest_dir="${WORKSPACE_DIR:-${HOME}/.claude-octopus}"
+    local manifest_dir="${WORKSPACE_DIR:-${HOME}/.kannaktopus}"
     local manifest="${manifest_dir}/.integrity-manifest"
 
     [[ "${OCTOPUS_SECURITY_V870:-true}" != "true" ]] && return 0

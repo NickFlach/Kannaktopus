@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Strategy Rotation Hook
+# Kannaktopus — Strategy Rotation Hook
 # PostToolUse hook that tracks consecutive tool failures and injects
 # a strategy rotation prompt when the same tool keeps failing.
 #

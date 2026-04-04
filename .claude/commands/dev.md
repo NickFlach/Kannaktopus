@@ -14,12 +14,12 @@ Switch to **Dev Work Mode**, optimized for software development.
 When this command is executed:
 
 1. **Check current mode:**
-   - Config file: `.claude/claude-octopus.local.md`
+   - Config file: `.claude/kannaktopus.local.md`
    - If file doesn't exist, user is already in Dev Work Mode (default)
    - Use bash `test -f` to check existence before reading
 
 2. **Switch to Dev Work mode:**
-   - Create/update `.claude/claude-octopus.local.md` with YAML frontmatter
+   - Create/update `.claude/kannaktopus.local.md` with YAML frontmatter
    - Set `knowledge_mode: false`
    - Confirm the switch with current mode details
 
@@ -46,7 +46,7 @@ When this command is executed:
 
 ## Two Work Modes
 
-Claude Octopus has two work modes:
+Kannaktopus has two work modes:
 
 1. **Dev Work Mode** 🔧 (this mode)
    - For: Software development, code, technical tasks

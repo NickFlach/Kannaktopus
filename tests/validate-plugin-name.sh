@@ -47,7 +47,7 @@ fi
 PACKAGE_JSON="$PROJECT_ROOT/package.json"
 if [[ -f "$PACKAGE_JSON" ]]; then
     PACKAGE_NAME=$(grep '"name"' "$PACKAGE_JSON" | head -1 | sed 's/.*"name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
-    EXPECTED_PACKAGE_NAME="claude-octopus"
+    EXPECTED_PACKAGE_NAME="kannaktopus"
 
     if [[ "$PACKAGE_NAME" != "$EXPECTED_PACKAGE_NAME" ]]; then
         echo -e "${YELLOW}⚠️  WARNING: Package name should be \"$EXPECTED_PACKAGE_NAME\" but is \"$PACKAGE_NAME\"${NC}"

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Budget Gate Hook (v8.7.0)
+# Kannaktopus Budget Gate Hook (v8.7.0)
 # PreToolUse hook that enforces session cost budget
 # Reads OCTOPUS_MAX_COST_USD and compares against metrics-session.json
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}
@@ -19,7 +19,7 @@ else
 fi
 
 # Locate metrics file
-metrics_dir="${WORKSPACE_DIR:-${HOME}/.claude-octopus}"
+metrics_dir="${WORKSPACE_DIR:-${HOME}/.kannaktopus}"
 metrics_file="${metrics_dir}/metrics-session.json"
 
 if [[ ! -f "$metrics_file" ]]; then

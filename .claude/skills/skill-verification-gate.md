@@ -59,7 +59,7 @@ If you catch yourself thinking any of these, STOP:
 
 ## Multi-Provider Context
 
-In Claude Octopus workflows, verification is especially critical because:
+In Kannaktopus workflows, verification is especially critical because:
 
 - **Provider outputs can be hallucinated** — Codex/Gemini/Copilot may claim success without evidence
 - **Consensus ≠ correctness** — three models agreeing doesn't mean they're right
@@ -69,10 +69,10 @@ In Claude Octopus workflows, verification is especially critical because:
 After any multi-provider workflow:
 ```bash
 # Verify synthesis file exists and is recent
-ls -la ~/.claude-octopus/results/*-synthesis-*.md | tail -1
+ls -la ~/.kannaktopus/results/*-synthesis-*.md | tail -1
 
 # Verify it has content (not just headers)
-wc -l ~/.claude-octopus/results/*-synthesis-*.md | tail -1
+wc -l ~/.kannaktopus/results/*-synthesis-*.md | tail -1
 ```
 
 ## When to Apply

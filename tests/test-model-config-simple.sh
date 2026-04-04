@@ -9,7 +9,7 @@ PLUGIN_DIR="$(dirname "$SCRIPT_DIR")"
 ALL_SRC=$(mktemp)
 cat "$PLUGIN_DIR/scripts/orchestrate.sh" "$PLUGIN_DIR/scripts/lib/"*.sh > "$ALL_SRC" 2>/dev/null
 trap 'rm -f "$ALL_SRC"' EXIT
-CONFIG_FILE="${HOME}/.claude-octopus/config/providers.json"
+CONFIG_FILE="${HOME}/.kannaktopus/config/providers.json"
 BACKUP_FILE="${CONFIG_FILE}.backup"
 
 # Colors

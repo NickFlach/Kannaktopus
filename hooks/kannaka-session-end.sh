@@ -15,7 +15,7 @@ source "${SCRIPT_DIR}/scripts/kannaka-bridge.sh" 2>/dev/null || exit 0
 # Skip if HRM not available
 kannaka_available || exit 0
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 PROJECT_NAME="$(basename "${PWD:-unknown}")"
 
 # --- 1. Extract session metadata ---
@@ -53,7 +53,7 @@ if [[ "$AGENT_CALLS" -gt 0 || "$ERRORS" -gt 0 ]]; then
 
     # --- 3. Extract and absorb individual learnings ---
     # Read the latest JSON learning file if it exists
-    LEARNINGS_DIR="${HOME}/.claude-octopus/learnings"
+    LEARNINGS_DIR="${HOME}/.kannaktopus/learnings"
     if [[ -d "$LEARNINGS_DIR" ]]; then
         LATEST_LEARNING=$(ls -t "$LEARNINGS_DIR"/*.json 2>/dev/null | head -1)
         if [[ -n "$LATEST_LEARNING" ]] && command -v jq &>/dev/null; then
@@ -71,7 +71,7 @@ fi
 
 # --- 4. Optional: trigger lite dream if many sessions accumulated ---
 # Only dream after every ~10 sessions to avoid overhead
-SESSION_COUNT_FILE="${HOME}/.claude-octopus/.kannaka-session-count"
+SESSION_COUNT_FILE="${HOME}/.kannaktopus/.kannaka-session-count"
 COUNT=0
 if [[ -f "$SESSION_COUNT_FILE" ]]; then
     COUNT=$(cat "$SESSION_COUNT_FILE" 2>/dev/null) || COUNT=0

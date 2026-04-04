@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 
 # Only act if an active workflow session exists
 if [[ ! -f "$SESSION_FILE" ]]; then
@@ -32,7 +32,7 @@ jq ".phase_tasks.completed = $COMPLETED" "$SESSION_FILE" > "${SESSION_FILE}.tmp"
     && mv "${SESSION_FILE}.tmp" "$SESSION_FILE"
 
 # Record metrics
-METRICS_DIR="${HOME}/.claude-octopus/metrics"
+METRICS_DIR="${HOME}/.kannaktopus/metrics"
 mkdir -p "$METRICS_DIR"
 echo "{\"event\":\"task_completed\",\"phase\":\"$CURRENT_PHASE\",\"completed\":$COMPLETED,\"total\":$TOTAL,\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" \
     >> "${METRICS_DIR}/completion-events.jsonl"
@@ -49,7 +49,7 @@ if [[ "$COMPLETED" -ge "$TOTAL" ]] && [[ "$TOTAL" -gt 0 ]]; then
     esac
 
     # Record phase completion
-    RESULTS_DIR="${HOME}/.claude-octopus/results"
+    RESULTS_DIR="${HOME}/.kannaktopus/results"
     TIMESTAMP=$(date +%Y%m%d-%H%M%S)
     echo "{\"phase\":\"$CURRENT_PHASE\",\"completed_at\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"tasks_completed\":$COMPLETED,\"next_phase\":\"$NEXT_PHASE\"}" \
         > "${RESULTS_DIR}/${CURRENT_PHASE}-complete-${TIMESTAMP}.json" 2>/dev/null || true

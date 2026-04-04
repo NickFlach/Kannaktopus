@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Dependency Installer
+# Kannaktopus Dependency Installer
 # ═══════════════════════════════════════════════════════════════════════════════
 # Called by /octo:setup and /octo:doctor to detect and install dependencies.
 # Usage: install-deps.sh [check|install|install-statusline|install-plugins]
@@ -110,7 +110,7 @@ check_deps() {
     fi
 
     # Statusline resolver
-    local resolver="$HOME/.claude-octopus/statusline.sh"
+    local resolver="$HOME/.kannaktopus/statusline.sh"
     if [[ -f "$resolver" ]]; then
         ok+=("statusline:Statusline resolver installed")
     else
@@ -120,9 +120,9 @@ check_deps() {
     # Statusline settings.json check
     local settings="$HOME/.claude/settings.json"
     if [[ -f "$settings" ]]; then
-        if grep -q 'plugins/cache/nyldn-plugins/octo/[0-9]' "$settings" 2>/dev/null; then
+        if grep -q 'plugins/cache/kannaka-plugins/octo/[0-9]' "$settings" 2>/dev/null; then
             warnings+=("statusline_stale:settings.json has versioned statusline path — will go stale on updates")
-        elif grep -q 'claude-octopus/statusline.sh' "$settings" 2>/dev/null; then
+        elif grep -q 'kannaktopus/statusline.sh' "$settings" 2>/dev/null; then
             ok+=("statusline_cfg:settings.json uses stable resolver path")
         elif grep -q 'octopus-statusline' "$settings" 2>/dev/null; then
             ok+=("statusline_cfg:Statusline configured (custom path)")
@@ -182,7 +182,7 @@ check_deps() {
 
 install_statusline() {
     local src="$PLUGIN_ROOT/hooks/statusline-resolver.sh"
-    local dst="$HOME/.claude-octopus/statusline.sh"
+    local dst="$HOME/.kannaktopus/statusline.sh"
 
     if [[ ! -f "$src" ]]; then
         echo "ERROR: statusline-resolver.sh not found in plugin" >&2
@@ -196,9 +196,9 @@ install_statusline() {
 
     # Fix settings.json if stale
     local settings="$HOME/.claude/settings.json"
-    if [[ -f "$settings" ]] && grep -q 'plugins/cache/nyldn-plugins/octo/[0-9]' "$settings" 2>/dev/null; then
+    if [[ -f "$settings" ]] && grep -q 'plugins/cache/kannaka-plugins/octo/[0-9]' "$settings" 2>/dev/null; then
         local tmp="${settings}.octotmp.$$"
-        if sed "s|bash.*plugins/cache/nyldn-plugins/octo/[0-9][^\"]*|bash ~/.claude-octopus/statusline.sh|g" \
+        if sed "s|bash.*plugins/cache/kannaka-plugins/octo/[0-9][^\"]*|bash ~/.kannaktopus/statusline.sh|g" \
             "$settings" > "$tmp" 2>/dev/null; then
             mv "$tmp" "$settings"
             echo "✓ Updated settings.json to use stable resolver path"

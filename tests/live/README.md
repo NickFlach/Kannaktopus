@@ -65,7 +65,7 @@ live_test_summary
 
 ## Logs
 
-Test logs are saved to `/tmp/claude-octopus-live-tests/logs/`
+Test logs are saved to `/tmp/kannaktopus-live-tests/logs/`
 
 ## Cost Warning
 

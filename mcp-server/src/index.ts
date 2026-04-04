@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Claude Octopus MCP Server
+ * Kannaktopus MCP Server
  *
- * Exposes Claude Octopus workflows (Double Diamond phases, debate, review)
+ * Exposes Kannaktopus workflows (Double Diamond phases, debate, review)
  * as MCP tools that any MCP client (OpenClaw, Claude.ai, Cursor, etc.) can consume.
  *
  * This server delegates to the existing orchestrate.sh infrastructure,
@@ -640,7 +640,7 @@ server.tool(
 
 server.tool(
   "octopus_list_skills",
-  "List all available Claude Octopus skills with their descriptions.",
+  "List all available Kannaktopus skills with their descriptions.",
   {},
   async () => {
     const skills = await loadSkillMetadata();
@@ -651,7 +651,7 @@ server.tool(
       content: [
         {
           type: "text" as const,
-          text: `# Claude Octopus Skills (${skills.length} available)\n\n${listing}`,
+          text: `# Kannaktopus Skills (${skills.length} available)\n\n${listing}`,
         },
       ],
     };
@@ -660,7 +660,7 @@ server.tool(
 
 server.tool(
   "octopus_status",
-  "Check Claude Octopus provider availability and configuration status.",
+  "Check Kannaktopus provider availability and configuration status.",
   {},
   async () => {
     const { text, isError } = await runOrchestrate("status", "");

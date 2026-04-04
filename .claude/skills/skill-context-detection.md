@@ -20,8 +20,8 @@ If user has explicitly set mode via `/octo:km on` or `/octo:km off`, respect tha
 
 ```bash
 # Check if knowledge mode is explicitly set
-if [[ -f ~/.claude-octopus/config/knowledge-mode ]]; then
-  EXPLICIT_MODE=$(cat ~/.claude-octopus/config/knowledge-mode)
+if [[ -f ~/.kannaktopus/config/knowledge-mode ]]; then
+  EXPLICIT_MODE=$(cat ~/.kannaktopus/config/knowledge-mode)
   if [[ "$EXPLICIT_MODE" == "on" ]]; then
     echo "knowledge"
     exit 0
@@ -127,7 +127,7 @@ When context is detected, update the visual banner to show context:
 
 **Dev Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Dev] Discover Phase: Researching OAuth implementation patterns
 
 Providers:
@@ -138,7 +138,7 @@ Providers:
 
 **Knowledge Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Knowledge] Discover Phase: Researching market entry strategies
 
 Providers:
@@ -169,12 +169,12 @@ When this skill activates:
 1. **Detect context**
    - Analyze user's prompt for knowledge vs dev indicators
    - Check project type (code repo vs doc-heavy)
-   - Check for explicit override (~/.claude-octopus/config/knowledge-mode)
+   - Check for explicit override (~/.kannaktopus/config/knowledge-mode)
    - Determine: "dev" or "knowledge" with confidence level
 
 2. **Show context-aware banner**
    ```
-   🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider [research|implementation|validation] mode
+   🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider [research|implementation|validation] mode
    [Phase Emoji] [Context] [Phase Name]: [Description]
    
    Detected Context: [Dev|Knowledge] (confidence: [high|medium|low])
@@ -253,7 +253,7 @@ Suggestions should be non-intrusive, appended as a brief note:
 
 ### Persistent Opt-Out
 
-- If user says "stop suggesting" or "no more tips": set `OCTO_PROACTIVE_SUGGESTIONS=off` in `.claude-octopus/preferences.json`
+- If user says "stop suggesting" or "no more tips": set `OCTO_PROACTIVE_SUGGESTIONS=off` in `.kannaktopus/preferences.json`
 - If user says "be proactive" or "turn on tips": set `OCTO_PROACTIVE_SUGGESTIONS=on`
 - Check preference at suggestion time — never suggest when opted out
 - Respect current mode: dev mode suggestions differ from knowledge work suggestions
@@ -262,7 +262,7 @@ Suggestions should be non-intrusive, appended as a brief note:
 
 Users who previously opted out can re-enable suggestions at any time:
 - Say "be proactive", "turn on tips", or "enable suggestions"
-- Manually edit `~/.claude-octopus/preferences.json` and set `OCTO_PROACTIVE_SUGGESTIONS` to `on`
+- Manually edit `~/.kannaktopus/preferences.json` and set `OCTO_PROACTIVE_SUGGESTIONS` to `on`
 - Default state (no preference set) is suggestions enabled
 
 ### Detection Signals

@@ -1,6 +1,6 @@
 #!/bin/bash
 # tests/helpers/generate-coverage-report.sh
-# Generates test coverage report for Claude Octopus functions
+# Generates test coverage report for Kannaktopus functions
 
 set -euo pipefail
 
@@ -79,7 +79,7 @@ generate_report() {
 
     # Generate text report
     {
-        echo "Claude Octopus Test Coverage Report"
+        echo "Kannaktopus Test Coverage Report"
         echo "===================================="
         echo ""
         echo "Generated: $(date)"
@@ -181,7 +181,7 @@ generate_html_report() {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Claude Octopus - Test Coverage Report</title>
+    <title>Kannaktopus - Test Coverage Report</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -297,7 +297,7 @@ generate_html_report() {
 </head>
 <body>
     <div class="header">
-        <h1>🐙 Claude Octopus</h1>
+        <h1>🐙 Kannaktopus</h1>
         <div class="subtitle">Test Coverage Report</div>
     </div>
 
@@ -361,7 +361,7 @@ EOF
 
     <div class="timestamp">
         Generated: $(date)<br>
-        Claude Octopus v4.9.0
+        Kannaktopus v4.9.0
     </div>
 </body>
 </html>

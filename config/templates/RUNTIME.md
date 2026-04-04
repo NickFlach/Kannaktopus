@@ -1,6 +1,6 @@
 # Runtime Context
 
-> Project-specific runtime context for Claude Octopus orchestration prompts.
+> Project-specific runtime context for Kannaktopus orchestration prompts.
 > Copy to your project root and fill in relevant sections.
 > Delete any sections that don't apply.
 

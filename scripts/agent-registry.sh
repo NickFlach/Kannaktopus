@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Agent Registry (v8.45.0)
+# Kannaktopus Agent Registry (v8.45.0)
 # Persistent lifecycle tracking for spawned coding agents.
 # Tracks: agent ID, branch, worktree, status, PR number, CI status.
 #
@@ -18,7 +18,7 @@
 set -eo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REGISTRY_DIR="${HOME}/.claude-octopus/agents"
+REGISTRY_DIR="${HOME}/.kannaktopus/agents"
 REGISTRY_FILE="${REGISTRY_DIR}/registry.json"
 ARCHIVE_DIR="${REGISTRY_DIR}/archive"
 

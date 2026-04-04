@@ -15,7 +15,7 @@ description: "\"Manage scheduled workflow jobs (add via wizard, dashboard, list,
 
 ---
 
-Manage scheduled workflow jobs for the Claude Octopus scheduler.
+Manage scheduled workflow jobs for the Kannaktopus scheduler.
 
 ## Usage
 
@@ -70,7 +70,7 @@ What would you like to do?
 
 Display banner:
 ```
-🐙 CLAUDE OCTOPUS ACTIVATED — Job Wizard
+🐙 KANNAKTOPUS ACTIVATED — Job Wizard
 ⏰ Schedule: Creating a new scheduled job
 
 Providers:
@@ -235,7 +235,7 @@ Use CronCreate tool with:
   - schedule: job's schedule.cron
   - workspace: job's execution.workspace
 ```
-Then store the job JSON (with `backend: coworkd`) to `~/.claude-octopus/scheduler/jobs/<id>.json` for dashboard display and audit.
+Then store the job JSON (with `backend: coworkd`) to `~/.kannaktopus/scheduler/jobs/<id>.json` for dashboard display and audit.
 
 **If `backend: daemon`:**
 ```bash
@@ -258,7 +258,7 @@ rm -f "$TMPFILE"
 
 When user wants to change schedule, budget, prompt, or timeout:
 
-1. Read job file: `~/.claude-octopus/scheduler/jobs/<id>.json`
+1. Read job file: `~/.kannaktopus/scheduler/jobs/<id>.json`
 2. Apply requested changes
 3. Show diff inline
 4. Write via `store_atomic_write` pattern (temp → validate → mv)

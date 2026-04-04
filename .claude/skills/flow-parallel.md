@@ -75,7 +75,7 @@ bash "${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(dirname "$0")")")}/scripts/h
 **Display this banner with real provider status BEFORE any decomposition:**
 
 ```
-🐙 CLAUDE OCTOPUS ACTIVATED - Team of Teams Mode
+🐙 KANNAKTOPUS ACTIVATED - Team of Teams Mode
 Parallel Phase: Decomposing compound task into N independent work packages
 
 Architecture:
@@ -87,7 +87,7 @@ Each worker:
   - Loads full Octopus plugin
   - Has own context, tools, and quality gates
   - Produces output.md + exit-code
-  - Tracked in agent registry (~/.claude-octopus/agents/registry.json)
+  - Tracked in agent registry (~/.kannaktopus/agents/registry.json)
 
 Estimated Time: 5-15 minutes (depending on task complexity)
 ```
@@ -188,7 +188,7 @@ fi
 ```bash
 WBS_CONTENT=$(<".octo/parallel/wbs.json")
 
-codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills. Respond directly to the prompt below.
+codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills. Respond directly to the prompt below.
 
 Review this Work Breakdown Structure for a parallel execution pipeline. Your job is to find problems BEFORE agents start working.
 

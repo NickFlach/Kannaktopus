@@ -1,7 +1,7 @@
 {
   "name": "@octo-claw/octo-claw",
   "version": "1.0.0",
-  "description": "OpenClaw extension for Claude Octopus — bridges Double Diamond workflows to OpenClaw",
+  "description": "OpenClaw extension for Kannaktopus — bridges Double Diamond workflows to OpenClaw",
   "type": "module",
   "main": "dist/index.js",
   "openclaw": {
@@ -29,7 +29,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nyldn/claude-octopus.git",
+    "url": "https://github.com/NickFlach/Kannaktopus.git",
     "directory": "openclaw"
   }
 }

@@ -14,7 +14,7 @@ triggerPatterns:
 
 ## Context Auto-Detection (v7.8+)
 
-**Claude Octopus now auto-detects work context!** The system analyzes your prompt and project to determine whether you're in a **Dev Context** (code-focused) or **Knowledge Context** (research/strategy-focused).
+**Kannaktopus now auto-detects work context!** The system analyzes your prompt and project to determine whether you're in a **Dev Context** (code-focused) or **Knowledge Context** (research/strategy-focused).
 
 **You typically don't need this skill** - context is detected automatically when you use:
 - `octo research X` - Auto-detects dev vs knowledge research
@@ -75,13 +75,13 @@ When workflows run, you'll see the detected context in the banner:
 
 **Dev Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Dev] Discover Phase: Technical research on caching patterns
 ```
 
 **Knowledge Context:**
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Knowledge] Discover Phase: Market analysis for APAC expansion
 ```
 
@@ -93,7 +93,7 @@ When workflows run, you'll see the detected context in the banner:
 
 **Claude:** (auto-detects Dev Context from "Node.js API")
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Dev] Discover Phase: Technical research on caching strategies
 
 [Researches with technical/implementation focus]
@@ -105,7 +105,7 @@ When workflows run, you'll see the detected context in the banner:
 
 **Claude:** (auto-detects Knowledge Context from "market opportunities")
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 [Knowledge] Discover Phase: Strategic research on healthcare AI market
 
 [Researches with business/strategic focus]
@@ -194,7 +194,7 @@ At the end of significant work sessions, extract learnings:
 2. What approach worked? What failed?
 3. What would you do differently next time?
 
-Store learnings in `.claude-octopus/learnings/<date>-<summary>.json`:
+Store learnings in `.kannaktopus/learnings/<date>-<summary>.json`:
 ```json
 {
   "date": "2026-03-21",
@@ -210,7 +210,7 @@ Each learning file captures: `task_type`, `approach`, `outcome`, and `lesson`.
 ### Session Start: Relevance Matching
 
 At session start, check for relevant learnings:
-- Read `.claude-octopus/learnings/` directory
+- Read `.kannaktopus/learnings/` directory
 - Match by task type and file patterns relevant to the current work
 - Inject top 3 most relevant learnings as context (within ~5% token budget)
 - Prefer recent learnings; deprioritize those older than 30 days

@@ -1,6 +1,6 @@
 # OpenCode CLI Provider Configuration
 
-This file contains OpenCode-specific instructions for Claude Octopus workflows.
+This file contains OpenCode-specific instructions for Kannaktopus workflows.
 
 ## Provider Information
 

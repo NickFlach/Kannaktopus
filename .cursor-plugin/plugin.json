@@ -1,13 +1,13 @@
 {
-  "name": "claude-octopus",
-  "displayName": "Claude Octopus",
+  "name": "kannaktopus",
+  "displayName": "Kannaktopus",
   "description": "Multi-LLM orchestration — up to 8 providers check each other's work. Research, build, review, and ship with consensus gates.",
   "version": "9.18.1",
   "author": {
-    "name": "nyldn"
+    "name": "Nick Flach"
   },
-  "homepage": "https://github.com/nyldn/claude-octopus",
-  "repository": "https://github.com/nyldn/claude-octopus",
+  "homepage": "https://github.com/NickFlach/Kannaktopus",
+  "repository": "https://github.com/NickFlach/Kannaktopus",
   "license": "MIT",
   "keywords": [
     "multi-llm",

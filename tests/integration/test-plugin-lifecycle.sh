@@ -27,15 +27,15 @@ setup_test_env() {
     if [[ "$ORIGINAL_STATE" != "0" ]]; then
         echo -e "${YELLOW}  → Uninstalling existing plugin for clean test...${NC}"
         claude plugin uninstall octo --scope user 2>/dev/null || true
-        rm -rf ~/.claude/plugins/cache/nyldn-plugins/octo 2>/dev/null || true
+        rm -rf ~/.claude/plugins/cache/kannaka-plugins/octo 2>/dev/null || true
     fi
 }
 
 restore_original_state() {
     if [[ "$ORIGINAL_STATE" != "0" ]]; then
         echo -e "${YELLOW}  → Restoring original plugin state...${NC}"
-        claude plugin marketplace add https://github.com/nyldn/claude-octopus 2>/dev/null || true
-        claude plugin install octo@nyldn-plugins --scope user 2>/dev/null || true
+        claude plugin marketplace add https://github.com/NickFlach/Kannaktopus 2>/dev/null || true
+        claude plugin install octo@kannaka-plugins --scope user 2>/dev/null || true
     fi
 }
 
@@ -59,7 +59,7 @@ test_claude_cli_available() {
 #==============================================================================
 
 test_add_marketplace() {
-    test_case "Add nyldn/claude-octopus marketplace"
+    test_case "Add NickFlach/Kannaktopus marketplace"
 
     if ! command -v claude &>/dev/null; then
         test_skip "Claude CLI not available"
@@ -67,7 +67,7 @@ test_add_marketplace() {
     fi
 
     # Add marketplace
-    local output=$(claude plugin marketplace add https://github.com/nyldn/claude-octopus 2>&1)
+    local output=$(claude plugin marketplace add https://github.com/NickFlach/Kannaktopus 2>&1)
     local exit_code=$?
 
     # Check if marketplace was added or already exists
@@ -83,7 +83,7 @@ test_add_marketplace() {
 #==============================================================================
 
 test_install_plugin() {
-    test_case "Install octo@nyldn-plugins"
+    test_case "Install octo@kannaka-plugins"
 
     if ! command -v claude &>/dev/null; then
         test_skip "Claude CLI not available"
@@ -91,7 +91,7 @@ test_install_plugin() {
     fi
 
     # Install plugin
-    local output=$(claude plugin install octo@nyldn-plugins --scope user 2>&1)
+    local output=$(claude plugin install octo@kannaka-plugins --scope user 2>&1)
     local exit_code=$?
 
     if [[ $exit_code -ne 0 ]]; then
@@ -139,7 +139,7 @@ test_verify_files_exist() {
     fi
 
     # Check for plugin files in cache directory
-    local cache_dir="$HOME/.claude/plugins/cache/nyldn-plugins/octo"
+    local cache_dir="$HOME/.claude/plugins/cache/kannaka-plugins/octo"
 
     if [[ ! -d "$cache_dir" ]]; then
         test_fail "Plugin cache directory not found: $cache_dir"
@@ -185,7 +185,7 @@ test_verify_plugin_config() {
         return 0
     fi
 
-    local cache_dir="$HOME/.claude/plugins/cache/nyldn-plugins/octo"
+    local cache_dir="$HOME/.claude/plugins/cache/kannaka-plugins/octo"
     local version_dir=$(find "$cache_dir" -maxdepth 1 -type d ! -name "octo" -exec basename {} \; | head -1)
 
     if [[ -z "$version_dir" ]]; then
@@ -309,7 +309,7 @@ test_reinstall() {
     fi
 
     # Reinstall
-    local output=$(claude plugin install octo@nyldn-plugins --scope user 2>&1)
+    local output=$(claude plugin install octo@kannaka-plugins --scope user 2>&1)
     local exit_code=$?
 
     if [[ $exit_code -ne 0 ]]; then

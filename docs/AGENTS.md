@@ -1,4 +1,4 @@
-# Claude Octopus Agent Catalog
+# Kannaktopus Agent Catalog
 
 > *32 specialized personas, infinite possibilities. But which one grabs YOUR problem?* 🐙
 
@@ -31,7 +31,7 @@
 | Review compliance/GDPR | `legal-compliance-advisor` | Regulatory navigator 🆕 |
 | Design UI/UX systems | `ui-ux-designer` | Design intelligence 🆕 |
 
-**Still unsure?** Just describe what you need - Claude Octopus auto-routes to the right tentacle! 🦑
+**Still unsure?** Just describe what you need - Kannaktopus auto-routes to the right tentacle! 🦑
 
 Knowledge-worker personas for researchers, consultants, and product managers are also included. [See Knowledge Workers Guide →](KNOWLEDGE-WORKERS.md)
 
@@ -52,7 +52,7 @@ Knowledge-worker personas for researchers, consultants, and product managers are
 
 ## By Development Phase
 
-Claude Octopus follows the **Double Diamond** methodology:
+Kannaktopus follows the **Double Diamond** methodology:
 
 ```
      DISCOVER         DEFINE         DEVELOP          DELIVER
@@ -181,7 +181,7 @@ Flowcharts         → mermaid-expert (haiku - simple)
 
 > *When your deliverable isn't code, but crystallized knowledge.* 🎓
 
-Claude Octopus also includes specialized agents for researchers, consultants, designers, marketers, and product managers.
+Kannaktopus also includes specialized agents for researchers, consultants, designers, marketers, and product managers.
 
 ### 🎯 UX Research
 

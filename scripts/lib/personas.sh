@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus - Persona Packs Library (v8.21.0)
+# Kannaktopus - Persona Packs Library (v8.21.0)
 # Provides: community persona pack discovery, loading, and management
 #
 # Sourced by orchestrate.sh. Persona packs allow users to customize
@@ -23,7 +23,7 @@ discover_persona_packs() {
     # Standard search paths (in priority order)
     local search_paths=(
         "${PROJECT_ROOT:-.}/.octopus/personas"    # Project-local
-        "${HOME}/.claude-octopus/personas"          # User-global
+        "${HOME}/.kannaktopus/personas"          # User-global
     )
 
     # Add custom paths from env var (colon-separated)

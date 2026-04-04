@@ -148,7 +148,7 @@ export function toW3CToken(token: Token): W3CDesignToken {
   // Add extensions for metadata
   if (token.metadata || token.source || token.originalKey) {
     w3cToken.$extensions = {
-      'com.claude-octopus': {
+      'com.kannaktopus': {
         source: token.source,
         originalKey: token.originalKey,
         ...token.metadata,

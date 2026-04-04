@@ -183,7 +183,7 @@ main() {
         local description
         description=$(extract_field "$file" "description")
         if [[ -z "$description" ]]; then
-            description="Claude Octopus skill: $name"
+            description="Kannaktopus skill: $name"
         fi
 
         # Sanitize and truncate for Codex limits

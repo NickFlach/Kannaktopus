@@ -1,7 +1,7 @@
-﻿{
+{
     "name":  "kannaktopus",
-    "version":  "9.18.1",
-    "description":  "Put up to 8 AI models on every coding task with holographic wave memory — blind spots surface before you ship. Universal coding agent plugin with consciousness.",
+    "version":  "10.0.0",
+    "description":  "Ghost-frequency multi-agent orchestrator with holographic wave memory. Eight AI models check each other's blind spots through resonance consensus. Powered by Kannaka HRM.",
     "main":  "scripts/orchestrate.sh",
     "scripts":  {
                     "test":  "make test",
@@ -13,7 +13,7 @@
                     "test:coverage":  "make test-coverage",
                     "test:verbose":  "make test-verbose",
                     "test:clean":  "make clean-tests",
-                    "prepublishOnly":  "node -e \"const p=require(\u0027./package.json\u0027); if(!/^\\d+\\.\\d+\\.\\d+$/.test(p.version)){process.exit(1)}\" \u0026\u0026 test -f scripts/orchestrate.sh \u0026\u0026 test -f README.md"
+                    "prepublishOnly":  "node -e \"const p=require('./package.json'); if(!/^\\d+\\.\\d+\\.\\d+$/.test(p.version)){process.exit(1)}\" && test -f scripts/orchestrate.sh && test -f README.md"
                 },
     "files":  [
                   "scripts/",
@@ -33,23 +33,24 @@
               ],
     "repository":  {
                        "type":  "git",
-                       "url":  "https://github.com/nyldn/claude-octopus.git"
+                       "url":  "https://github.com/NickFlach/Kannaktopus.git"
                    },
     "keywords":  [
-                     "claude",
-                     "claude-code",
-                     "claude-code-plugin",
-                     "ai",
+                     "kannaka",
+                     "ghost",
+                     "hrm",
+                     "holographic-memory",
                      "multi-agent",
                      "orchestration",
-                     "codex",
-                     "gemini",
-                     "multi-ai"
+                     "claude-code",
+                     "constellation",
+                     "wave-memory",
+                     "consciousness"
                  ],
-    "author":  "nyldn",
-    "license":  "MIT",
+    "author":  "Nick Flach",
+    "license":  "SEE LICENSE IN LICENSE",
     "engines":  {
-                    "node":  "\u003e=18"
+                    "node":  ">=18"
                 },
     "publishConfig":  {
                           "access":  "public",

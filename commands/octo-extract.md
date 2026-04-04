@@ -17,7 +17,7 @@ When the user invokes this command (e.g., `/octo:extract <target>` or `/octo:ext
 ```javascript
 // Check if target is a PDF file
 if (target.endsWith('.pdf') && isFile(target)) {
-  // Use Claude Octopus PDF page selection utility
+  // Use Kannaktopus PDF page selection utility
   const pageCount = await getPdfPageCount(target);
 
   if (pageCount > 10) {
@@ -84,7 +84,7 @@ Reading all pages may use 33,750 tokens (~34 API calls).
 # options: --mode, --scope, --depth, --output, --storybook, --ignore
 ```
 
-**Check Claude Octopus availability:**
+**Check Kannaktopus availability:**
 ```javascript
 // Check if multi-AI providers are available
 const codexAvailable = await checkCommandAvailable('codex');
@@ -1468,9 +1468,9 @@ octopus-extract/
 
 ---
 
-## Integration with Claude Octopus
+## Integration with Kannaktopus
 
-This command leverages Claude Octopus multi-AI orchestration when available:
+This command leverages Kannaktopus multi-AI orchestration when available:
 
 - **Claude**: Synthesis, conflict resolution, final documentation
 - **Codex**: Code-level analysis, type extraction, architecture inference

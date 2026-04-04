@@ -21,17 +21,17 @@ When this command is executed:
    - "off": Switch to Dev Work mode (set `knowledge_mode: false`)
 
 2. **Check for config file:**
-   - Config file: `.claude/claude-octopus.local.md`
+   - Config file: `.claude/kannaktopus.local.md`
    - If file doesn't exist when switching, create it
    - Use bash `test -f` to check existence before reading
 
 3. **Switch to Knowledge Work mode (no argument or "on"):**
-   - Create/update `.claude/claude-octopus.local.md` with YAML frontmatter
+   - Create/update `.claude/kannaktopus.local.md` with YAML frontmatter
    - Set `knowledge_mode: true`
    - Confirm with emoji 🎓 and active personas
 
 4. **Switch to Dev Work mode ("off"):**
-   - Create/update `.claude/claude-octopus.local.md` with YAML frontmatter
+   - Create/update `.claude/kannaktopus.local.md` with YAML frontmatter
    - Set `knowledge_mode: false`
    - Confirm with emoji 🔧 and active personas
 

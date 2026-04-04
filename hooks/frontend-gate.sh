@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Frontend Gate Hook (v8.6.0, enhanced v8.8.0)
+# Kannaktopus Frontend Gate Hook (v8.6.0, enhanced v8.8.0)
 # Domain-specific quality gate for frontend-developer persona
 # Validates: Accessibility (ARIA/semantic), responsive design (breakpoint/viewport)
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}

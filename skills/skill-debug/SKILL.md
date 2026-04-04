@@ -18,7 +18,7 @@ description: "Debug issues methodically — use when stuck on errors, test failu
 
 ---
 
-**Your first output line MUST be:** `🐙 **CLAUDE OCTOPUS ACTIVATED** - Systematic Debugging`
+**Your first output line MUST be:** `🐙 **KANNAKTOPUS ACTIVATED** - Systematic Debugging`
 
 ## The Iron Law
 
@@ -229,7 +229,7 @@ When error is deep in call stack:
 
 When debugging involves multiple fix attempts, track a **WTF score** to detect runaway fix loops. This complements the 3-Strike Rule above with quantitative drift detection.
 
-**Track these signals** (default weights, override via `~/.claude-octopus/loop-config.conf`):
+**Track these signals** (default weights, override via `~/.kannaktopus/loop-config.conf`):
 
 | Event | Score Impact |
 |-------|-------------|
@@ -319,7 +319,7 @@ After debugging completes, remind the user to run `/octo:unfreeze` if needed, or
 
 ---
 
-## Integration with Claude Octopus
+## Integration with Kannaktopus
 
 When using octopus workflows for debugging:
 

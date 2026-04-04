@@ -173,4 +173,4 @@ User: "I need a comprehensive investor deck about the autonomous vehicles market
 
 ---
 
-*Slide deck skill for claude-octopus v8.12.0+*
+*Slide deck skill for kannaktopus v8.12.0+*

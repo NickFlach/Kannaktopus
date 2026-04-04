@@ -260,7 +260,7 @@ ${heuristic_ctx}"
         local opus_tier
         opus_tier=$(get_agent_config "${curated_agent:-}" "tier" 2>/dev/null) || opus_tier="premium"
         local session_autonomy
-        session_autonomy=$(jq -r '.autonomy // "supervised"' "${HOME}/.claude-octopus/session.json" 2>/dev/null) || session_autonomy="supervised"
+        session_autonomy=$(jq -r '.autonomy // "supervised"' "${HOME}/.kannaktopus/session.json" 2>/dev/null) || session_autonomy="supervised"
         local opus_mode
         opus_mode=$(select_opus_mode "$phase" "$opus_tier" "$session_autonomy")
         if [[ "$opus_mode" == "fast" ]]; then
@@ -373,7 +373,7 @@ ${heuristic_ctx}"
 
     # Store metrics mapping for batch completion recording (after DRY_RUN gate)
     if [[ -n "$metrics_id" ]]; then
-        local metrics_base="${WORKSPACE_DIR:-${HOME}/.claude-octopus}"
+        local metrics_base="${WORKSPACE_DIR:-${HOME}/.kannaktopus}"
         local metrics_map="${metrics_base}/.metrics-map"
         echo "${task_group:-${task_id}}:${metrics_id}:${agent_type}:${model}" >> "$metrics_map"
     fi

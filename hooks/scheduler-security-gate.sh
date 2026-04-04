@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Scheduler - Security Gate Hook (v8.15.0)
+# Kannaktopus Scheduler - Security Gate Hook (v8.15.0)
 # PreToolUse hook active when OCTOPUS_JOB_ID is set.
 # Blocks tools not in the job's allowed list and restricts filesystem access.
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}
@@ -25,7 +25,7 @@ else
 fi
 [[ -z "$INPUT" ]] && INPUT='{}'
 
-SCHEDULER_DIR="${HOME}/.claude-octopus/scheduler"
+SCHEDULER_DIR="${HOME}/.kannaktopus/scheduler"
 JOB_FILE="${SCHEDULER_DIR}/jobs/${OCTOPUS_JOB_ID}.json"
 
 # If job file not found, block for safety
@@ -71,7 +71,7 @@ if [[ "$TOOL_NAME" == "Read" ]] || [[ "$TOOL_NAME" == "Write" ]] || [[ "$TOOL_NA
 
             # Normalize allowed paths with trailing slash for safe prefix matching
             safe_workspace="${WORKSPACE%/}/"
-            safe_octopus="${HOME}/.claude-octopus/"
+            safe_octopus="${HOME}/.kannaktopus/"
 
             # Allow access to workspace and octopus config only (not ~/.claude)
             if [[ "$resolved_path" != "${safe_workspace}"* ]] && \

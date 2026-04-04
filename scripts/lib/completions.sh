@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# completions.sh — Shell completion generation for Claude Octopus
+# completions.sh — Shell completion generation for Kannaktopus
 #
 # Functions: generate_shell_completion, generate_bash_completion, generate_fish_completion
 #
@@ -8,7 +8,7 @@
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # v4.2 FEATURE: SHELL COMPLETION
-# Generate bash/zsh completion scripts for Claude Octopus
+# Generate bash/zsh completion scripts for Kannaktopus
 # ═══════════════════════════════════════════════════════════════════════════════
 
 generate_shell_completion() {
@@ -34,7 +34,7 @@ generate_shell_completion() {
 
 generate_bash_completion() {
     cat << 'BASH_COMPLETION'
-# Claude Octopus bash completion
+# Kannaktopus bash completion
 # Add to ~/.bashrc: eval "$(orchestrate.sh completion bash)"
 
 _claude_octopus_completions() {
@@ -91,7 +91,7 @@ _claude_octopus_completions() {
 }
 
 complete -F _claude_octopus_completions orchestrate.sh
-complete -F _claude_octopus_completions claude-octopus
+complete -F _claude_octopus_completions kannaktopus
 BASH_COMPLETION
 }
 
@@ -99,7 +99,7 @@ BASH_COMPLETION
 
 generate_fish_completion() {
     cat << 'FISH_COMPLETION'
-# Claude Octopus fish completion
+# Kannaktopus fish completion
 # Save to ~/.config/fish/completions/orchestrate.sh.fish
 
 # Disable file completion by default

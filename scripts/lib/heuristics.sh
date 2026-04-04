@@ -176,7 +176,7 @@ $(<"$raw_concat")"
 
         local synthesis_result
         if synthesis_result=$(printf '%s' "$synthesis_prompt" | run_with_timeout "$TIMEOUT" gemini 2>/dev/null) && [[ -n "$synthesis_result" ]]; then
-            echo "# Claude Octopus - Synthesized Results" > "$aggregate_file"
+            echo "# Kannaktopus - Synthesized Results" > "$aggregate_file"
             echo "" >> "$aggregate_file"
             echo "Generated: $(date)" >> "$aggregate_file"
             echo "Sources: $result_count subtask outputs (ranked by quality)" >> "$aggregate_file"
@@ -194,7 +194,7 @@ $(<"$raw_concat")"
     fi
 
     # Fallback: concatenation (single result or no synthesis provider)
-    echo "# Claude Octopus - Aggregated Results" > "$aggregate_file"
+    echo "# Kannaktopus - Aggregated Results" > "$aggregate_file"
     echo "" >> "$aggregate_file"
     echo "Generated: $(date)" >> "$aggregate_file"
     echo "" >> "$aggregate_file"

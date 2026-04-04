@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Test octo-state.sh functionality
-# Validates project state management for Claude Octopus v7.22.0
+# Validates project state management for Kannaktopus v7.22.0
 
 set -euo pipefail
 

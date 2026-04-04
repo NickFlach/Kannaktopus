@@ -49,7 +49,7 @@ handle_auth_command() {
     case "$action" in
         login)
             echo -e "${CYAN}${_BOX_TOP}${NC}"
-            echo -e "${CYAN}║  🔐 Claude Octopus - OpenAI Authentication                ║${NC}"
+            echo -e "${CYAN}║  🔐 Kannaktopus - OpenAI Authentication                ║${NC}"
             echo -e "${CYAN}${_BOX_BOT}${NC}"
             echo ""
 
@@ -78,7 +78,7 @@ handle_auth_command() {
                 echo ""
                 echo -e "${GREEN}✓ Successfully authenticated with OpenAI${NC}"
                 echo ""
-                echo "You can now use Claude Octopus with your OpenAI subscription."
+                echo "You can now use Kannaktopus with your OpenAI subscription."
             else
                 echo ""
                 echo -e "${RED}✗ Authentication failed${NC}"
@@ -91,7 +91,7 @@ handle_auth_command() {
 
         logout)
             echo -e "${CYAN}${_BOX_TOP}${NC}"
-            echo -e "${CYAN}║  🔐 Claude Octopus - Logout                               ║${NC}"
+            echo -e "${CYAN}║  🔐 Kannaktopus - Logout                               ║${NC}"
             echo -e "${CYAN}${_BOX_BOT}${NC}"
             echo ""
 
@@ -112,7 +112,7 @@ handle_auth_command() {
 
         status)
             echo -e "${CYAN}${_BOX_TOP}${NC}"
-            echo -e "${CYAN}║  🔐 Claude Octopus - Authentication Status                ║${NC}"
+            echo -e "${CYAN}║  🔐 Kannaktopus - Authentication Status                ║${NC}"
             echo -e "${CYAN}${_BOX_BOT}${NC}"
             echo ""
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Context file management for Claude Octopus
+# Context file management for Kannaktopus
 # Manages phase context files that capture user vision and decisions
 
 set -euo pipefail
 
 # Configuration
-CONTEXT_DIR=".claude-octopus/context"
+CONTEXT_DIR=".kannaktopus/context"
 
 # Colors for output
 RED='\033[0;31m'
@@ -214,7 +214,7 @@ create_templated_context() {
 # Display help
 show_help() {
     cat <<EOF
-Claude Octopus Context Manager
+Kannaktopus Context Manager
 
 Usage: context-manager.sh <command> [args]
 

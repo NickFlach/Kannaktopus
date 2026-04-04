@@ -7,7 +7,7 @@ aliases:
 
 # Scheduler
 
-Manage the Claude Octopus scheduled workflow runner daemon.
+Manage the Kannaktopus scheduled workflow runner daemon.
 
 ## Usage
 
@@ -38,7 +38,7 @@ If the intent is ambiguous, use AskUserQuestion to clarify.
 ### Step 2: Display Banner
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Scheduler Management
+🐙 **KANNAKTOPUS ACTIVATED** - Scheduler Management
 ⏰ Scheduler: [action description]
 
 Providers:
@@ -58,7 +58,7 @@ After `status`, give a human-readable summary:
 After `start`, confirm it's running and remind the user to add jobs if none exist.
 
 After `emergency-stop`, explain what happened and how to recover:
-- "Remove `~/.claude-octopus/scheduler/switches/KILL_ALL` to allow restart"
+- "Remove `~/.kannaktopus/scheduler/switches/KILL_ALL` to allow restart"
 
 ### Natural Language Examples
 

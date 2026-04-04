@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Security Gate Hook (v8.6.0, enhanced v8.8.0)
+# Kannaktopus Security Gate Hook (v8.6.0, enhanced v8.8.0)
 # Domain-specific quality gate for security-auditor persona
 # Validates: OWASP category coverage (2+), severity classifications, remediation present
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}

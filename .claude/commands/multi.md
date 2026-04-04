@@ -134,7 +134,7 @@ This command activates the multi-provider skill in **forced mode**, which:
 
 ## What This Does
 
-Normal Claude Octopus workflows automatically decide when to use multiple providers:
+Normal Kannaktopus workflows automatically decide when to use multiple providers:
 - "octo research OAuth" → automatically triggers multi-provider (probe workflow)
 - "What is OAuth?" → uses Claude only (simple question)
 
@@ -203,7 +203,7 @@ You can also force parallel mode with natural language:
 When the multi command activates, you'll see the visual indicator banner:
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider mode
 Force parallel execution
 
 Providers:

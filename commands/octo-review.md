@@ -17,7 +17,7 @@ description: "Expert multi-LLM code review with inline PR comments — competes 
 
 ---
 
-🐙 **CLAUDE OCTOPUS ACTIVATED** — Multi-LLM Code Review
+🐙 **KANNAKTOPUS ACTIVATED** — Multi-LLM Code Review
 
 Providers:
 🔴 Codex CLI — logic and correctness

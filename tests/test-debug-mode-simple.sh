@@ -50,7 +50,7 @@ assert_not_contains() {
     fi
 }
 
-echo "Testing Claude Octopus Debug Mode (v7.25.0)"
+echo "Testing Kannaktopus Debug Mode (v7.25.0)"
 echo "============================================"
 echo ""
 

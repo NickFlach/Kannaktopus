@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run all test suites for Claude Octopus plugin
+# Run all test suites for Kannaktopus plugin
 # This is the main test entry point
 #
 # Usage:
@@ -192,7 +192,7 @@ fi
 
 echo ""
 echo -e "${CYAN}╔══════════════════════════════════════════════════════════╗${NC}"
-echo -e "${CYAN}║          Claude Octopus Test Suite                       ║${NC}"
+echo -e "${CYAN}║          Kannaktopus Test Suite                       ║${NC}"
 echo -e "${CYAN}╚══════════════════════════════════════════════════════════╝${NC}"
 echo ""
 echo -e "${BLUE}Categories:${NC} ${CATEGORIES[*]}"

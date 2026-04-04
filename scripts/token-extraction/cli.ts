@@ -204,7 +204,7 @@ Examples:
   # Custom feature scope (JSON)
   token-extraction --feature-scope '{"name":"auth","includePaths":["src/auth/**"]}'
 
-For more information, visit: https://github.com/nyldn/claude-octopus
+For more information, visit: https://github.com/NickFlach/Kannaktopus
   `);
 }
 

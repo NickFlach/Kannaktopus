@@ -166,7 +166,7 @@ jobs:
 
       - name: Create test summary
         run: |
-          echo "# Claude Octopus Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "# Kannaktopus Test Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Test Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY

@@ -56,7 +56,7 @@ claude_mem_observe() {
         -X POST "${CLAUDE_MEM_URL}/api/sessions/${session_id}/observations" \
         -H "Content-Type: application/json" \
         -d "$(jq -n --arg type "$obs_type" --arg title "$title" --arg text "$text" \
-            '{type: $type, title: $title, text: $text, source: "claude-octopus", concept: "how-it-works"}')" >/dev/null 2>&1 &
+            '{type: $type, title: $title, text: $text, source: "kannaktopus", concept: "how-it-works"}')" >/dev/null 2>&1 &
 
     return 0
 }

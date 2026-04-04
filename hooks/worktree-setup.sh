@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus WorktreeCreate Hook Handler
+# Kannaktopus WorktreeCreate Hook Handler
 # Triggered when Claude Code creates a worktree for an isolated agent (v2.1.50+)
 #
 # v8.29.0: Version-aware worktree setup

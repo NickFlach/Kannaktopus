@@ -81,12 +81,12 @@ If not installed:
 
 Knowledge work outputs are stored in:
 ```bash
-~/.claude-octopus/results/
+~/.kannaktopus/results/
 ```
 
 List recent outputs:
 ```bash
-ls -lht ~/.claude-octopus/results/ | head -10
+ls -lht ~/.kannaktopus/results/ | head -10
 ```
 
 ### Step 2: Choose Format Based on Purpose
@@ -136,7 +136,7 @@ User ran one workflow, wants one document:
 ```
 User: "Export my latest synthesis to a Word document"
 
-1. Check ~/.claude-octopus/results/ for most recent .md file
+1. Check ~/.kannaktopus/results/ for most recent .md file
 2. Identify it's from synthesize workflow
 3. Recommend DOCX for academic report format
 4. Use document-skills:docx to convert
@@ -204,7 +204,7 @@ User: "Create both a Word doc and PowerPoint from this strategy"
 ### Example 1: UX Research Persona Deck
 
 ```markdown
-Input: ~/.claude-octopus/results/empathize-session-2026-01-18.md
+Input: ~/.kannaktopus/results/empathize-session-2026-01-18.md
 
 Output Goal: Stakeholder presentation
 
@@ -220,7 +220,7 @@ Steps:
 ### Example 2: Strategic Business Case
 
 ```markdown
-Input: ~/.claude-octopus/results/advise-market-analysis-2026-01-18.md
+Input: ~/.kannaktopus/results/advise-market-analysis-2026-01-18.md
 
 Output Goal: Comprehensive business case document
 
@@ -236,7 +236,7 @@ Steps:
 ### Example 3: Literature Review Paper
 
 ```markdown
-Input: ~/.claude-octopus/results/synthesize-ai-safety-2026-01-18.md
+Input: ~/.kannaktopus/results/synthesize-ai-safety-2026-01-18.md
 
 Output Goal: Academic paper format
 
@@ -310,7 +310,7 @@ This skill is designed to work seamlessly with the three knowledge mode workflow
 ```
 Knowledge Work Flow:
 1. Run workflow: /octo:empathize (or advise/synthesize)
-2. Review markdown output in ~/.claude-octopus/results/
+2. Review markdown output in ~/.kannaktopus/results/
 3. Request conversion: "Export to PowerPoint"
 4. This skill activates automatically
 5. Professional document delivered
@@ -329,7 +329,7 @@ Knowledge Work Flow:
 
 ```bash
 # List recent knowledge work outputs
-ls -lht ~/.claude-octopus/results/ | head -5
+ls -lht ~/.kannaktopus/results/ | head -5
 
 # Check document-skills installed
 /plugin list | grep document-skills
@@ -338,7 +338,7 @@ ls -lht ~/.claude-octopus/results/ | head -5
 /plugin install document-skills@anthropic-agent-skills
 
 # View specific markdown
-cat ~/.claude-octopus/results/[filename].md
+cat ~/.kannaktopus/results/[filename].md
 ```
 
 ## Getting Help
@@ -351,4 +351,4 @@ For questions about:
 
 ---
 
-*Document delivery skill for claude-octopus v7.3.0+*
+*Document delivery skill for kannaktopus v7.3.0+*

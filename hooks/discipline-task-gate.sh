@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-DISCIPLINE_CONF="${HOME}/.claude-octopus/config/discipline.conf"
+DISCIPLINE_CONF="${HOME}/.kannaktopus/config/discipline.conf"
 
 if [[ ! -f "$DISCIPLINE_CONF" ]] || ! grep -q "OCTOPUS_DISCIPLINE=on" "$DISCIPLINE_CONF" 2>/dev/null; then
     echo '{}'

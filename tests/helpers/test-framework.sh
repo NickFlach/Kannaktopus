@@ -1,6 +1,6 @@
 #!/bin/bash
 # tests/helpers/test-framework.sh
-# Comprehensive test framework for Claude Octopus
+# Comprehensive test framework for Kannaktopus
 # Provides assertions, mocks, fixtures, hooks, and reporting
 
 set -euo pipefail

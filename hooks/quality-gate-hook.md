@@ -6,11 +6,11 @@ description: Validates quality gates before file modifications during tangle/ink
 
 # Quality Gate PreToolUse Hook
 
-This hook enforces quality gates before allowing file modifications in Claude Octopus workflows.
+This hook enforces quality gates before allowing file modifications in Kannaktopus workflows.
 
 ## Purpose
 
-When Claude Code executes tools that modify files (Bash, Write, Edit) during an active claude-octopus workflow, this hook:
+When Claude Code executes tools that modify files (Bash, Write, Edit) during an active kannaktopus workflow, this hook:
 
 1. Checks for active tangle/ink phase execution
 2. Reads the quality gate status from validation reports
@@ -19,14 +19,14 @@ When Claude Code executes tools that modify files (Bash, Write, Edit) during an 
 ## Trigger Conditions
 
 - Tool is Bash, Write, or Edit
-- Active claude-octopus workflow detected (session file exists)
+- Active kannaktopus workflow detected (session file exists)
 - Current phase is `tangle` or `ink`
 
 ## Validation Logic
 
 ```bash
 # Check for quality gate file
-VALIDATION_FILE=$(ls -t ~/.claude-octopus/results/tangle-validation-*.md 2>/dev/null | head -1)
+VALIDATION_FILE=$(ls -t ~/.kannaktopus/results/tangle-validation-*.md 2>/dev/null | head -1)
 
 if [[ -f "$VALIDATION_FILE" ]]; then
     # Parse quality gate status
@@ -53,8 +53,8 @@ This hook leverages the `additionalContext` feature (v2.1.9+) to inject workflow
   },
   "session": {
     "id": "claude-abc123",
-    "results_dir": "~/.claude-octopus/results/claude-abc123/",
-    "plans_dir": "~/.claude-octopus/plans/claude-abc123/"
+    "results_dir": "~/.kannaktopus/results/claude-abc123/",
+    "plans_dir": "~/.kannaktopus/plans/claude-abc123/"
   },
   "providers": {
     "codex": "available",
@@ -82,6 +82,6 @@ When `CI_MODE=true` (detected via `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS` or `CI`
 
 ## Related Files
 
-- `~/.claude-octopus/results/tangle-validation-*.md` - Quality gate reports
-- `~/.claude-octopus/session.json` - Current session state
+- `~/.kannaktopus/results/tangle-validation-*.md` - Quality gate reports
+- `~/.kannaktopus/session.json` - Current session state
 - `scripts/orchestrate.sh` - Main orchestration script

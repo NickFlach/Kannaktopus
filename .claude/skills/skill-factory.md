@@ -37,7 +37,7 @@ command -v gemini &> /dev/null && gemini_status="Available" || gemini_status="No
 ```
 Display banner:
 ```
-🐙 CLAUDE OCTOPUS ACTIVATED - Dark Factory Mode
+🐙 KANNAKTOPUS ACTIVATED - Dark Factory Mode
 Pipeline: Parse → Scenarios → Embrace → Holdout → Score → Report
 
 Providers:
@@ -87,7 +87,7 @@ If a second provider is available (Codex or Gemini), dispatch the challenge:
 SPEC_CONTENT=$(<"<spec_path>")
 
 # Challenge scenario coverage with a different provider
-codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills. Respond directly to the prompt below.
+codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills. Respond directly to the prompt below.
 
 You are a QA adversary. Given this specification and generated scenarios, identify coverage gaps.
 
@@ -152,7 +152,7 @@ if [[ -z "$REPORT_FILE" ]]; then
 fi
 cat "$REPORT_FILE"
 ```
-If validation fails: report error, show logs from `~/.claude-octopus/logs/`, DO NOT proceed, DO NOT substitute.
+If validation fails: report error, show logs from `~/.kannaktopus/logs/`, DO NOT proceed, DO NOT substitute.
 
 ### STEP 7: Read Scores and Present Results (MANDATORY)
 ```bash
@@ -184,7 +184,7 @@ Present next-step suggestions based on verdict:
 
 Include attribution footer:
 ```
-Dark Factory Mode powered by Claude Octopus v8.25.0
+Dark Factory Mode powered by Kannaktopus v8.25.0
 Pipeline: Spec → Scenarios → Embrace → Holdout → Score → Report
 Providers: Codex | Gemini | Claude
 ```

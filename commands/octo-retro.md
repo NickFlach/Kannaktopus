@@ -139,10 +139,10 @@ Show total session count and average session length.
 
 ### 4. Save JSON Snapshot
 
-Save a structured JSON snapshot to `.claude-octopus/retros/<date>.json` (where `<date>` is today in YYYY-MM-DD format).
+Save a structured JSON snapshot to `.kannaktopus/retros/<date>.json` (where `<date>` is today in YYYY-MM-DD format).
 
 ```bash
-mkdir -p .claude-octopus/retros
+mkdir -p .kannaktopus/retros
 ```
 
 The JSON MUST include these fields:
@@ -174,7 +174,7 @@ The JSON MUST include these fields:
 
 ### 5. Compare with Prior Snapshot
 
-After saving, check if a prior snapshot exists in `.claude-octopus/retros/`. If one is found:
+After saving, check if a prior snapshot exists in `.kannaktopus/retros/`. If one is found:
 
 - Load the most recent prior JSON
 - Compare key metrics: commits, LOC, test ratio, sessions, AI-assisted %

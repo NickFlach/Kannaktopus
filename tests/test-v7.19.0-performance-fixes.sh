@@ -548,7 +548,7 @@ test_integration_documentation() {
 main() {
     echo ""
     echo -e "${BLUE}╔═══════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║  Claude Octopus v7.19.0 Performance Test Suite          ║${NC}"
+    echo -e "${BLUE}║  Kannaktopus v7.19.0 Performance Test Suite          ║${NC}"
     echo -e "${BLUE}║  Testing all 10 performance fixes                        ║${NC}"
     echo -e "${BLUE}╚═══════════════════════════════════════════════════════════╝${NC}"
     echo ""

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Code Quality Gate Hook (v8.6.0, enhanced v8.8.0)
+# Kannaktopus Code Quality Gate Hook (v8.6.0, enhanced v8.8.0)
 # Domain-specific quality gate for code-reviewer, tdd-orchestrator, incident-responder
 # Validates: Actionable findings (2+), severity/priority levels, root cause (incident)
 # Returns JSON decision: {"decision": "continue|block", "reason": "..."}

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus - Intelligence Library (v8.20.0)
+# Kannaktopus - Intelligence Library (v8.20.0)
 # Provides: Provider Intelligence, Cost Routing, Capability Matching,
 #           Quorum Consensus, and File Path Validation
 #
@@ -882,7 +882,7 @@ record_run_pattern() {
 
     [[ -f "$result_file" ]] || return 0
 
-    local patterns_file="${HOME}/.claude-octopus/.octo/patterns.jsonl"
+    local patterns_file="${HOME}/.kannaktopus/.octo/patterns.jsonl"
 
     # Extract file paths mentioned in the result (look for common path patterns)
     local result_content
@@ -915,7 +915,7 @@ build_heuristic_context() {
     [[ "${OCTOPUS_HEURISTIC_LEARNING:-on}" == "off" ]] && return 0
 
     local prompt="$1"
-    local patterns_file="${HOME}/.claude-octopus/.octo/patterns.jsonl"
+    local patterns_file="${HOME}/.kannaktopus/.octo/patterns.jsonl"
 
     [[ -f "$patterns_file" ]] || return 0
 

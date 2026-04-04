@@ -104,7 +104,7 @@ command -v gemini &> /dev/null && gemini_status="Available ✓" || gemini_status
 **Display this banner BEFORE orchestrate.sh execution:**
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Multi-provider research mode
+🐙 **KANNAKTOPUS ACTIVATED** - Multi-provider research mode
 🔍 Discover Phase: [Brief description of research topic]
 
 Provider Availability:
@@ -157,7 +157,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh probe "<user's research question>" 
 
 ```bash
 # Find the latest synthesis file (created within last 10 minutes)
-SYNTHESIS_FILE=$(find ~/.claude-octopus/results -name "probe-synthesis-*.md" -mmin -10 2>/dev/null | head -n1)
+SYNTHESIS_FILE=$(find ~/.kannaktopus/results -name "probe-synthesis-*.md" -mmin -10 2>/dev/null | head -n1)
 
 if [[ -z "$SYNTHESIS_FILE" ]]; then
   echo "❌ VALIDATION FAILED: No synthesis file found"
@@ -171,7 +171,7 @@ cat "$SYNTHESIS_FILE"
 
 **If validation fails:**
 1. Report error to user
-2. Show logs from `~/.claude-octopus/logs/`
+2. Show logs from `~/.kannaktopus/logs/`
 3. DO NOT proceed with presenting results
 4. DO NOT substitute with direct research
 
@@ -188,7 +188,7 @@ Read the synthesis file and format according to `format_choice`:
 **Include attribution:**
 ```
 ---
-*Multi-AI Research powered by Claude Octopus*
+*Multi-AI Research powered by Kannaktopus*
 *Providers: 🔴 Codex | 🟡 Gemini | 🔵 Claude*
 *Full synthesis: $SYNTHESIS_FILE*
 ```
@@ -219,7 +219,7 @@ TaskUpdate({taskId: "...", status: "completed"})
 If any step fails:
 - **Step 1 (Questions)**: Cannot proceed without user input
 - **Step 2 (Providers)**: If both unavailable, suggest `/octo:setup` and STOP
-- **Step 3 (orchestrate.sh)**: Show bash error, check logs at `~/.claude-octopus/logs/`, report to user
+- **Step 3 (orchestrate.sh)**: Show bash error, check logs at `~/.kannaktopus/logs/`, report to user
 - **Step 4 (Validation)**: If synthesis missing, show orchestrate.sh logs, DO NOT substitute with direct research
 
 Never fall back to direct research if orchestrate.sh execution fails. Report the failure and let the user decide how to proceed.

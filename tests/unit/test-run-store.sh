@@ -66,10 +66,10 @@ done
 
 # ── Storage location ─────────────────────────────────────────────────────────
 
-if grep -q 'claude-octopus/runs' "$RUN_STORE_LIB" 2>/dev/null; then
-    pass "Uses ~/.claude-octopus/runs/ storage location"
+if grep -q 'kannaktopus/runs' "$RUN_STORE_LIB" 2>/dev/null; then
+    pass "Uses ~/.kannaktopus/runs/ storage location"
 else
-    fail "Uses ~/.claude-octopus/runs/ storage location" "wrong location"
+    fail "Uses ~/.kannaktopus/runs/ storage location" "wrong location"
 fi
 
 if grep -q 'run-log.jsonl' "$RUN_STORE_LIB" 2>/dev/null; then
@@ -194,7 +194,7 @@ log() { true; }
 source "$RUN_STORE_LIB"
 record_run "discover" "codex,gemini" "success" "5" "30000" '{"topic":"test"}'
 record_run "review" "codex,claude" "success" "3" "45000" '{}'
-STORE="\$HOME/.claude-octopus/runs/run-log.jsonl"
+STORE="\$HOME/.kannaktopus/runs/run-log.jsonl"
 [[ -f "\$STORE" ]] && echo "PASS_FILE" || echo "FAIL_FILE"
 echo "LINES=\$(wc -l < "\$STORE" 2>/dev/null | tr -d ' ')"
 query_runs 10 "discover" 2>/dev/null | grep -q "discover" && echo "PASS_QUERY" || echo "FAIL_QUERY"

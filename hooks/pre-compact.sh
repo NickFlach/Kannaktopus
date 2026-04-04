@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — PreCompact Hook (v8.41.0)
+# Kannaktopus — PreCompact Hook (v8.41.0)
 # Fires before context compaction. Persists workflow state so progress
 # context survives automatic or manual compaction.
 #
@@ -8,8 +8,8 @@
 
 set -euo pipefail
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
-STATE_DIR="${HOME}/.claude-octopus/.octo"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
+STATE_DIR="${HOME}/.kannaktopus/.octo"
 
 # Nothing to persist if no active session
 if [[ ! -f "$SESSION_FILE" ]]; then

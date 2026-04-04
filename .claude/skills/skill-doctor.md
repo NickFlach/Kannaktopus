@@ -20,7 +20,7 @@ trigger: |
 
 ## Overview
 
-Run environment diagnostics across 11 check categories. Identifies misconfigured providers, stale state, broken hooks, and other issues that prevent Claude Octopus from working correctly.
+Run environment diagnostics across 11 check categories. Identifies misconfigured providers, stale state, broken hooks, and other issues that prevent Kannaktopus from working correctly.
 
 **Core principle:** Detect problems before they surface in workflows.
 
@@ -157,7 +157,7 @@ All checks pass — no action needed.
 
 ## Hook Profile
 
-Claude Octopus hooks can run in different profiles to balance cost and coverage.
+Kannaktopus hooks can run in different profiles to balance cost and coverage.
 
 Current profile: `$OCTO_HOOK_PROFILE` (default: standard)
 
@@ -199,7 +199,7 @@ The doctor checks for project-level `RUNTIME.md` — a file that provides projec
 
 ### What the Doctor Checks
 
-- **RUNTIME.md exists** in the project root (also checks `.octopus/RUNTIME.md` and `.claude-octopus/RUNTIME.md`)
+- **RUNTIME.md exists** in the project root (also checks `.octopus/RUNTIME.md` and `.kannaktopus/RUNTIME.md`)
 - If missing, suggest creating one from the template: `cp "${CLAUDE_PLUGIN_ROOT}/config/templates/RUNTIME.md" ./RUNTIME.md`
 - If present, confirm it contains at least one populated section (not just the template defaults)
 

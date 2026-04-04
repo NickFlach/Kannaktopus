@@ -3,11 +3,11 @@
   "version": "9.18.1",
   "description": "v9.18.1 — Multi-LLM orchestration for Claude Code with Double Diamond workflows, provider routing, safety gates, and automation. Use '/octo:auto' or just describe what you need. Run /octo:setup.",
   "author": {
-    "name": "nyldn"
+    "name": "Nick Flach"
   },
   "license": "MIT",
-  "repository": "https://github.com/nyldn/claude-octopus",
-  "homepage": "https://github.com/nyldn/claude-octopus",
+  "repository": "https://github.com/NickFlach/Kannaktopus",
+  "homepage": "https://github.com/NickFlach/Kannaktopus",
   "keywords": [
     "multi-llm",
     "multi-agent",

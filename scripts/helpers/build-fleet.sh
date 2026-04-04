@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Dynamic Fleet Builder
+# Kannaktopus — Dynamic Fleet Builder
 # ═══════════════════════════════════════════════════════════════════════════════
 # Single source of truth for building agent fleets from available providers.
 # Replaces hardcoded fleet tables in skill files.

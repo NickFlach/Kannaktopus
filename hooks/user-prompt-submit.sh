@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — UserPromptSubmit Hook (v9.11.0)
+# Kannaktopus — UserPromptSubmit Hook (v9.11.0)
 # Fires before user prompt is processed. Classifies task intent
 # with confidence levels, injects routing context, and optionally
 # auto-invokes matching /octo: workflows.
@@ -74,7 +74,7 @@ except: pass" 2>/dev/null) || true
 fi
 
 # Tier 2: preferences.json (user preference, survives sessions)
-PREFS_FILE="${HOME}/.claude-octopus/preferences.json"
+PREFS_FILE="${HOME}/.kannaktopus/preferences.json"
 if [[ -f "$PREFS_FILE" ]] && command -v python3 &>/dev/null; then
     _pref=$(python3 -c "
 import json, sys
@@ -161,7 +161,7 @@ esac
 # ═══════════════════════════════════════════════════════════════════════════════
 # SESSION TRACKING — detect repeat intent for weak-signal auto-invoke
 # ═══════════════════════════════════════════════════════════════════════════════
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 REPEAT_INTENT=false
 
 if [[ -n "$INTENT" && -f "$SESSION_FILE" ]] && command -v jq &>/dev/null; then

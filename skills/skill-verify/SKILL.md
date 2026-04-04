@@ -6,7 +6,7 @@ description: "Verify claims with actual evidence before declaring success — us
 
 # Verification Before Completion
 
-**Your first output line MUST be:** `🐙 **CLAUDE OCTOPUS ACTIVATED** - Verification Gate`
+**Your first output line MUST be:** `🐙 **KANNAKTOPUS ACTIVATED** - Verification Gate`
 
 ## The Iron Law
 
@@ -175,7 +175,7 @@ cargo check               # Rust
 
 ---
 
-## Integration with Claude Octopus
+## Integration with Kannaktopus
 
 ### Quality Gates
 

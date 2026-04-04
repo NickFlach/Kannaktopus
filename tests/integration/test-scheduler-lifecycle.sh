@@ -15,7 +15,7 @@ NC='\033[0m'
 
 # Use a temporary scheduler directory to avoid polluting real state
 export HOME="$(mktemp -d)"
-SCHEDULER_DIR="${HOME}/.claude-octopus/scheduler"
+SCHEDULER_DIR="${HOME}/.kannaktopus/scheduler"
 
 # Source modules
 source "${PROJECT_ROOT}/scripts/scheduler/store.sh"

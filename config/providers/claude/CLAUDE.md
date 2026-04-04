@@ -1,6 +1,6 @@
 # Claude Provider Configuration
 
-This file contains Claude-specific instructions for Claude Octopus workflows.
+This file contains Claude-specific instructions for Kannaktopus workflows.
 
 ## Provider Information
 
@@ -11,7 +11,7 @@ This file contains Claude-specific instructions for Claude Octopus workflows.
 
 ## Role in Workflows
 
-Claude serves as the **orchestrator and synthesizer** in Claude Octopus workflows:
+Claude serves as the **orchestrator and synthesizer** in Kannaktopus workflows:
 
 1. **Orchestration** - Coordinates multi-provider workflows
 2. **Synthesis** - Combines insights from Codex and Gemini
@@ -57,7 +57,7 @@ Claude's role is to:
 
 ## Model Selection: Opus 4.6 vs Sonnet 4.6
 
-Claude Octopus supports two Claude model tiers via the `claude` and `claude-opus` agent types:
+Kannaktopus supports two Claude model tiers via the `claude` and `claude-opus` agent types:
 
 - **Claude Sonnet 4.6** (`claude`, `claude-sonnet`) - Default for most tasks. Balanced performance and cost. Pricing: $3/$15 per MTok input/output.
 - **Claude Opus 4.6** (`claude-opus`) - Premium tier for strategic synthesis, complex architecture decisions, and research aggregation. Pricing: $5/$25 per MTok input/output.

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Code Review Pipeline
+# Kannaktopus — Code Review Pipeline
 # Extracted from orchestrate.sh
 # Source-safe: no main execution block.
 
@@ -104,7 +104,7 @@ build_review_fleet() {
 # making provider failures impossible to miss.
 print_provider_report() {
     local status_file="$1"
-    local fallback_log="${HOME}/.claude-octopus/provider-fallbacks.log"
+    local fallback_log="${HOME}/.kannaktopus/provider-fallbacks.log"
 
     if [[ ! -f "$status_file" ]]; then
         return 0
@@ -222,7 +222,7 @@ review_run() {
     fi
 
     local timestamp="$_ts"
-    local results_dir="${RESULTS_DIR:-$HOME/.claude-octopus/results}"
+    local results_dir="${RESULTS_DIR:-$HOME/.kannaktopus/results}"
     # Sync RESULTS_DIR global so spawn_agent writes to the same directory
     RESULTS_DIR="$results_dir"
     local findings_file="$results_dir/review-findings-${timestamp}.json"

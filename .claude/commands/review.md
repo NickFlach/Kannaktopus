@@ -25,7 +25,7 @@ echo "PROVIDER_CHECK_END"
 Then display the banner with ACTUAL results:
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** — Multi-LLM Code Review
+🐙 **KANNAKTOPUS ACTIVATED** — Multi-LLM Code Review
 
 Providers:
 🔴 Codex CLI: [Available ✓ / Not installed ✗] — logic and correctness

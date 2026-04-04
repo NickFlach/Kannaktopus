@@ -36,7 +36,7 @@ test_fail() {
 }
 
 echo -e "${BLUE}╔════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║   Claude Octopus - Version Check Test Suite               ║${NC}"
+echo -e "${BLUE}║   Kannaktopus - Version Check Test Suite               ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
@@ -157,7 +157,7 @@ esac
 
 # Test 7: Check cache file creation
 test_start "Provider cache file creation"
-cache_file="$HOME/.claude-octopus/.provider-cache"
+cache_file="$HOME/.kannaktopus/.provider-cache"
 if [[ -f "$cache_file" ]]; then
     test_pass "Cache file exists at $cache_file"
 

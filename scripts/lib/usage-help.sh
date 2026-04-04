@@ -4,8 +4,8 @@
 
 generate_zsh_completion() {
     cat << 'ZSH_COMPLETION'
-#compdef orchestrate.sh claude-octopus
-# Claude Octopus zsh completion
+#compdef orchestrate.sh kannaktopus
+# Kannaktopus zsh completion
 # Add to ~/.zshrc: eval "$(orchestrate.sh completion zsh)"
 
 _claude_octopus() {
@@ -85,7 +85,7 @@ _claude_octopus() {
 
     case "$state" in
         command)
-            _describe -t commands 'claude-octopus commands' commands
+            _describe -t commands 'kannaktopus commands' commands
             ;;
         args)
             case "$words[1]" in
@@ -183,7 +183,7 @@ ${YELLOW}Examples:${NC}
   $(basename "$0") discover "How should we handle user authentication?"
 
 ${YELLOW}Output:${NC}
-  Results saved to: ~/.claude-octopus/results/discover-synthesis-*.md
+  Results saved to: ~/.kannaktopus/results/discover-synthesis-*.md
 EOF
             ;;
         define|grasp)
@@ -200,7 +200,7 @@ ${YELLOW}Examples:${NC}
   $(basename "$0") define "implement caching" ./results/discover-synthesis-123.md
 
 ${YELLOW}Output:${NC}
-  Results saved to: ~/.claude-octopus/results/define-consensus-*.md
+  Results saved to: ~/.kannaktopus/results/define-consensus-*.md
 EOF
             ;;
         develop|tangle)
@@ -222,7 +222,7 @@ ${YELLOW}Examples:${NC}
   $(basename "$0") develop "implement caching" ./results/define-consensus-123.md
 
 ${YELLOW}Output:${NC}
-  Results saved to: ~/.claude-octopus/results/develop-validation-*.md
+  Results saved to: ~/.kannaktopus/results/develop-validation-*.md
 EOF
             ;;
         deliver|ink)
@@ -239,7 +239,7 @@ ${YELLOW}Examples:${NC}
   $(basename "$0") deliver "ship it" ./results/develop-validation-123.md
 
 ${YELLOW}Output:${NC}
-  Results saved to: ~/.claude-octopus/results/deliver-result-*.md
+  Results saved to: ~/.kannaktopus/results/deliver-result-*.md
 EOF
             ;;
         octopus-configure)
@@ -254,7 +254,7 @@ Guides you through:
   3. Setting up workspace
   4. Running a test command
 
-Run this first if you're new to Claude Octopus!
+Run this first if you're new to Kannaktopus!
 
 ${YELLOW}Alias:${NC} setup (deprecated, use octopus-configure)
 EOF
@@ -341,7 +341,7 @@ EOF
             ;;
         init)
             cat << EOF
-${YELLOW}init${NC} - Initialize Claude Octopus workspace
+${YELLOW}init${NC} - Initialize Kannaktopus workspace
 
 ${YELLOW}Usage:${NC} $(basename "$0") init [--interactive|-i]
 
@@ -363,7 +363,7 @@ ${YELLOW}Examples:${NC}
   $(basename "$0") init -i                  # Same as --interactive
 
 ${YELLOW}Created Structure:${NC}
-  ~/.claude-octopus/
+  ~/.kannaktopus/
   ├── results/    # Output from workflows
   ├── logs/       # Execution logs
   └── tasks.json  # Example task file
@@ -389,7 +389,7 @@ ${YELLOW}These settings affect:${NC}
   • Cost optimization strategies
 
 ${YELLOW}Config file:${NC}
-  ~/.claude-octopus/.user-config
+  ~/.kannaktopus/.user-config
 
 ${YELLOW}Examples:${NC}
   $(basename "$0") config              # Update preferences
@@ -420,7 +420,7 @@ ${YELLOW}Examples:${NC}
 ${YELLOW}Notes:${NC}
   • All decisions are logged to the audit trail
   • Use 'audit' command to view decision history
-  • Reviews are stored in ~/.claude-octopus/review-queue.json
+  • Reviews are stored in ~/.kannaktopus/review-queue.json
 EOF
             ;;
         audit)
@@ -446,7 +446,7 @@ ${YELLOW}Entry Format:${NC}
   Each entry shows: timestamp | action | phase | decision | reviewer
 
 ${YELLOW}Notes:${NC}
-  • Audit log stored at ~/.claude-octopus/audit.log
+  • Audit log stored at ~/.kannaktopus/audit.log
   • Entries are JSON (one per line) for easy parsing
   • Integrates with CI/CD for compliance tracking
 EOF
@@ -479,7 +479,7 @@ ${YELLOW}Workflow:${NC}
   Synthesis: Both agents converge on final solution
 
 ${YELLOW}Output:${NC}
-  Results saved to: ~/.claude-octopus/results/grapple-*.md
+  Results saved to: ~/.kannaktopus/results/grapple-*.md
 EOF
             ;;
         squeeze|red-team)
@@ -509,7 +509,7 @@ ${YELLOW}Use Cases:${NC}
   • Compliance validation
 
 ${YELLOW}Output:${NC}
-  Results saved to: ~/.claude-octopus/results/squeeze-*.md
+  Results saved to: ~/.kannaktopus/results/squeeze-*.md
 EOF
             ;;
         *)
@@ -548,7 +548,7 @@ ${CYAN}                          ___
              (/\`    ( (\`          ) )  '-;    Eight tentacles.
               \`      '-;         (-'         Infinite possibilities.
 ${NC}
-${CYAN}Claude Octopus${NC} - Design Thinking Enabler for Claude Code
+${CYAN}Kannaktopus${NC} - Design Thinking Enabler for Claude Code
 Multi-agent orchestration using Double Diamond methodology.
 
 ${YELLOW}Usage:${NC} $(basename "$0") [OPTIONS] COMMAND [ARGS...]
@@ -671,11 +671,11 @@ ${YELLOW}Examples:${NC}
   $(basename "$0") develop "user management API" -P --autonomy supervised
 
 ${YELLOW}Environment:${NC}
-  CLAUDE_OCTOPUS_WORKSPACE  Override workspace (default: ~/.claude-octopus)
+  CLAUDE_OCTOPUS_WORKSPACE  Override workspace (default: ~/.kannaktopus)
   OPENAI_API_KEY            Required for Codex CLI
   GEMINI_API_KEY            Required for Gemini CLI
 
-${CYAN}https://github.com/nyldn/claude-octopus${NC}
+${CYAN}https://github.com/NickFlach/Kannaktopus${NC}
 EOF
     exit 0
 }

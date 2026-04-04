@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Provider Router for Claude Octopus v9.8.0
+# Provider Router for Kannaktopus v9.8.0
 # Provider routing with reliability layer: error classification, circuit breaker, backoff
 # Config: OCTOPUS_ROUTING_MODE=round-robin|fastest|cheapest|scored (default: round-robin)
 
@@ -7,15 +7,15 @@
 OCTOPUS_ROUTING_MODE="${OCTOPUS_ROUTING_MODE:-round-robin}"
 
 # Round-robin state (file-based for cross-process persistence)
-_ROUTER_STATE_FILE="${WORKSPACE_DIR:-${HOME}/.claude-octopus}/.router-state"
-_ROUTER_STATS_FILE="${WORKSPACE_DIR:-${HOME}/.claude-octopus}/.provider-stats.json"
+_ROUTER_STATE_FILE="${WORKSPACE_DIR:-${HOME}/.kannaktopus}/.router-state"
+_ROUTER_STATS_FILE="${WORKSPACE_DIR:-${HOME}/.kannaktopus}/.provider-stats.json"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # Provider Reliability Layer (v9.8.0)
 # Error classification, circuit breaker, graduated backoff
 # ═══════════════════════════════════════════════════════════════════════════════
 
-_PROVIDER_STATE_DIR="${HOME}/.claude-octopus/provider-state"
+_PROVIDER_STATE_DIR="${HOME}/.kannaktopus/provider-state"
 
 # Circuit breaker defaults (configurable via env)
 OCTO_CB_FAILURE_THRESHOLD="${OCTO_CB_FAILURE_THRESHOLD:-3}"   # failures before opening
@@ -230,7 +230,7 @@ calculate_backoff() {
 
 # Build provider latency stats from metrics-session.json
 build_provider_stats() {
-    local metrics_dir="${WORKSPACE_DIR:-${HOME}/.claude-octopus}"
+    local metrics_dir="${WORKSPACE_DIR:-${HOME}/.kannaktopus}"
     local metrics_file="${metrics_dir}/metrics-session.json"
     local stats_file="$_ROUTER_STATS_FILE"
 

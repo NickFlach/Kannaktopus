@@ -52,7 +52,7 @@ fi
 
 **Status:** No project initialized
 
-No Claude Octopus project found in this directory.
+No Kannaktopus project found in this directory.
 
 Run `/octo:embrace [description]` to start a new project.
 ```
@@ -149,7 +149,7 @@ command -v gemini &> /dev/null && gemini_status="Available" || gemini_status="No
 
 ```bash
 # Find the latest validation file
-VALIDATION_FILE=$(find ~/.claude-octopus/results -name "ink-validation-*.md" -mmin -10 2>/dev/null | head -n1)
+VALIDATION_FILE=$(find ~/.kannaktopus/results -name "ink-validation-*.md" -mmin -10 2>/dev/null | head -n1)
 
 if [[ -z "$VALIDATION_FILE" ]]; then
     echo "AUDIT FAILED: No validation file found"
@@ -376,7 +376,7 @@ Restore with: `/octo:rollback {CHECKPOINT_TAG}`
 
 **To start a new project:** `/octo:embrace`
 
-*Multi-AI validation powered by Claude Octopus*
+*Multi-AI validation powered by Kannaktopus*
 *Providers: Codex | Gemini | Claude*
 ```
 

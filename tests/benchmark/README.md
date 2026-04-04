@@ -1,6 +1,6 @@
-# Claude Octopus Benchmark Suite
+# Kannaktopus Benchmark Suite
 
-This directory contains benchmarking tools to validate the claude-octopus plugin's value proposition through **ground truth comparison** against known vulnerable code.
+This directory contains benchmarking tools to validate the kannaktopus plugin's value proposition through **ground truth comparison** against known vulnerable code.
 
 ---
 
@@ -130,14 +130,14 @@ tests/benchmark/
 # → Paste Claude's response when prompted
 
 # 2. Disable plugin
-mv ~/.claude/plugins/claude-octopus{,.disabled}
+mv ~/.claude/plugins/kannaktopus{,.disabled}
 
 # 3. WITHOUT plugin (baseline)
 ./manual-test.sh without-plugin
 # → Paste Claude's response when prompted
 
 # 4. Re-enable plugin
-mv ~/.claude/plugins/claude-octopus{.disabled,}
+mv ~/.claude/plugins/kannaktopus{.disabled,}
 
 # 5. Compare
 ./manual-test.sh compare
@@ -325,10 +325,10 @@ TEST_CASE=your-test-name ./manual-test.sh with-plugin
 ### "Plugin not found" during manual test
 ```bash
 # Verify plugin location
-ls ~/.claude/plugins/claude-octopus
+ls ~/.claude/plugins/kannaktopus
 
 # Re-enable if disabled
-mv ~/.claude/plugins/claude-octopus{.disabled,}
+mv ~/.claude/plugins/kannaktopus{.disabled,}
 ```
 
 ### "No results found" in automated mode

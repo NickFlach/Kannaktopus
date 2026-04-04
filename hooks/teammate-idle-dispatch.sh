@@ -5,7 +5,7 @@
 
 set -euo pipefail
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 
 # Only act if an active workflow session exists
 if [[ ! -f "$SESSION_FILE" ]]; then
@@ -34,7 +34,7 @@ if [[ "$QUEUE_LENGTH" -gt 0 ]]; then
         && mv "${SESSION_FILE}.tmp" "$SESSION_FILE"
 
     # Track idle event in metrics
-    METRICS_DIR="${HOME}/.claude-octopus/metrics"
+    METRICS_DIR="${HOME}/.kannaktopus/metrics"
     mkdir -p "$METRICS_DIR"
     echo "{\"event\":\"teammate_idle\",\"phase\":\"$CURRENT_PHASE\",\"dispatched_task\":\"$NEXT_TASK\",\"dispatched_role\":\"$NEXT_ROLE\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" \
         >> "${METRICS_DIR}/idle-events.jsonl"

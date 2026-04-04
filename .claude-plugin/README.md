@@ -1,8 +1,8 @@
 <!-- Plugin name MUST remain "octo" — see PLUGIN_NAME_LOCK.md -->
 
-# Claude Octopus
+# Kannaktopus
 
-**One prompt. Up to eight AI providers checking each other's work.** Claude Octopus turns Claude Code into a multi-LLM orchestration engine — Codex, Gemini, Copilot, Qwen, Ollama, Perplexity, and OpenRouter all contribute perspectives, then a 75% consensus gate catches disagreements before they ship.
+**One prompt. Up to eight AI providers checking each other's work.** Kannaktopus turns Claude Code into a multi-LLM orchestration engine — Codex, Gemini, Copilot, Qwen, Ollama, Perplexity, and OpenRouter all contribute perspectives, then a 75% consensus gate catches disagreements before they ship.
 
 ## What Changes
 
@@ -24,8 +24,8 @@ This works for research, code review, debugging, TDD, security audits, UI design
 ## Install
 
 ```bash
-claude plugin marketplace add https://github.com/nyldn/claude-octopus.git
-claude plugin install octo@nyldn-plugins
+claude plugin marketplace add https://github.com/NickFlach/Kannaktopus.git
+claude plugin install octo@kannaka-plugins
 ```
 
 Then run `/octo:setup` — it detects your providers, shows what's available, and walks you through config. **Zero external providers required to start.** Claude is built in; add others one at a time.
@@ -62,4 +62,4 @@ Octopus orchestrates — it doesn't replace domain knowledge. If three models co
 - [**Command Reference**](../docs/COMMAND-REFERENCE.md) — all 47 commands with triggers
 - [**Persona Guide**](../docs/AGENTS.md) — 32 specialized agents
 - [**Changelog**](../CHANGELOG.md) — release history
-- [**Issues**](https://github.com/nyldn/claude-octopus/issues) — bugs and feature requests
+- [**Issues**](https://github.com/NickFlach/Kannaktopus/issues) — bugs and feature requests

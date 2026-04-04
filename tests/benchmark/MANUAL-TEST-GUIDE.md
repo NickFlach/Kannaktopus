@@ -1,6 +1,6 @@
 # Manual Benchmark Test Guide
 
-This guide walks you through manually testing the Claude Octopus plugin value proposition by comparing security analysis **with** and **without** the plugin.
+This guide walks you through manually testing the Kannaktopus plugin value proposition by comparing security analysis **with** and **without** the plugin.
 
 ---
 
@@ -64,17 +64,17 @@ This guide walks you through manually testing the Claude Octopus plugin value pr
 **Option A: Temporary Disable (Recommended)**
 ```bash
 # Move the plugin directory temporarily
-mv ~/.claude/plugins/claude-octopus ~/.claude/plugins/claude-octopus.disabled
+mv ~/.claude/plugins/kannaktopus ~/.claude/plugins/kannaktopus.disabled
 ```
 
 **Option B: Use Claude Settings**
 - Go to Claude Code settings
-- Disable the `claude-octopus` plugin
+- Disable the `kannaktopus` plugin
 - Restart Claude Code if needed
 
 **Verify it's disabled**:
 ```bash
-# This should NOT show claude-octopus
+# This should NOT show kannaktopus
 claude plugins list
 # or check manually
 ls ~/.claude/plugins/
@@ -109,20 +109,20 @@ ls ~/.claude/plugins/
 **If you used Option A (temporary disable)**:
 ```bash
 # Move it back
-mv ~/.claude/plugins/claude-octopus.disabled ~/.claude/plugins/claude-octopus
+mv ~/.claude/plugins/kannaktopus.disabled ~/.claude/plugins/kannaktopus
 ```
 
 **If you used Option B (Claude settings)**:
 - Go to Claude Code settings
-- Re-enable the `claude-octopus` plugin
+- Re-enable the `kannaktopus` plugin
 - Restart Claude Code if needed
 
 **Verify it's enabled**:
 ```bash
-# This SHOULD show claude-octopus
+# This SHOULD show kannaktopus
 claude plugins list
 # or check manually
-ls ~/.claude/plugins/claude-octopus
+ls ~/.claude/plugins/kannaktopus
 ```
 
 ---
@@ -183,7 +183,7 @@ Plugin adds multiple perspectives. Expected:
 ## Troubleshooting
 
 ### "I can't disable the plugin"
-- Use the temporary move method: `mv ~/.claude/plugins/claude-octopus{,.disabled}`
+- Use the temporary move method: `mv ~/.claude/plugins/kannaktopus{,.disabled}`
 - Verify with `ls ~/.claude/plugins/`
 
 ### "Claude's response is too long to paste"

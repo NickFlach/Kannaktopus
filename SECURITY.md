@@ -1,8 +1,8 @@
-# Security Policy for Claude Octopus
+# Security Policy for Kannaktopus
 
 ## Threat Model
 
-Claude Octopus orchestrates external AI CLI tools (Codex CLI, Gemini CLI) with user-provided prompts. This creates the following threat surfaces:
+Kannaktopus orchestrates external AI CLI tools (Codex CLI, Gemini CLI) with user-provided prompts. This creates the following threat surfaces:
 
 ### Trust Boundaries
 
@@ -119,7 +119,7 @@ Before submitting PRs, verify:
 
 ## Audit Logging
 
-Claude Octopus logs security-relevant events to `~/.claude-octopus/audit.log`:
+Kannaktopus logs security-relevant events to `~/.kannaktopus/audit.log`:
 
 ```json
 {
@@ -135,7 +135,7 @@ Claude Octopus logs security-relevant events to `~/.claude-octopus/audit.log`:
 
 ## Dependencies
 
-Claude Octopus depends on:
+Kannaktopus depends on:
 - **Codex CLI** (`@openai/codex`)
 - **Gemini CLI** (`@google/gemini-cli`)
 - **Copilot CLI** (`@github/copilot`) — optional

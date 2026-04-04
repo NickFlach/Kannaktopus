@@ -10,7 +10,7 @@
 
 set -euo pipefail
 
-WORKSPACE_DIR="${OCTOPUS_WORKSPACE:-${HOME}/.claude-octopus}"
+WORKSPACE_DIR="${OCTOPUS_WORKSPACE:-${HOME}/.kannaktopus}"
 TEAMS_DIR="${WORKSPACE_DIR}/agent-teams"
 
 # Guard: python3 required for JSON parsing

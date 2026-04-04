@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Agent Dispatch & Model Resolution
+# Kannaktopus — Agent Dispatch & Model Resolution
 # ═══════════════════════════════════════════════════════════════════════════════
 # Extracted from orchestrate.sh in v9.7.7 monolith decomposition.
 # Contains: get_agent_command, get_agent_model, validate_model_allowed,

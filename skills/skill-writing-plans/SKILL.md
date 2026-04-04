@@ -18,7 +18,7 @@ description: "Zero-context implementation plans with bite-sized tasks. Use when:
 
 ---
 
-**Your first output line MUST be:** `🐙 **CLAUDE OCTOPUS ACTIVATED** - Implementation Planning`
+**Your first output line MUST be:** `🐙 **KANNAKTOPUS ACTIVATED** - Implementation Planning`
 
 ## Overview
 
@@ -217,7 +217,7 @@ git commit -m "feat(validators): add email validation with tests"
 
 ---
 
-## Integration with Claude Octopus
+## Integration with Kannaktopus
 
 ### Using Octopus for Plan Execution
 
@@ -230,7 +230,7 @@ After creating a plan, offer execution options:
 Execute tasks one by one with verification between each.
 
 **2. Parallel (octopus tangle)**
-Use Claude Octopus to parallelize independent tasks:
+Use Kannaktopus to parallelize independent tasks:
 ```bash
 ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh tangle "Execute implementation plan for [feature]"
 ```
@@ -244,10 +244,10 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh embrace "Implement [feature] per pl
 
 ### Plan Storage (Claude Code v2.1.10)
 
-Claude Octopus uses session-aware plan storage. Plans are automatically saved to:
+Kannaktopus uses session-aware plan storage. Plans are automatically saved to:
 
 ```
-~/.claude-octopus/plans/${CLAUDE_SESSION_ID}/YYYY-MM-DD-feature-name.md
+~/.kannaktopus/plans/${CLAUDE_SESSION_ID}/YYYY-MM-DD-feature-name.md
 ```
 
 This integrates with Claude Code's `plansDirectory` setting. To customize:
@@ -255,7 +255,7 @@ This integrates with Claude Code's `plansDirectory` setting. To customize:
 ```json
 // settings.json
 {
-  "plansDirectory": "~/.claude-octopus/plans"
+  "plansDirectory": "~/.kannaktopus/plans"
 }
 ```
 

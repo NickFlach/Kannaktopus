@@ -196,7 +196,7 @@ ALL_SRC=$(mktemp)
 cat "$PROJECT_ROOT/scripts/orchestrate.sh" "$PROJECT_ROOT/scripts/lib/"*.sh > "$ALL_SRC" 2>/dev/null
 
 # Persistent state dir (not /tmp/)
-if grep -q 'CLAUDE_PLUGIN_DATA\|WORKSPACE_DIR\|\.claude-octopus' "$PROJECT_ROOT/scripts/lib/resilience.sh" 2>/dev/null; then
+if grep -q 'CLAUDE_PLUGIN_DATA\|WORKSPACE_DIR\|\.kannaktopus' "$PROJECT_ROOT/scripts/lib/resilience.sh" 2>/dev/null; then
     pass "Circuit breaker state persists across sessions"
 else
     fail "Circuit breaker state persists" "still using /tmp/"

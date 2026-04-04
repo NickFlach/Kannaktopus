@@ -1,4 +1,4 @@
-# Claude Octopus Knowledge Worker Guide
+# Kannaktopus Knowledge Worker Guide
 
 > *Extending knowledge tentacles into research, strategy, and synthesis. Because your brain needs eight extra arms.* 🐙
 
@@ -6,11 +6,11 @@
 
 ## Introduction
 
-Claude Octopus includes **Knowledge Work Mode**, a specialized suite of workflows and agents designed for researchers, consultants, product managers, and academic writers. While the core of Claude Octopus remains rooted in elite software engineering, these features acknowledge that "development" begins long before the first line of code and continues long after the PR is merged.
+Kannaktopus includes **Knowledge Work Mode**, a specialized suite of workflows and agents designed for researchers, consultants, product managers, and academic writers. While the core of Kannaktopus remains rooted in elite software engineering, these features acknowledge that "development" begins long before the first line of code and continues long after the PR is merged.
 
-Traditional AI coding assistants focus on the "Tangle" (Develop) phase. Claude Octopus recognizes that high-value output requires a deep "Probe" (Discover) and "Grasp" (Define) phase, especially when the deliverable isn't just code, but a strategic decision or a synthesized body of knowledge.
+Traditional AI coding assistants focus on the "Tangle" (Develop) phase. Kannaktopus recognizes that high-value output requires a deep "Probe" (Discover) and "Grasp" (Define) phase, especially when the deliverable isn't just code, but a strategic decision or a synthesized body of knowledge.
 
-Whether you are synthesizing user interviews, architecting a market entry strategy, or weaving together 50 academic papers into a coherent literature review, the knowledge tentacles of Claude Octopus are designed to handle the heavy lifting of information processing.
+Whether you are synthesizing user interviews, architecting a market entry strategy, or weaving together 50 academic papers into a coherent literature review, the knowledge tentacles of Kannaktopus are designed to handle the heavy lifting of information processing.
 
 ---
 
@@ -45,7 +45,7 @@ For plugin command details, see the [Command and Usage Reference](./COMMAND-REFE
 
 ## The Three Knowledge Workflows
 
-Claude Octopus uses multi-phase, multi-agent pipelines to ensure depth and accuracy in knowledge work. Each phase is a "checkpoint" where different agents critique and build upon the work of the previous phase.
+Kannaktopus uses multi-phase, multi-agent pipelines to ensure depth and accuracy in knowledge work. Each phase is a "checkpoint" where different agents critique and build upon the work of the previous phase.
 
 ### 🎯 Empathize (UX Research)
 *Understanding users through multiple tentacles.*

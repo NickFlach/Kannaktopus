@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — InstructionsLoaded Hook (v8.35.0)
+# Kannaktopus — InstructionsLoaded Hook (v8.35.0)
 # Fires when CLAUDE.md instructions are loaded into a session.
 # Injects dynamic workflow context so agents start with awareness of:
 #   - Current workflow phase (if any)
@@ -11,8 +11,8 @@
 
 set -euo pipefail
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
-RESULTS_DIR="${HOME}/.claude-octopus/results"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
+RESULTS_DIR="${HOME}/.kannaktopus/results"
 
 # No session file — nothing to inject
 if [[ ! -f "$SESSION_FILE" ]]; then
@@ -32,7 +32,7 @@ EFFORT=$(jq -r '.effort_level // empty' "$SESSION_FILE" 2>/dev/null)
 
 # v8.41.0: Check for pre-compact snapshot (written by PreCompact hook before compaction)
 # If session.json has no phase but a snapshot exists, restore from snapshot
-SNAPSHOT_FILE="${HOME}/.claude-octopus/.octo/pre-compact-snapshot.json"
+SNAPSHOT_FILE="${HOME}/.kannaktopus/.octo/pre-compact-snapshot.json"
 if [[ -z "$PHASE" || "$PHASE" == "null" ]] && [[ -f "$SNAPSHOT_FILE" ]]; then
     PHASE=$(jq -r '.phase // empty' "$SNAPSHOT_FILE" 2>/dev/null)
     WORKFLOW=$(jq -r '.workflow // empty' "$SNAPSHOT_FILE" 2>/dev/null)

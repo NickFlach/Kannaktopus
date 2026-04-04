@@ -8,7 +8,7 @@
       "hooks": [
         {
           "type": "prompt",
-          "prompt": "\ud83d\udc19 **CLAUDE OCTOPUS ACTIVATED** - Using external CLI providers (Codex/Gemini) for this task. This is NOT a Claude subagent - external APIs will be invoked."
+          "prompt": "\ud83d\udc19 **KANNAKTOPUS ACTIVATED** - Using external CLI providers (Codex/Gemini) for this task. This is NOT a Claude subagent - external APIs will be invoked."
         },
         {
           "type": "command",

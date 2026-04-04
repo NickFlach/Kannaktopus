@@ -109,7 +109,7 @@ echo "PROVIDER_CHECK_END"
 **After running the check**, display the banner with ACTUAL results. You MUST list ALL providers — do NOT omit providers from the banner:
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** - Full Double Diamond Workflow
+🐙 **KANNAKTOPUS ACTIVATED** - Full Double Diamond Workflow
 🐙 Embrace: [Brief description of what's being built]
 
 All Phases:
@@ -161,10 +161,10 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh embrace "<user's prompt>"
 - Autonomous: Runs all 4 phases without intervention
 
 **Results saved to:**
-- `~/.claude-octopus/results/probe-synthesis-<timestamp>.md`
-- `~/.claude-octopus/results/grasp-consensus-<timestamp>.md`
-- `~/.claude-octopus/results/tangle-validation-<timestamp>.md`
-- `~/.claude-octopus/results/delivery-<timestamp>.md`
+- `~/.kannaktopus/results/probe-synthesis-<timestamp>.md`
+- `~/.kannaktopus/results/grasp-consensus-<timestamp>.md`
+- `~/.kannaktopus/results/tangle-validation-<timestamp>.md`
+- `~/.kannaktopus/results/delivery-<timestamp>.md`
 
 ### Step 3b: Define→Develop Debate Gate
 
@@ -172,7 +172,7 @@ ${CLAUDE_PLUGIN_ROOT}/scripts/orchestrate.sh embrace "<user's prompt>"
 
 After the Grasp (Define) phase completes and before Tangle (Develop) begins:
 
-1. **Read the grasp consensus** from `~/.claude-octopus/results/grasp-consensus-*.md`
+1. **Read the grasp consensus** from `~/.kannaktopus/results/grasp-consensus-*.md`
 2. **Run a 1-round quick debate** challenging the chosen approach:
 
 ```
@@ -213,7 +213,7 @@ AskUserQuestion({
 
 After Tangle (Develop) completes, before Ink (Deliver):
 
-1. **Read the tangle validation** from `~/.claude-octopus/results/tangle-validation-*.md`
+1. **Read the tangle validation** from `~/.kannaktopus/results/tangle-validation-*.md`
 2. **Run a 1-round collaborative debate** on implementation quality:
 
 ```
@@ -258,7 +258,7 @@ WHY: Every embrace workflow produces code changes. Automated review by a differe
 
 **CRITICAL: After orchestrate.sh completes, you MUST present results AND ask the user what to do next. Do NOT end the session silently.**
 
-1. Read the result files from `~/.claude-octopus/results/` and present a concise synthesis
+1. Read the result files from `~/.kannaktopus/results/` and present a concise synthesis
 2. Include code review and E2E verification findings from Step 3d
 3. **Always ask what to do next using AskUserQuestion:**
 

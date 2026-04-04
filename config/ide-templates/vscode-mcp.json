@@ -1,6 +1,6 @@
 {
   "servers": {
-    "claude-octopus": {
+    "kannaktopus": {
       "command": "npx",
       "args": ["tsx", "${PLUGIN_ROOT}/mcp-server/src/index.ts"],
       "env": {

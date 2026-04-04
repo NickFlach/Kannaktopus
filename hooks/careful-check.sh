@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude Octopus Careful Mode Hook (v9.8.0)
+# Kannaktopus Careful Mode Hook (v9.8.0)
 # PreToolUse hook on Bash that warns before destructive command patterns.
 # Activated by /octo:careful command (writes state file).
 # Returns JSON decision: {"decision":"allow"} or {"permissionDecision":"ask","message":"..."}

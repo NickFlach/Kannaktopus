@@ -3,11 +3,11 @@
   "version": "9.15.1",
   "description": "Multi-tentacled orchestrator using Double Diamond methodology. (v9.15.1) 3-tier adaptive statusline, dependency installer, smart HUD. 32 expert personas, 40 commands, 50 skills. Commands '/octo:*'. Run /octo:setup for guided setup. Compatible with Claude Code and Factory AI Droid.",
   "author": {
-    "name": "nyldn"
+    "name": "Nick Flach"
   },
   "license": "MIT",
-  "repository": "https://github.com/nyldn/claude-octopus",
-  "homepage": "https://github.com/nyldn/claude-octopus#readme",
+  "repository": "https://github.com/NickFlach/Kannaktopus",
+  "homepage": "https://github.com/NickFlach/Kannaktopus#readme",
   "keywords": [
     "factory-ai",
     "droid",

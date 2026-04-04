@@ -23,7 +23,7 @@ init_interactive() {
     echo -e "  1. Run: ${GREEN}./scripts/orchestrate.sh detect-providers${NC}"
     echo -e "     This will check your current setup and give you clear next steps."
     echo ""
-    echo -e "  2. Or use: ${GREEN}/claude-octopus:setup${NC} in Claude Code"
+    echo -e "  2. Or use: ${GREEN}/kannaktopus:setup${NC} in Claude Code"
     echo -e "     This provides full setup instructions within Claude Code."
     echo ""
     echo -e "${CYAN}Why the change?${NC}"
@@ -140,7 +140,7 @@ preflight_with_recovery() {
     fi
 
     # Check workspace
-    if [[ ! -d "${WORKSPACE_DIR:-$HOME/.claude-octopus}" ]]; then
+    if [[ ! -d "${WORKSPACE_DIR:-$HOME/.kannaktopus}" ]]; then
         show_error "E005"
         has_errors=true
     fi
@@ -157,7 +157,7 @@ preflight_with_recovery() {
 # ═══════════════════════════════════════════════════════════════════════════════
 
 CI_MODE="${CI:-false}"
-AUDIT_LOG="${WORKSPACE_DIR:-$HOME/.claude-octopus}/audit.log"
+AUDIT_LOG="${WORKSPACE_DIR:-$HOME/.kannaktopus}/audit.log"
 
 # Initialize CI mode from environment
 init_ci_mode() {

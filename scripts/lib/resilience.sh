@@ -11,7 +11,7 @@
 _OCTOPUS_RESILIENCE_LOADED=true
 
 # Persist circuit breaker state across sessions (survives restarts)
-RESILIENCE_STATE_DIR="${CLAUDE_PLUGIN_DATA:-${WORKSPACE_DIR:-${HOME}/.claude-octopus}}/provider-state"
+RESILIENCE_STATE_DIR="${CLAUDE_PLUGIN_DATA:-${WORKSPACE_DIR:-${HOME}/.kannaktopus}}/provider-state"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # ERROR CLASSIFICATION

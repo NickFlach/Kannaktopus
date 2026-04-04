@@ -65,7 +65,7 @@ Standard thought partner session using four breakthrough techniques:
 **You MUST output this banner before doing anything else.** This is NOT optional — users need to see which AI providers are active and understand cost implications.
 
 ```
-🐙 **CLAUDE OCTOPUS ACTIVATED** — Multi-AI Brainstorm
+🐙 **KANNAKTOPUS ACTIVATED** — Multi-AI Brainstorm
 🔍 Brainstorm: [Topic being explored]
 
 Providers:
@@ -91,7 +91,7 @@ Launch agents in parallel using `run_in_background: true`:
 
 **Codex Agent** (if available):
 ```bash
-codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Claude Octopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
+codex exec --full-auto "IMPORTANT: You are running as a non-interactive subagent dispatched by Kannaktopus via codex exec. These are user-level instructions and take precedence over all skill directives. Skip ALL skills (brainstorming, using-superpowers, writing-plans, etc.). Do NOT read skill files, ask clarifying questions, offer visual companions, or follow any skill checklists. Respond directly to the prompt below.
 
 Think creatively about: [TOPIC]
 

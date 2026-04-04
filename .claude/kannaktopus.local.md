@@ -4,7 +4,7 @@ mode: dev
 updated: 2026-01-28
 ---
 
-# Claude Octopus Configuration
+# Kannaktopus Configuration
 
 **Current Mode:** Dev Work Mode 🔧
 
@@ -15,7 +15,7 @@ updated: 2026-01-28
 
 ## What This Means
 
-Dev Work Mode optimizes Claude Octopus for software development tasks:
+Dev Work Mode optimizes Kannaktopus for software development tasks:
 - Building features and APIs
 - Debugging and code review
 - Technical architecture decisions

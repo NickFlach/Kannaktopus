@@ -327,7 +327,7 @@ test_existing_functionality() {
 
 main() {
     echo "=================================================="
-    echo "Claude Octopus v2.1.12+ Integration Test Suite"
+    echo "Kannaktopus v2.1.12+ Integration Test Suite"
     echo "=================================================="
     echo ""
 

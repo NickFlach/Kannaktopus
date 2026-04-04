@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — Context Awareness Hook (v9.19.0)
+# Kannaktopus — Context Awareness Hook (v9.19.0)
 # PostToolUse hook that warns when context window usage is high.
 # Reads bridge file written by statusline hooks and emits warnings
 # at 65% (WARNING), 75% (CRITICAL), and 80% (AUTO_COMPACT) thresholds.
@@ -28,7 +28,7 @@ SESSION="${CLAUDE_SESSION_ID:-unknown}"
 BRIDGE="/tmp/octopus-ctx-${SESSION}.json"
 DEBOUNCE_FILE="/tmp/octopus-ctx-debounce-${SESSION}.count"
 LAST_SEVERITY_FILE="/tmp/octopus-ctx-severity-${SESSION}.level"
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 
 # No bridge file = statusline hasn't run yet, skip silently
 [[ -f "$BRIDGE" ]] || exit 0

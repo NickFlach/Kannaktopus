@@ -198,7 +198,7 @@ Generates W3C Design Tokens JSON format.
       "$type": "color",
       "$value": "#3b82f6",
       "$extensions": {
-        "com.claude-octopus": {
+        "com.kannaktopus": {
           "source": "tailwind.config"
         }
       }
@@ -453,14 +453,14 @@ Included test fixtures demonstrate:
 ### As CLI Tool
 
 ```bash
-npm install -g @claude-octopus/token-extraction
+npm install -g @kannaktopus/token-extraction
 token-extraction --project ./my-app
 ```
 
 ### As Library
 
 ```typescript
-import { runTokenExtraction } from '@claude-octopus/token-extraction';
+import { runTokenExtraction } from '@kannaktopus/token-extraction';
 
 const result = await runTokenExtraction('./my-app', {
   outputFormats: ['json', 'css'],
@@ -552,11 +552,11 @@ Areas particularly welcome for contributions:
 
 ## License
 
-MIT License - See LICENSE file for details.
+Space Child License v1.0 - See LICENSE file for details.
 
 ## Support
 
 For issues, questions, or contributions:
-- GitHub Issues: https://github.com/nyldn/claude-octopus/issues
+- GitHub Issues: https://github.com/NickFlach/Kannaktopus/issues
 - Documentation: See README.md
 - Examples: See examples/ directory

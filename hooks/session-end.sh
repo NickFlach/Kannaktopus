@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — SessionEnd Hook (v8.41.0)
+# Kannaktopus — SessionEnd Hook (v8.41.0)
 # Fires when a Claude Code session ends. Finalizes metrics,
 # cleans up session artifacts, and persists key preferences
 # to auto-memory for cross-session continuity.
@@ -9,8 +9,8 @@
 
 set -euo pipefail
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
-METRICS_DIR="${HOME}/.claude-octopus/metrics"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
+METRICS_DIR="${HOME}/.kannaktopus/metrics"
 MEMORY_DIR="${HOME}/.claude/projects"
 
 # --- 1. Finalize session metrics ---
@@ -110,9 +110,9 @@ fi
 
 # --- 4. Cross-task learning extraction (v9.8.0) ---
 # Extracts structured learnings from the session and persists them as individual
-# JSON files in .claude-octopus/learnings/. Capped at 5 learnings per session
+# JSON files in .kannaktopus/learnings/. Capped at 5 learnings per session
 # to stay within budget. These are consumed at session start for relevance matching.
-LEARNINGS_DIR="${HOME}/.claude-octopus/learnings"
+LEARNINGS_DIR="${HOME}/.kannaktopus/learnings"
 if [[ -f "$SESSION_FILE" ]] && command -v jq &>/dev/null; then
     mkdir -p "$LEARNINGS_DIR"
 
@@ -224,8 +224,8 @@ fi
 
 # --- 7. Clean up session artifacts ---
 # Remove transient files but keep session.json for resume capability
-rm -f "${HOME}/.claude-octopus/.octo/pre-compact-snapshot.json" 2>/dev/null || true
-rm -f "${HOME}/.claude-octopus/.reload-signal" 2>/dev/null || true
+rm -f "${HOME}/.kannaktopus/.octo/pre-compact-snapshot.json" 2>/dev/null || true
+rm -f "${HOME}/.kannaktopus/.reload-signal" 2>/dev/null || true
 
 # Session manager cleanup: retain 10 most recent sessions
 if [[ -x "${CLAUDE_PLUGIN_ROOT:-}/scripts/session-manager.sh" ]]; then

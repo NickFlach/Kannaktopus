@@ -1,6 +1,6 @@
 # GitHub Copilot CLI Provider Configuration
 
-This file contains Copilot-specific instructions for Claude Octopus workflows.
+This file contains Copilot-specific instructions for Kannaktopus workflows.
 
 ## Provider Information
 

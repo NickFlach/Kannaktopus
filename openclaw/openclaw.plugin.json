@@ -1,7 +1,7 @@
 {
   "id": "octo-claw",
   "name": "octo-claw",
-  "displayName": "Claude Octopus",
+  "displayName": "Kannaktopus",
   "version": "1.0.0",
   "description": "Multi-agent orchestration with Double Diamond methodology. Brings 48 skills, expert code review, structured AI debates, and multi-provider workflows to OpenClaw.",
   "category": "tools",
@@ -35,7 +35,7 @@
       },
       "mcpServerUrl": {
         "type": "string",
-        "description": "URL of the Claude Octopus MCP server. Defaults to stdio transport.",
+        "description": "URL of the Kannaktopus MCP server. Defaults to stdio transport.",
         "default": ""
       }
     },

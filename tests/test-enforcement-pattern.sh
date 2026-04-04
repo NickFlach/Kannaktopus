@@ -331,11 +331,11 @@ echo ""
 echo "Test 16: Checking for visual indicators requirement..."
 skills_with_indicators=0
 for skill_file in "${ENFORCE_SKILLS[@]}"; do
-    if grep -q "🐙.*CLAUDE OCTOPUS ACTIVATED" "$skill_file"; then
+    if grep -q "🐙.*KANNAKTOPUS ACTIVATED" "$skill_file"; then
         ((skills_with_indicators++))
     else
         fail "$(basename "$skill_file") missing visual indicators" \
-             "Should require '🐙 **CLAUDE OCTOPUS ACTIVATED**' banner"
+             "Should require '🐙 **KANNAKTOPUS ACTIVATED**' banner"
     fi
 done
 if [[ $skills_with_indicators -eq ${#ENFORCE_SKILLS[@]} ]]; then
@@ -364,12 +364,12 @@ echo ""
 echo "Test 18: Checking for multi-AI attribution..."
 skills_with_attribution=0
 for skill_file in "${ENFORCE_SKILLS[@]}"; do
-    if grep -q "Multi-AI.*powered by Claude Octopus" "$skill_file" && \
+    if grep -q "Multi-AI.*powered by Kannaktopus" "$skill_file" && \
        grep -q "Providers: 🔴 Codex | 🟡 Gemini | 🔵 Claude" "$skill_file"; then
         ((skills_with_attribution++))
     else
         fail "$(basename "$skill_file") missing attribution footer" \
-             "Should include 'Multi-AI powered by Claude Octopus' and provider list"
+             "Should include 'Multi-AI powered by Kannaktopus' and provider list"
     fi
 done
 if [[ $skills_with_attribution -eq ${#ENFORCE_SKILLS[@]} ]]; then

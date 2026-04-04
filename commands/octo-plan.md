@@ -237,7 +237,7 @@ recommend debate gates. Include the debate checkpoint markers in the saved plan
 **Display a comprehensive plan visualization:**
 
 ```
-🐙 **CLAUDE OCTOPUS PLAN**
+🐙 **KANNAKTOPUS PLAN**
 
 WHAT YOU'LL END UP WITH:
 [Clear description of the deliverable based on their goal]

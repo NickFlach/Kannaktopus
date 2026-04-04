@@ -56,7 +56,7 @@ echo "PROVIDER_CHECK_END"
 Display the factory banner with ACTUAL results:
 
 ```
-CLAUDE OCTOPUS ACTIVATED - Dark Factory Mode
+KANNAKTOPUS ACTIVATED - Dark Factory Mode
 Pipeline: Parse → Scenarios → Embrace → Holdout → Score → Report
 
 Providers:

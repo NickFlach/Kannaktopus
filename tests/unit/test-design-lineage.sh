@@ -77,7 +77,7 @@ assert_contains "$FRONTMATTER" "find prior designs" "frontmatter: trigger mentio
 
 # ── Storage location documented ──────────────────────────────────────────────
 
-assert_contains "$SKILL_CONTENT" "~/.claude-octopus/designs/" "storage: ~/.claude-octopus/designs/ location documented"
+assert_contains "$SKILL_CONTENT" "~/.kannaktopus/designs/" "storage: ~/.kannaktopus/designs/ location documented"
 
 assert_contains "$SKILL_CONTENT" "project.slug" "storage: project-scoped via slug"
 

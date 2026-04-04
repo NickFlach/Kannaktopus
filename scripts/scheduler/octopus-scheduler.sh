@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus Scheduler - CLI Entry Point (v8.16.0)
+# Kannaktopus Scheduler - CLI Entry Point (v8.16.0)
 # Subcommands: dashboard, start, stop, status, add, list, remove, enable, disable, logs, emergency-stop
 #
 # Backend selection (set OCTOPUS_SCHEDULER_BACKEND=auto|daemon|coworkd):
@@ -27,7 +27,7 @@ VERSION="8.16.0"
 
 usage() {
     cat <<EOF
-${BOLD}Claude Octopus Scheduler v${VERSION}${NC}
+${BOLD}Kannaktopus Scheduler v${VERSION}${NC}
 
 ${BOLD}Dashboard:${NC}
   dashboard          Rich status table for all jobs (default when no args)
@@ -76,7 +76,7 @@ cmd_dashboard() {
     daily_spend=$(get_daily_spend)
 
     echo ""
-    echo -e "🐙 ${BOLD}Claude Octopus Scheduler${NC} v${VERSION}"
+    echo -e "🐙 ${BOLD}Kannaktopus Scheduler${NC} v${VERSION}"
     echo -e "   ${daemon_status_line}   Daily spend: \$${daily_spend}"
     echo ""
 

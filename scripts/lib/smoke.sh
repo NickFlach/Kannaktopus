@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus â Provider Smoke Tests & Configuration
+# Kannaktopus â Provider Smoke Tests & Configuration
 # Extracted from orchestrate.sh
 # Source-safe: no main execution block.
 
@@ -8,7 +8,7 @@
 # Intelligent routing based on provider subscriptions, costs, and capabilities
 # ═══════════════════════════════════════════════════════════════════════════════
 
-PROVIDERS_CONFIG_FILE="${WORKSPACE_DIR:-$HOME/.claude-octopus}/.providers-config"
+PROVIDERS_CONFIG_FILE="${WORKSPACE_DIR:-$HOME/.kannaktopus}/.providers-config"
 
 # Provider configuration variables (loaded from file)
 PROVIDER_CODEX_INSTALLED="false"
@@ -305,7 +305,7 @@ auto_detect_provider_config() {
 # ═══════════════════════════════════════════════════════════════════════════════
 
 # Tier cache file location
-TIER_CACHE_FILE="${WORKSPACE_DIR:-$HOME/.claude-octopus}/.tier-cache"
+TIER_CACHE_FILE="${WORKSPACE_DIR:-$HOME/.kannaktopus}/.tier-cache"
 TIER_CACHE_TTL=86400  # 24 hours in seconds
 
 # Check if tier cache is valid for a provider (not expired)
@@ -849,7 +849,7 @@ show_provider_status() {
 # Fast parallel test that catches real provider failures before workflow starts
 # ═══════════════════════════════════════════════════════════════════════════════
 
-SMOKE_TEST_CACHE_FILE="${WORKSPACE_DIR:-$HOME/.claude-octopus}/.smoke-test-cache"
+SMOKE_TEST_CACHE_FILE="${WORKSPACE_DIR:-$HOME/.kannaktopus}/.smoke-test-cache"
 
 # Compute cache key from current model config (auto-invalidates on config change)
 smoke_test_cache_key() {

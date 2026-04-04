@@ -117,7 +117,7 @@ migrate_provider_config() {
     [[ "$_PROVIDER_CONFIG_MIGRATED" == "true" ]] && return 0
     _PROVIDER_CONFIG_MIGRATED=true
 
-    local config_file="${HOME}/.claude-octopus/config/providers.json"
+    local config_file="${HOME}/.kannaktopus/config/providers.json"
     [[ -f "$config_file" ]] || return 0
     command -v jq &>/dev/null || return 0
 
@@ -237,7 +237,7 @@ set_provider_model() {
     local provider="$1"
     local model="$2"
     local session_only="${3:-}"
-    local config_file="${HOME}/.claude-octopus/config/providers.json"
+    local config_file="${HOME}/.kannaktopus/config/providers.json"
 
     # v8.49.0: Provider whitelist validation
     case "$provider" in
@@ -330,7 +330,7 @@ EOF
 # Usage: reset_provider_model <provider|all>
 reset_provider_model() {
     local provider="$1"
-    local config_file="${HOME}/.claude-octopus/config/providers.json"
+    local config_file="${HOME}/.kannaktopus/config/providers.json"
 
     if [[ ! -f "$config_file" ]]; then
         echo "No configuration file found"

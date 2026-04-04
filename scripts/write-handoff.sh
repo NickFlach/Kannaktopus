@@ -6,11 +6,11 @@
 
 set -euo pipefail
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 STATE_FILE=".octo/STATE.md"
 HANDOFF_FILE=".octo-continue.md"
 SESSION_ID="${CLAUDE_SESSION_ID:-unknown}"
-PROGRESS_FILE="${HOME}/.claude-octopus/progress-${SESSION_ID}.json"
+PROGRESS_FILE="${HOME}/.kannaktopus/progress-${SESSION_ID}.json"
 
 # Only write if there's session state worth preserving
 [[ -f "$SESSION_FILE" ]] || exit 0

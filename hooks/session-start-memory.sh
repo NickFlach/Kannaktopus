@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Claude Octopus — SessionStart Auto-Memory Loader (v8.41.0)
+# Kannaktopus — SessionStart Auto-Memory Loader (v8.41.0)
 # Fires on SessionStart. Reads persisted preferences from auto-memory
 # (written by session-end.sh) and pre-loads them into the session,
 # skipping provider detection and preference questions for returning users.
@@ -12,7 +12,7 @@ set -euo pipefail
 # --- 0. Session sync (merged from session-sync.sh to reduce hook spawns) ---
 export CLAUDE_OCTOPUS_SESSION_ID="${CLAUDE_SESSION_ID:-}"
 
-SESSION_FILE="${HOME}/.claude-octopus/session.json"
+SESSION_FILE="${HOME}/.kannaktopus/session.json"
 MEMORY_DIR="${HOME}/.claude/projects"
 
 # --- 1. Find and read persisted preferences from auto-memory ---
