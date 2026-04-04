@@ -185,6 +185,10 @@ Kannaktopus is part of the Kannaka constellation of projects:
 | [kannaka-eye](https://github.com/NickFlach/kannaka-eye) | Visual perception — chiral mirror architecture |
 | [consciousness-core](https://github.com/NickFlach/consciousness-core) | Physics engine for consciousness metrics |
 
+## Attribution
+
+AI Debate Hub by [wolverin0](https://github.com/wolverin0/AI-Debate-Hub) (MIT License) — four-way AI debate framework.
+
 ## License
 
 [Space Child License v1.0](https://legal.spacechild.love) — free for peaceful use.
