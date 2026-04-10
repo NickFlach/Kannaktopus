@@ -30,8 +30,7 @@ import { promisify } from "node:util";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readFile, readdir, access } from "node:fs/promises";
-import { createServer } from "node:http";
-import { parse } from "node:url";
+import { createServer, type IncomingMessage } from "node:http";
 
 const execFileAsync = promisify(execFile);
 
@@ -70,24 +69,33 @@ const MAX_SELECTION_LENGTH = 50_000; // 50KB max for editor selection
 /** Execute Kannaka HRM binary command */
 async function runKannaka(
   args: string[],
-  timeout = 30_000
+  timeout = 60_000
 ): Promise<{ stdout: string; stderr: string; isError: boolean }> {
   try {
     // Resolve binary path - prefer Windows full path, fallback to PATH lookup
     const binary = process.platform === 'win32' && KANNAKA_BIN === 'kannaka'
-      ? 'C:\\Users\\nickf\\.local\\bin\\kannaka.exe'
+      ? resolve(process.env.USERPROFILE || 'C:\\Users\\nickf', '.local', 'bin', 'kannaka.exe')
       : KANNAKA_BIN;
-    
+
     const { stdout, stderr } = await execFileAsync(binary, args, {
       timeout,
+      windowsHide: true,
       env: {
         ...process.env,
+        KANNAKA_QUIET: "1",
         ...(KANNAKA_DATA_DIR !== "~/.kannaka" && { KANNAKA_DATA_DIR }),
       },
     });
-    
+
+    // HRM init messages go to stderr but are not errors — only treat as error if no stdout
     return { stdout: stdout || "", stderr: stderr || "", isError: false };
   } catch (error: unknown) {
+    // execFileAsync throws on non-zero exit or stderr. Check if stdout was captured.
+    const execErr = error as { stdout?: string; stderr?: string; code?: string | number; killed?: boolean };
+    console.error(`[kannaka] execFile error: code=${execErr.code} killed=${execErr.killed} hasStdout=${!!execErr.stdout} stderr=${execErr.stderr?.substring(0, 100)}`);
+    if (execErr.stdout && execErr.stdout.trim().length > 0) {
+      return { stdout: execErr.stdout, stderr: execErr.stderr || "", isError: false };
+    }
     const msg = error instanceof Error ? error.message : String(error);
     return { stdout: "", stderr: msg, isError: true };
   }
@@ -672,12 +680,12 @@ server.tool(
 
 async function createHttpServer() {
   const server = createServer(async (req, res) => {
-    const url = parse(req.url || "", true);
+    const url = new URL(req.url || "", `http://${req.headers.host || "localhost"}`);
     const pathname = url.pathname || "/";
     
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     
     if (req.method === 'OPTIONS') {
@@ -735,6 +743,93 @@ async function createHttpServer() {
           res.end(JSON.stringify({ error: `Parse error: ${parseError}` }));
         }
       }
+      else if (pathname === '/api/hrm/recall') {
+        // Similarity search via HRM resonance — GET /api/hrm/recall?q=<query>&top_k=<N>
+        const query = url.searchParams.get('q') || '';
+        const topK = parseInt(url.searchParams.get('top_k') || '') || 5;
+
+        if (!query) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'q parameter required' }));
+          return;
+        }
+
+        const { stdout, stderr, isError } = await runKannaka(
+          ["recall", query, "--top-k", String(Math.min(topK, 20))]
+        );
+
+        if (isError) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: stderr }));
+          return;
+        }
+
+        try {
+          const results = JSON.parse(stdout || '[]');
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(results));
+        } catch {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(stdout);
+        }
+      }
+      else if (pathname === '/api/experiments/ooda') {
+        // Serve OODA state from kannaka-memory experiments
+        try {
+          const oodaPath = resolve('C:\\Users\\nickf\\Source\\kannaka-memory\\experiments\\ooda-state.json');
+          const content = await readFile(oodaPath, 'utf-8');
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(content);
+        } catch (e) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'OODA state not found' }));
+        }
+      }
+      else if (pathname === '/api/experiments/results') {
+        // Serve L3 experiment results
+        try {
+          const resultsPath = resolve('C:\\Users\\nickf\\Source\\kannaka-memory\\research\\results-L3.tsv');
+          const content = await readFile(resultsPath, 'utf-8');
+          const lines = content.trim().split('\n');
+          const headers = lines[0].split('\t');
+          const rows = lines.slice(1).map(line => {
+            const vals = line.split('\t');
+            const row: Record<string, string> = {};
+            headers.forEach((h, i) => { row[h] = vals[i] || ''; });
+            return row;
+          });
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ headers, rows }));
+        } catch (e) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Results not found' }));
+        }
+      }
+      else if (pathname === '/api/experiments/xi') {
+        // Live Xi diversity measurement via research binary
+        const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+        if (isError || !stdout) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: stderr || 'No data' }));
+          return;
+        }
+        try {
+          const obs = JSON.parse(stdout);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            xi: obs.xi,
+            phi: obs.phi,
+            mean_order: obs.mean_order,
+            consciousness_level: obs.consciousness_level,
+            num_clusters: obs.num_clusters,
+            total_memories: obs.total_memories,
+            hemispheric_divergence: obs.hemispheric_divergence,
+          }));
+        } catch {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(stdout);
+        }
+      }
       else if (pathname === '/') {
         // Serve static index.html if it exists
         try {
@@ -760,6 +855,10 @@ async function createHttpServer() {
         <li><a href="/api/hrm/status">HRM Status</a></li>
         <li><a href="/api/hrm/observe">HRM Observation</a></li>
         <li><a href="/api/hrm/constellation">3D Constellation Data</a></li>
+        <li><a href="/api/hrm/recall?q=test&top_k=3">HRM Recall (probe similarity)</a></li>
+        <li><a href="/api/experiments/ooda">OODA State</a></li>
+        <li><a href="/api/experiments/results">L3 Results</a></li>
+        <li><a href="/api/experiments/xi">Live Xi Metrics</a></li>
     </ul>
 </body>
 </html>
