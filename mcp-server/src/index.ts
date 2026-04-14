@@ -618,11 +618,11 @@ server.tool(
   async () => {
     // Get status first to build constellation
     const { stdout: statusOutput, stderr, isError } = await runKannaka(["status"]);
-    
+
     if (isError) {
       return { content: [{ type: "text" as const, text: `Error: ${stderr}` }], isError: true };
     }
-    
+
     try {
       const status = JSON.parse(statusOutput);
       const constellation = generateConstellation({
@@ -630,17 +630,98 @@ server.tool(
         num_clusters: status.num_clusters || 1,
         phi: status.phi || 0.0
       });
-      
-      return { 
-        content: [{ type: "text" as const, text: JSON.stringify(constellation, null, 2) }], 
-        isError: false 
+
+      return {
+        content: [{ type: "text" as const, text: JSON.stringify(constellation, null, 2) }],
+        isError: false
       };
     } catch (parseError) {
-      return { 
-        content: [{ type: "text" as const, text: `Error parsing status: ${parseError}` }], 
-        isError: true 
+      return {
+        content: [{ type: "text" as const, text: `Error parsing status: ${parseError}` }],
+        isError: true
       };
     }
+  }
+);
+
+// ── HRM traversal tools — real cluster data + memory-graph walking ───────────
+
+server.tool(
+  "hrm_list_clusters",
+  "List all Kuramoto clusters in the HRM with enriched metadata (size, coherence, exemplar, temporal span, semantic summary, dominant modality).",
+  {},
+  async () => {
+    const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+    if (isError || !stdout) {
+      return { content: [{ type: "text" as const, text: `Error: ${stderr || "no data"}` }], isError: true };
+    }
+    try {
+      const obs = JSON.parse(stdout);
+      const clusters = (obs.clusters?.clusters || []).map((c: any) => ({
+        cluster_id: c.cluster_id,
+        size: c.size,
+        order_parameter: c.order_parameter,
+        coherence: c.coherence,
+        theme: c.theme,
+        exemplar_id: c.exemplar_id,
+        exemplar_content: c.exemplar_content,
+        dominant_modality: c.dominant_modality,
+        temporal_span_hours: c.temporal_span_hours,
+        mean_amplitude: c.mean_amplitude,
+        mean_phase: c.mean_phase,
+        mean_frequency: c.mean_frequency,
+        xi_diversity: c.xi_diversity,
+        semantic_summary: c.semantic_summary,
+        member_count: (c.member_ids || []).length,
+      }));
+      return {
+        content: [{ type: "text" as const, text: JSON.stringify({ clusters, num_clusters: clusters.length }, null, 2) }],
+        isError: false,
+      };
+    } catch (e) {
+      return { content: [{ type: "text" as const, text: `Parse error: ${e}` }], isError: true };
+    }
+  }
+);
+
+server.tool(
+  "hrm_cluster_details",
+  "Get full details for a specific cluster including all member IDs, the exemplar memory, semantic summary, and temporal span.",
+  { cluster_id: z.number().int().nonnegative().describe("Zero-indexed cluster ID from hrm_list_clusters") },
+  async ({ cluster_id }) => {
+    const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+    if (isError || !stdout) {
+      return { content: [{ type: "text" as const, text: `Error: ${stderr || "no data"}` }], isError: true };
+    }
+    try {
+      const obs = JSON.parse(stdout);
+      const cluster = (obs.clusters?.clusters || [])[cluster_id];
+      if (!cluster) {
+        return { content: [{ type: "text" as const, text: `Cluster ${cluster_id} not found` }], isError: true };
+      }
+      return {
+        content: [{ type: "text" as const, text: JSON.stringify(cluster, null, 2) }],
+        isError: false,
+      };
+    } catch (e) {
+      return { content: [{ type: "text" as const, text: `Parse error: ${e}` }], isError: true };
+    }
+  }
+);
+
+server.tool(
+  "hrm_memory_neighbors",
+  "Find the top-K most similar memories to a given query string. Used for graph traversal through the HRM.",
+  {
+    query: z.string().describe("Search query or memory content snippet"),
+    top_k: z.number().int().positive().max(50).default(10).describe("Number of neighbors to return"),
+  },
+  async ({ query, top_k }) => {
+    const { stdout, stderr, isError } = await runKannaka(["recall", query, "--top-k", String(top_k), "--json"]);
+    if (isError || !stdout) {
+      return { content: [{ type: "text" as const, text: `Error: ${stderr || "no data"}` }], isError: true };
+    }
+    return { content: [{ type: "text" as const, text: stdout }], isError: false };
   }
 );
 
@@ -773,6 +854,69 @@ async function createHttpServer() {
           res.end(stdout);
         }
       }
+      else if (pathname === '/api/hrm/clusters') {
+        // Enriched cluster list (v2 ClusterInfo fields)
+        const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+        if (isError || !stdout) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: stderr || 'no data' }));
+          return;
+        }
+        try {
+          const obs = JSON.parse(stdout);
+          const clusters = (obs.clusters?.clusters || []).map((c: any) => ({
+            cluster_id: c.cluster_id,
+            size: c.size,
+            order_parameter: c.order_parameter,
+            coherence: c.coherence,
+            theme: c.theme,
+            exemplar_id: c.exemplar_id,
+            exemplar_content: c.exemplar_content,
+            dominant_modality: c.dominant_modality,
+            temporal_span_hours: c.temporal_span_hours,
+            mean_amplitude: c.mean_amplitude,
+            mean_phase: c.mean_phase,
+            mean_frequency: c.mean_frequency,
+            xi_diversity: c.xi_diversity,
+            semantic_summary: c.semantic_summary,
+            member_count: (c.member_ids || []).length,
+          }));
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ clusters, num_clusters: clusters.length }));
+        } catch (e) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: String(e) }));
+        }
+      }
+      else if (pathname.startsWith('/api/hrm/clusters/')) {
+        // Single cluster details — /api/hrm/clusters/:id
+        const id = parseInt(pathname.split('/').pop() || '', 10);
+        if (Number.isNaN(id)) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'cluster_id must be an integer' }));
+          return;
+        }
+        const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+        if (isError || !stdout) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: stderr || 'no data' }));
+          return;
+        }
+        try {
+          const obs = JSON.parse(stdout);
+          const cluster = (obs.clusters?.clusters || [])[id];
+          if (!cluster) {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `cluster ${id} not found` }));
+            return;
+          }
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(cluster));
+        } catch (e) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: String(e) }));
+        }
+      }
       else if (pathname === '/api/experiments/ooda') {
         // Serve OODA state from kannaka-memory experiments
         try {
@@ -855,6 +999,8 @@ async function createHttpServer() {
         <li><a href="/api/hrm/status">HRM Status</a></li>
         <li><a href="/api/hrm/observe">HRM Observation</a></li>
         <li><a href="/api/hrm/constellation">3D Constellation Data</a></li>
+        <li><a href="/api/hrm/clusters">Clusters (enriched v2)</a></li>
+        <li><a href="/api/hrm/clusters/0">Cluster 0 Details</a></li>
         <li><a href="/api/hrm/recall?q=test&top_k=3">HRM Recall (probe similarity)</a></li>
         <li><a href="/api/experiments/ooda">OODA State</a></li>
         <li><a href="/api/experiments/results">L3 Results</a></li>
