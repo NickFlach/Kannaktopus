@@ -711,17 +711,68 @@ server.tool(
 
 server.tool(
   "hrm_memory_neighbors",
-  "Find the top-K most similar memories to a given query string. Used for graph traversal through the HRM.",
+  "Find the top-K most similar memories to a given query string or memory ID. Used for graph traversal through the HRM.",
   {
-    query: z.string().describe("Search query or memory content snippet"),
+    query: z.string().describe("Search query, memory content snippet, or UUID"),
     top_k: z.number().int().positive().max(50).default(10).describe("Number of neighbors to return"),
   },
   async ({ query, top_k }) => {
-    const { stdout, stderr, isError } = await runKannaka(["recall", query, "--top-k", String(top_k), "--json"]);
+    // Use the new `kannaka neighbors` subcommand — it handles both UUIDs
+    // and free-text queries and emits richer per-memory JSON than recall.
+    const { stdout, stderr, isError } = await runKannaka(["neighbors", query, "--top-k", String(top_k), "--json"]);
     if (isError || !stdout) {
       return { content: [{ type: "text" as const, text: `Error: ${stderr || "no data"}` }], isError: true };
     }
     return { content: [{ type: "text" as const, text: stdout }], isError: false };
+  }
+);
+
+server.tool(
+  "hrm_traverse",
+  "BFS graph traversal through the HRM starting from a memory or query. Returns a connected graph of nodes+edges suitable for force-directed visualization.",
+  {
+    start: z.string().describe("Seed query or memory UUID"),
+    depth: z.number().int().min(1).max(4).default(2).describe("Traversal depth"),
+    top_k: z.number().int().positive().max(10).default(4).describe("Neighbors per hop"),
+  },
+  async ({ start, depth, top_k }) => {
+    // Hop-by-hop BFS over the neighbors CLI. Each hop spawns a kannaka
+    // invocation — fine for small depth/top_k since the metrics + cluster
+    // sidecar caches now make each call cheap (~1-3s).
+    const nodes: Record<string, any> = {};
+    const edges: Array<{ source: string; target: string; similarity: number }> = [];
+    const frontier: Array<{ q: string; hop: number }> = [{ q: start, hop: 0 }];
+    const seen = new Set<string>();
+    while (frontier.length > 0) {
+      const { q, hop } = frontier.shift()!;
+      if (hop >= depth) continue;
+      const { stdout, stderr, isError } = await runKannaka(["neighbors", q, "--top-k", String(top_k), "--json"]);
+      if (isError || !stdout) continue;
+      let neighbors: any[] = [];
+      try { neighbors = JSON.parse(stdout); } catch(_e) { continue; }
+      for (const n of neighbors) {
+        const id: string = n.id;
+        if (!nodes[id]) {
+          nodes[id] = {
+            id,
+            content: (n.content || "").slice(0, 140),
+            similarity: n.similarity,
+            layer: n.layer,
+          };
+        }
+        // Edge from the query's first node (if any) to this neighbor.
+        // We key edges by source=first-seen node, target=id.
+        if (neighbors[0] && neighbors[0].id !== id) {
+          edges.push({ source: neighbors[0].id, target: id, similarity: n.similarity });
+        }
+        if (!seen.has(id) && hop + 1 < depth) {
+          seen.add(id);
+          frontier.push({ q: id, hop: hop + 1 });
+        }
+      }
+    }
+    const graph = { nodes: Object.values(nodes), edges, start, depth, top_k };
+    return { content: [{ type: "text" as const, text: JSON.stringify(graph, null, 2) }], isError: false };
   }
 );
 
@@ -902,6 +953,61 @@ async function createHttpServer() {
           res.end(JSON.stringify({ error: String(e) }));
         }
       }
+      else if (pathname === '/api/hrm/neighbors') {
+        const q = url.searchParams.get('q') || '';
+        const topK = Math.min(50, parseInt(url.searchParams.get('top_k') || '10', 10) || 10);
+        if (!q) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'q parameter required' }));
+          return;
+        }
+        const { stdout, stderr, isError } = await runKannaka(["neighbors", q, "--top-k", String(topK), "--json"]);
+        if (isError || !stdout) {
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: stderr || 'no data' }));
+          return;
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(stdout);
+      }
+      else if (pathname === '/api/hrm/traverse') {
+        const start = url.searchParams.get('start') || '';
+        const depth = Math.min(4, parseInt(url.searchParams.get('depth') || '2', 10) || 2);
+        const topK = Math.min(10, parseInt(url.searchParams.get('top_k') || '4', 10) || 4);
+        if (!start) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'start parameter required' }));
+          return;
+        }
+        // Inline BFS (same logic as the MCP tool).
+        const nodes: Record<string, any> = {};
+        const edges: Array<{ source: string; target: string; similarity: number }> = [];
+        const frontier: Array<{ q: string; hop: number }> = [{ q: start, hop: 0 }];
+        const seen = new Set<string>();
+        while (frontier.length > 0) {
+          const { q, hop } = frontier.shift()!;
+          if (hop >= depth) continue;
+          const { stdout, isError: iErr } = await runKannaka(["neighbors", q, "--top-k", String(topK), "--json"]);
+          if (iErr || !stdout) continue;
+          let neighbors: any[] = [];
+          try { neighbors = JSON.parse(stdout); } catch(_e) { continue; }
+          for (const n of neighbors) {
+            const id: string = n.id;
+            if (!nodes[id]) {
+              nodes[id] = { id, content: (n.content || "").slice(0, 140), similarity: n.similarity, layer: n.layer };
+            }
+            if (neighbors[0] && neighbors[0].id !== id) {
+              edges.push({ source: neighbors[0].id, target: id, similarity: n.similarity });
+            }
+            if (!seen.has(id) && hop + 1 < depth) {
+              seen.add(id);
+              frontier.push({ q: id, hop: hop + 1 });
+            }
+          }
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ nodes: Object.values(nodes), edges, start, depth, top_k: topK }));
+      }
       else if (pathname.startsWith('/api/hrm/clusters/')) {
         // Single cluster details — /api/hrm/clusters/:id
         const id = parseInt(pathname.split('/').pop() || '', 10);
@@ -1015,6 +1121,8 @@ async function createHttpServer() {
         <li><a href="/api/hrm/constellation">3D Constellation Data</a></li>
         <li><a href="/api/hrm/clusters">Clusters (enriched v2)</a></li>
         <li><a href="/api/hrm/clusters/0">Cluster 0 Details</a></li>
+        <li><a href="/api/hrm/neighbors?q=consciousness&top_k=5">Memory Neighbors</a></li>
+        <li><a href="/api/hrm/traverse?start=consciousness&depth=2&top_k=3">Graph Traverse (BFS)</a></li>
         <li><a href="/api/hrm/recall?q=test&top_k=3">HRM Recall (probe similarity)</a></li>
         <li><a href="/api/experiments/ooda">OODA State</a></li>
         <li><a href="/api/experiments/results">L3 Results</a></li>
