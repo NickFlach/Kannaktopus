@@ -69,7 +69,7 @@ const MAX_SELECTION_LENGTH = 50_000; // 50KB max for editor selection
 /** Execute Kannaka HRM binary command */
 async function runKannaka(
   args: string[],
-  timeout = 60_000
+  timeout = 20_000  // 20s — short enough to fail fast on HRM contention, long enough for cold start
 ): Promise<{ stdout: string; stderr: string; isError: boolean }> {
   try {
     // Resolve binary path - prefer Windows full path, fallback to PATH lookup
@@ -856,14 +856,28 @@ async function createHttpServer() {
       }
       else if (pathname === '/api/hrm/clusters') {
         // Enriched cluster list (v2 ClusterInfo fields)
-        const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
-        if (isError || !stdout) {
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: stderr || 'no data' }));
-          return;
+        let obsSource = 'live';
+        let obsStdout: string | null = null;
+        const live = await runKannaka(["observe", "--json"]);
+        if (!live.isError && live.stdout) {
+          obsStdout = live.stdout;
+        } else {
+          // Fall back to observe-cache.json if the live binary is hanging /
+          // contending on the HRM file. Cache may be stale but keeps the
+          // endpoint responsive during heavy swarm activity.
+          try {
+            const cacheDir = process.env.KANNAKA_DATA_DIR || `${process.env.HOME || '/home/opc'}/.kannaka`;
+            const cachePath = resolve(cacheDir, 'observe-cache.json');
+            obsStdout = await readFile(cachePath, 'utf-8');
+            obsSource = 'cache';
+          } catch (e) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: live.stderr || 'no data', cache_error: String(e) }));
+            return;
+          }
         }
         try {
-          const obs = JSON.parse(stdout);
+          const obs = JSON.parse(obsStdout!);
           const clusters = (obs.clusters?.clusters || []).map((c: any) => ({
             cluster_id: c.cluster_id,
             size: c.size,
@@ -882,7 +896,7 @@ async function createHttpServer() {
             member_count: (c.member_ids || []).length,
           }));
           res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ clusters, num_clusters: clusters.length }));
+          res.end(JSON.stringify({ clusters, num_clusters: clusters.length, source: obsSource }));
         } catch (e) {
           res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: String(e) }));
