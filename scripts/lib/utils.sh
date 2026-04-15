@@ -220,7 +220,7 @@ rotate_logs() {
             mv "$log" "${log}.1"
             gzip "${log}.1" 2>/dev/null || true
             ((rotated++)) || true
-            log DEBUG "Rotated large log: $(basename "$log") (${size_kb}KB)"
+            _utils_log DEBUG "Rotated large log: $(basename "$log") (${size_kb}KB)"
         fi
     done
 
@@ -231,7 +231,7 @@ rotate_logs() {
         total_freed=$((total_freed + size_kb))
         rm -f "$old_log"
         ((deleted++)) || true
-        log DEBUG "Deleted old log: $(basename "$old_log") (${size_kb}KB)"
+        _utils_log DEBUG "Deleted old log: $(basename "$old_log") (${size_kb}KB)"
     done < <(find "$LOGS_DIR" -name "*.log" -mtime "+$max_age_days" -print0 2>/dev/null)
 
     # Find compressed logs older than max_age_days
@@ -240,7 +240,7 @@ rotate_logs() {
         total_freed=$((total_freed + size_kb))
         rm -f "$old_log"
         ((deleted++)) || true
-        log DEBUG "Deleted old compressed log: $(basename "$old_log") (${size_kb}KB)"
+        _utils_log DEBUG "Deleted old compressed log: $(basename "$old_log") (${size_kb}KB)"
     done < <(find "$LOGS_DIR" -name "*.log.*.gz" -mtime "+$max_age_days" -print0 2>/dev/null)
 
     # Also clean up old .raw files (v7.19.0 debugging artifacts)
@@ -248,13 +248,13 @@ rotate_logs() {
         local size_kb=$(du -k "$raw_file" 2>/dev/null | cut -f1)
         total_freed=$((total_freed + size_kb))
         rm -f "$raw_file"
-        log DEBUG "Deleted old raw output: $(basename "$raw_file") (${size_kb}KB)"
+        _utils_log DEBUG "Deleted old raw output: $(basename "$raw_file") (${size_kb}KB)"
     done < <(find "$RESULTS_DIR" -name ".raw-*.out" -mtime "+7" -print0 2>/dev/null)
 
     # Report if anything was cleaned up
     if [[ $rotated -gt 0 ]] || [[ $deleted -gt 0 ]]; then
         local freed_mb=$((total_freed / 1024))
-        log INFO "Log cleanup: rotated $rotated, deleted $deleted files, freed ${freed_mb}MB"
+        _utils_log INFO "Log cleanup: rotated $rotated, deleted $deleted files, freed ${freed_mb}MB"
     fi
 }
 

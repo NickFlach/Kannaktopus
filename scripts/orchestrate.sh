@@ -165,41 +165,11 @@ else
     CLAUDE_CODE_CONTROL=""
 fi
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# SECURITY: External URL validation (v7.9.0)
-# Validates URLs before fetching external content
-# See: skill-security-framing.md for full documentation
-# ═══════════════════════════════════════════════════════════════════════════════
-
-# ═══════════════════════════════════════════════════════════════════════════════
-# SECURITY: Twitter/X URL transformation (v7.9.0)
-# Transforms Twitter/X URLs to FxTwitter API for reliable content extraction
-# ═══════════════════════════════════════════════════════════════════════════════
-
-# ═══════════════════════════════════════════════════════════════════════════════
-# SECURITY: Content wrapping for untrusted external content (v7.9.0)
-# Wraps content in security frame before analysis
-# See: skill-security-framing.md for full documentation
-# ═══════════════════════════════════════════════════════════════════════════════
-
-# ═══════════════════════════════════════════════════════════════════════════════
-# SECURITY: CLI output wrapping for untrusted external provider output (v8.7.0)
-# Wraps codex/gemini output in trust markers; passes claude output unchanged
-# ═══════════════════════════════════════════════════════════════════════════════
-
-# [EXTRACTED to lib/agents.sh]
-
-
-# ═══════════════════════════════════════════════════════════════════════════════
-# UX ENHANCEMENTS: Critical Fixes for v7.16.0
-# File locking, environment validation, dependency checks for progress tracking
-# ═══════════════════════════════════════════════════════════════════════════════
-
-# Atomic JSON update with file locking (prevents race conditions)
-
-# Validate Claude Code task integration features
-
-# Check for required dependencies (jq, etc.)
+# NOTE: v7.9.0 security helpers (URL validation, Twitter/X transformation,
+# content wrapping, CLI output wrapping) and v7.16.0 UX enhancements (atomic
+# JSON update, task integration validation, dependency checks) were extracted
+# to lib/secure.sh, lib/agents.sh, and other modules. Stale header banners
+# were removed during cleanup; see git history for original context.
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # CLAUDE CODE VERSION DETECTION (v7.12.0, updated v8.48.0)
