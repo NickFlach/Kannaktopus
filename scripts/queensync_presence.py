@@ -57,6 +57,13 @@ INTERVAL_SECONDS = float(os.environ.get("KANNAKTOPUS_PRESENCE_SECONDS", "30"))
 
 JOIN_SUBJECT = "queen.event.join"
 LEAVE_SUBJECT = "queen.event.leave"
+# Kannaka radio's NATS bridge populates `swarmState.agents` (the map
+# surfaced on /api/swarm and observatory.ninja-portal.com) only from
+# `QUEEN.phase.<agent_id>` messages — `queen.event.join` lands in the
+# event log but NOT in the agents map. So we also publish a phase
+# heartbeat each cycle so the arm shows up in the observatory's agent
+# count and visualisation, not just its event ticker.
+PHASE_SUBJECT = f"QUEEN.phase.{ARM_ID}"
 
 # Capability list mirrors what Kannaktopus actually does so the Queen Console
 # arm-detail panel can render the right quick-action buttons. Edit freely.
@@ -74,6 +81,32 @@ def _payload() -> bytes:
             "armId": ARM_ID,
             "displayName": DISPLAY_NAME,
             "kind": "kannaktopus_arm",
+            "capabilities": CAPABILITIES,
+        }
+    ).encode("utf-8")
+
+
+def _phase_payload(beat: int) -> bytes:
+    """Heartbeat payload published on QUEEN.phase.<arm_id>.
+
+    The radio's nats-client.js reads `phase` (or `theta`) and `display_name`,
+    sets `lastSeen` itself, and prunes agents not seen for 5 min. We rotate
+    the phase value gently so the observatory's swarm visualisation shows
+    Kannaktopus as a *moving* oscillator rather than a static dot.
+    """
+    import math
+    theta = (beat * 0.1) % (2 * math.pi)
+    return json.dumps(
+        {
+            "agent_id": ARM_ID,
+            "display_name": DISPLAY_NAME,
+            "kind": "kannaktopus_arm",
+            "phase": theta,
+            "theta": theta,
+            "frequency": 0.1,
+            "memory_count": 0,
+            "coherence": 0.5,
+            "phi": 0.0,
             "capabilities": CAPABILITIES,
         }
     ).encode("utf-8")
@@ -130,10 +163,13 @@ async def run() -> int:
             # Windows: signal handlers not supported on the proactor loop.
             pass
 
+    beat = 0
     try:
-        # Send first join immediately (don't wait one interval before showing up).
+        # Send first join + phase immediately so the arm shows up within a
+        # second of the daemon starting (don't wait one interval).
         await nc.publish(JOIN_SUBJECT, payload)
-        log.info("published initial %s for %s", JOIN_SUBJECT, ARM_ID)
+        await nc.publish(PHASE_SUBJECT, _phase_payload(beat))
+        log.info("published initial %s + %s for %s", JOIN_SUBJECT, PHASE_SUBJECT, ARM_ID)
 
         while not stop.is_set():
             try:
@@ -142,9 +178,11 @@ async def run() -> int:
                 pass
             if stop.is_set():
                 break
+            beat += 1
             try:
                 await nc.publish(JOIN_SUBJECT, payload)
-                log.debug("published %s for %s", JOIN_SUBJECT, ARM_ID)
+                await nc.publish(PHASE_SUBJECT, _phase_payload(beat))
+                log.debug("published %s + %s for %s (beat=%d)", JOIN_SUBJECT, PHASE_SUBJECT, ARM_ID, beat)
             except NatsError as exc:
                 log.warning("publish failed: %s", exc)
     finally:
