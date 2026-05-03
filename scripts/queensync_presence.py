@@ -142,16 +142,25 @@ def _phase_payload(beat: int) -> bytes:
 
 async def _connect_with_backoff() -> "nats.NATS":
     delay = 1.0
+    user = os.environ.get("NATS_USER", "")
+    password = os.environ.get("NATS_PASSWORD", "")
     while True:
         try:
-            nc = await nats.connect(
-                NATS_URL,
-                name=f"{ARM_ID}-presence",
-                connect_timeout=5,
-                max_reconnect_attempts=-1,
-                reconnect_time_wait=2,
-            )
-            log.info("connected to NATS %s", NATS_URL)
+            kwargs: dict = {
+                "name": f"{ARM_ID}-presence",
+                "connect_timeout": 5,
+                "max_reconnect_attempts": -1,
+                "reconnect_time_wait": 2,
+            }
+            # NATS auth — required when the bus restricts queen.event.* /
+            # QUEEN.phase.* publishes to authenticated users only (which is
+            # the default config on the constellation bus). Without these
+            # credentials, every publish is silently rejected as anon.
+            if user and password:
+                kwargs["user"] = user
+                kwargs["password"] = password
+            nc = await nats.connect(NATS_URL, **kwargs)
+            log.info("connected to NATS %s as %s", NATS_URL, user or "anon")
             return nc
         except Exception as exc:  # noqa: BLE001
             log.warning(
