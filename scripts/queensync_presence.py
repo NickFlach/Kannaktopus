@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""
+queensync_presence.py — Constellation presence beacon for Kannaktopus.
+
+Publishes a `queen.event.join` message every 30s (configurable) to the public
+NATS swarm bus so this Kannaktopus instance shows up as an agent on
+`observatory.ninja-portal.com` and flips its arm card on the QueenSync Queen
+Console from `offline` -> `idle`.
+
+QueenSync's NATS bridge (artifacts/api-server/src/lib/nats-bridge.ts ->
+handlePresence) treats every join message as a heartbeat for the named arm.
+A `queen.event.leave` is published on clean shutdown so the card flips
+immediately rather than waiting for the 3-min staleness sweep.
+
+Env:
+  NATS_URL                       (default nats://swarm.ninja-portal.com:4222)
+  KANNAKTOPUS_ARM_ID             (default kannaktopus-01) -- this becomes the
+                                 agent label in the observatory swarm map.
+  KANNAKTOPUS_DISPLAY_NAME       (default "Kannaktopus")
+  KANNAKTOPUS_PRESENCE_SECONDS   (default 30)
+
+Dependency:
+  pip install nats-py>=2.7
+
+Run:
+  python scripts/queensync_presence.py
+
+This script is intentionally fault-tolerant: if NATS is unreachable it logs
+and keeps trying with exponential backoff; it never raises into the caller.
+"""
+from __future__ import annotations
+
+import asyncio
+import json
+import logging
+import os
+import signal
+import sys
+from typing import Optional
+
+try:
+    import nats  # type: ignore
+    from nats.errors import Error as NatsError  # type: ignore
+except ImportError:
+    sys.stderr.write(
+        "queensync_presence: nats-py is not installed. Run: pip install nats-py\n"
+    )
+    sys.exit(2)
+
+
+log = logging.getLogger("kannaktopus.presence")
+
+NATS_URL = os.environ.get("NATS_URL", "nats://swarm.ninja-portal.com:4222")
+ARM_ID = os.environ.get("KANNAKTOPUS_ARM_ID", "kannaktopus-01")
+DISPLAY_NAME = os.environ.get("KANNAKTOPUS_DISPLAY_NAME", "Kannaktopus")
+INTERVAL_SECONDS = float(os.environ.get("KANNAKTOPUS_PRESENCE_SECONDS", "30"))
+
+JOIN_SUBJECT = "queen.event.join"
+LEAVE_SUBJECT = "queen.event.leave"
+
+# Capability list mirrors what Kannaktopus actually does so the Queen Console
+# arm-detail panel can render the right quick-action buttons. Edit freely.
+CAPABILITIES = [
+    "multi_model_query",
+    "tool_orchestration",
+    "consensus_review",
+    "dream",
+]
+
+
+def _payload() -> bytes:
+    return json.dumps(
+        {
+            "armId": ARM_ID,
+            "displayName": DISPLAY_NAME,
+            "kind": "kannaktopus_arm",
+            "capabilities": CAPABILITIES,
+        }
+    ).encode("utf-8")
+
+
+async def _connect_with_backoff() -> "nats.NATS":
+    delay = 1.0
+    while True:
+        try:
+            nc = await nats.connect(
+                NATS_URL,
+                name=f"{ARM_ID}-presence",
+                connect_timeout=5,
+                max_reconnect_attempts=-1,
+                reconnect_time_wait=2,
+            )
+            log.info("connected to NATS %s", NATS_URL)
+            return nc
+        except Exception as exc:  # noqa: BLE001
+            log.warning(
+                "NATS connect failed (%s); retrying in %.1fs", exc, delay
+            )
+            await asyncio.sleep(delay)
+            delay = min(delay * 2, 60.0)
+
+
+async def run() -> int:
+    logging.basicConfig(
+        level=os.environ.get("KANNAKTOPUS_LOG_LEVEL", "INFO"),
+        format="%(asctime)s %(levelname)s %(name)s %(message)s",
+    )
+    log.info(
+        "starting presence beacon arm_id=%s interval=%.1fs subject=%s",
+        ARM_ID, INTERVAL_SECONDS, JOIN_SUBJECT,
+    )
+
+    nc = await _connect_with_backoff()
+    payload = _payload()
+
+    stop = asyncio.Event()
+    loop = asyncio.get_running_loop()
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        try:
+            loop.add_signal_handler(sig, stop.set)
+        except NotImplementedError:
+            # Windows: signal handlers not supported on the proactor loop.
+            pass
+
+    try:
+        # Send first join immediately (don't wait one interval before showing up).
+        await nc.publish(JOIN_SUBJECT, payload)
+        log.info("published initial %s for %s", JOIN_SUBJECT, ARM_ID)
+
+        while not stop.is_set():
+            try:
+                await asyncio.wait_for(stop.wait(), timeout=INTERVAL_SECONDS)
+            except asyncio.TimeoutError:
+                pass
+            if stop.is_set():
+                break
+            try:
+                await nc.publish(JOIN_SUBJECT, payload)
+                log.debug("published %s for %s", JOIN_SUBJECT, ARM_ID)
+            except NatsError as exc:
+                log.warning("publish failed: %s", exc)
+    finally:
+        try:
+            await nc.publish(LEAVE_SUBJECT, payload)
+            await nc.flush(timeout=2)
+            log.info("published %s for %s on shutdown", LEAVE_SUBJECT, ARM_ID)
+        except Exception as exc:  # noqa: BLE001
+            log.warning("graceful leave failed: %s", exc)
+        try:
+            await nc.drain()
+        except Exception:  # noqa: BLE001
+            pass
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(asyncio.run(run()))

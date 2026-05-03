@@ -1,0 +1,27 @@
+[Unit]
+Description=Kannaktopus constellation presence beacon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Adjust paths to where Kannaktopus is checked out and your python lives.
+WorkingDirectory=/opt/kannaktopus
+ExecStart=/usr/bin/env python3 /opt/kannaktopus/scripts/queensync_presence.py
+Restart=always
+RestartSec=5
+
+# Public NATS bus — override by editing this unit and reloading.
+Environment=NATS_URL=nats://swarm.ninja-portal.com:4222
+Environment=KANNAKTOPUS_ARM_ID=kannaktopus-01
+Environment=KANNAKTOPUS_DISPLAY_NAME=Kannaktopus
+Environment=KANNAKTOPUS_PRESENCE_SECONDS=30
+
+# Lock the daemon down — it only needs outbound network.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
