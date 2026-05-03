@@ -89,13 +89,21 @@ _kt_pulse_metrics() {
     fi
     # cost (col 9) and tokens (col 8) summed; model (col 3) and agent (col 2)
     # are taken from the most recent row + uniq count respectively.
-    awk -F'|' '
+    #
+    # LC_ALL=C pins awk's `%.4f` to a `.` decimal separator. Without it,
+    # hosts with `LC_NUMERIC=de_DE` / `fr_FR` / etc. emit e.g.
+    # `"cost_usd":0,4127,` — valid awk output, invalid JSON, silently
+    # breaks the Queen Console's per-arm cost meter outside en_US locales.
+    LC_ALL=C awk -F'|' '
         BEGIN { cost = 0; tokens = 0 }
         NF >= 9 {
             cost   += $9 + 0
             tokens += $8 + 0
             last_model = $3
-            agents[$2] = 1
+            # Skip rows with no agent id — otherwise `agents[""] = 1` would
+            # store under the empty key and the END loop would count it as
+            # a real agent, inflating the uniq count by one per malformed row.
+            if ($2 != "") agents[$2] = 1
         }
         END {
             n = 0
