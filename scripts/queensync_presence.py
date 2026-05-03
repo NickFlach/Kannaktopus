@@ -53,7 +53,35 @@ log = logging.getLogger("kannaktopus.presence")
 NATS_URL = os.environ.get("NATS_URL", "nats://swarm.ninja-portal.com:4222")
 ARM_ID = os.environ.get("KANNAKTOPUS_ARM_ID", "kannaktopus-01")
 DISPLAY_NAME = os.environ.get("KANNAKTOPUS_DISPLAY_NAME", "Kannaktopus")
-INTERVAL_SECONDS = float(os.environ.get("KANNAKTOPUS_PRESENCE_SECONDS", "30"))
+
+# Constellation operators ask publishers to stay >=10s between beats so the
+# bus doesn't get flooded. Clamp aggressively rather than fail open.
+_MIN_INTERVAL_SECONDS = 10.0
+_DEFAULT_INTERVAL_SECONDS = 30.0
+
+
+def _resolve_interval() -> float:
+    raw = os.environ.get("KANNAKTOPUS_PRESENCE_SECONDS")
+    if raw is None or raw == "":
+        return _DEFAULT_INTERVAL_SECONDS
+    try:
+        value = float(raw)
+    except ValueError:
+        sys.stderr.write(
+            f"queensync_presence: invalid KANNAKTOPUS_PRESENCE_SECONDS={raw!r}, "
+            f"using {_DEFAULT_INTERVAL_SECONDS}s\n"
+        )
+        return _DEFAULT_INTERVAL_SECONDS
+    if value < _MIN_INTERVAL_SECONDS:
+        sys.stderr.write(
+            f"queensync_presence: KANNAKTOPUS_PRESENCE_SECONDS={value} below "
+            f"floor; clamping to {_MIN_INTERVAL_SECONDS}s\n"
+        )
+        return _MIN_INTERVAL_SECONDS
+    return value
+
+
+INTERVAL_SECONDS = _resolve_interval()
 
 JOIN_SUBJECT = "queen.event.join"
 LEAVE_SUBJECT = "queen.event.leave"
@@ -81,24 +109,16 @@ def _payload() -> bytes:
 
 async def _connect_with_backoff() -> "nats.NATS":
     delay = 1.0
-    user = os.environ.get("NATS_USER", "")
-    password = os.environ.get("NATS_PASSWORD", "")
     while True:
         try:
-            kwargs: dict = {
-                "name": f"{ARM_ID}-presence",
-                "connect_timeout": 5,
-                "max_reconnect_attempts": -1,
-                "reconnect_time_wait": 2,
-            }
-            # Auth is optional. The public bus advertises anonymous publish
-            # for queen.event.*; private mirrors / locked-down bus configs
-            # require credentials. Set NATS_USER + NATS_PASSWORD to use them.
-            if user and password:
-                kwargs["user"] = user
-                kwargs["password"] = password
-            nc = await nats.connect(NATS_URL, **kwargs)
-            log.info("connected to NATS %s as %s", NATS_URL, user or "anon")
+            nc = await nats.connect(
+                NATS_URL,
+                name=f"{ARM_ID}-presence",
+                connect_timeout=5,
+                max_reconnect_attempts=-1,
+                reconnect_time_wait=2,
+            )
+            log.info("connected to NATS %s", NATS_URL)
             return nc
         except Exception as exc:  # noqa: BLE001
             log.warning(

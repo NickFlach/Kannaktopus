@@ -5,6 +5,14 @@ Wants=network-online.target
 
 [Service]
 Type=simple
+
+# Run as a dedicated unprivileged user. Create it once with:
+#   sudo useradd --system --no-create-home --shell /usr/sbin/nologin kannaktopus
+# The daemon only needs outbound TCP to publish, so root is unnecessary
+# privilege.
+User=kannaktopus
+Group=kannaktopus
+
 # Adjust paths to where Kannaktopus is checked out and your python lives.
 WorkingDirectory=/opt/kannaktopus
 ExecStart=/usr/bin/env python3 /opt/kannaktopus/scripts/queensync_presence.py
@@ -22,6 +30,15 @@ NoNewPrivileges=true
 ProtectSystem=strict
 ProtectHome=true
 PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
 
 [Install]
 WantedBy=multi-user.target

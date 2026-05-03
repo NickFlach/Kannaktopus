@@ -46,7 +46,7 @@ right to drop noisy publishers. Keep the interval ≥ 30s.
 | `NATS_URL`                       | `nats://swarm.ninja-portal.com:4222`     | Override to point at a private bus during dev.             |
 | `KANNAKTOPUS_ARM_ID`             | `kannaktopus-01`                         | Becomes the agent key in `swarm.agents` and the QueenSync arm row. Use `kannaka-prime` to take over the existing seeded card. |
 | `KANNAKTOPUS_DISPLAY_NAME`       | `Kannaktopus`                            | Label rendered in the Queen Console.                       |
-| `KANNAKTOPUS_PRESENCE_SECONDS`   | `30`                                     | Beacon interval. Don't go below 10s.                       |
+| `KANNAKTOPUS_PRESENCE_SECONDS`   | `30`                                     | Beacon interval. Values below `10` are clamped to `10`; non-numeric values fall back to `30`. |
 | `KANNAKTOPUS_LOG_LEVEL`          | `INFO`                                   | `DEBUG` to see every publish.                              |
 
 ## Running
@@ -67,16 +67,23 @@ INFO  kannaktopus.presence published initial queen.event.join for kannaktopus-01
 
 ### systemd (Linux host)
 
-A unit file ships at `scripts/systemd/kannaktopus-presence.service`.
-Adjust `WorkingDirectory=` and `ExecStart=` to match your install, then:
+A unit file ships at `scripts/systemd/kannaktopus-presence.service`. It
+runs as a dedicated unprivileged user (`kannaktopus`) — create it once,
+adjust `WorkingDirectory=` and `ExecStart=` to match your install, then
+enable the service:
 
 ```bash
+sudo useradd --system --no-create-home --shell /usr/sbin/nologin kannaktopus
 sudo cp scripts/systemd/kannaktopus-presence.service \
         /etc/systemd/system/kannaktopus-presence.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now kannaktopus-presence.service
 sudo journalctl -u kannaktopus-presence -f
 ```
+
+The unit ships with `NoNewPrivileges`, `ProtectSystem=strict`,
+`RestrictAddressFamilies=AF_INET AF_INET6`, and the rest of the standard
+hardening flags — the daemon only needs outbound TCP to publish.
 
 ### Phase pulses (optional)
 
