@@ -64,6 +64,10 @@ source "${SCRIPT_DIR}/lib/routing.sh" 2>/dev/null || true
 # Security utilities: anti-injection, secure tempfiles, output guards
 source "${SCRIPT_DIR}/lib/secure.sh" 2>/dev/null || true
 
+# Constellation presence (queen.event.join + QUEEN.phase.<armId> pulses).
+# Fire-and-forget — silently no-ops if the `nats` CLI isn't installed.
+source "${SCRIPT_DIR}/lib/nats-publish.sh" 2>/dev/null || true
+
 # Provider detection & version checking (v9.7.7 extraction)
 source "${SCRIPT_DIR}/lib/providers.sh" 2>/dev/null || true
 source "${SCRIPT_DIR}/lib/preflight.sh" 2>/dev/null || true
@@ -2197,7 +2201,24 @@ ${obs_ctx}"
                   updated_at: now | todate}' \
                 > "$session_dir/session.json" 2>/dev/null || true
         fi
+
+        # Constellation pulse: emit QUEEN.phase.<armId> on the swarm bus so
+        # observatory.ninja-portal.com (and the Queen Console) can show this
+        # Kannaktopus arm moving through probe → grasp → tangle → ink. No-op
+        # when the `nats` CLI is missing or the helper failed to load.
+        if declare -F nats_publish_phase >/dev/null 2>&1; then
+            local _phase_extra
+            _phase_extra=$(printf '{"status":"%s","workflow":"embrace","completed":%s,"total":%s}' \
+                "$status" "${OCTOPUS_COMPLETED_PHASES:-0}" "${OCTOPUS_TOTAL_PHASES:-4}")
+            nats_publish_phase "$phase" "${task_group:-}" "$_phase_extra" || true
+        fi
     }
+
+    # One-shot presence join so the arm appears immediately, even before the
+    # long-running queensync_presence.py daemon publishes its first beat.
+    if declare -F nats_publish_join >/dev/null 2>&1; then
+        nats_publish_join || true
+    fi
 
     _write_embrace_session_state "init" "starting"
     echo ""

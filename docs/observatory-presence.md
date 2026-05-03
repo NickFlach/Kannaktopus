@@ -85,7 +85,34 @@ The unit ships with `NoNewPrivileges`, `ProtectSystem=strict`,
 `RestrictAddressFamilies=AF_INET AF_INET6`, and the rest of the standard
 hardening flags — the daemon only needs outbound TCP to publish.
 
-### Phase pulses (optional)
+### Phase pulses (automatic)
+
+`scripts/orchestrate.sh` sources `scripts/lib/nats-publish.sh` and emits
+`QUEEN.phase.<armId>` on every embrace phase boundary
+(`probe` → `grasp` → `tangle` → `ink`, plus `init` and `complete`). It also
+fires a one-shot `queen.event.join` at workflow start so the arm appears
+on the observatory immediately, before the long-running presence daemon
+publishes its first beat.
+
+These pulses are **fire-and-forget** — they background the publish and
+silently no-op if the `nats` CLI is missing, so Kannaktopus never blocks
+on the bus and never fails a workflow because of a network blip.
+
+To enable, install the NATS CLI:
+
+```bash
+# Linux
+curl -L https://github.com/nats-io/natscli/releases/latest/download/nats-$(uname -m)-linux.tar.gz | tar -xz
+sudo install nats-*/nats /usr/local/bin/
+
+# macOS
+brew tap nats-io/nats-tools && brew install nats
+```
+
+Then run any embrace and watch the Queen Console: the kannaktopus_arm
+card should pulse through the four phases in real time.
+
+### Phase pulses (manual)
 
 If you want Kannaktopus to *pulse* as it works (probe → grasp → tangle →
 ink), source `scripts/lib/nats-publish.sh` from `orchestrate.sh` and call
