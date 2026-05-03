@@ -68,17 +68,59 @@ source "${SCRIPT_DIR}/lib/secure.sh" 2>/dev/null || true
 # Fire-and-forget — silently no-ops if the `nats` CLI isn't installed.
 source "${SCRIPT_DIR}/lib/nats-publish.sh" 2>/dev/null || true
 
+# _kt_pulse_metrics
+# Snapshot the session's current cost / model / agent count / tokens from
+# lib/cost.sh's pipe-delimited call log so phase pulses can carry richer
+# payload than just status. The Queen Console can then render per-arm
+# spend meters, model badges, and fan-out viz without us shipping a
+# parallel telemetry stream.
+#
+# Returns a single-line JSON object suitable for nesting inside the
+# pulse's `extra` block, e.g.:
+#   {"cost_usd":0.4127,"model":"claude-opus-4-7","agents":3,"tokens":12345}
+# Returns `{}` when no calls have been recorded yet (fresh session, dry run,
+# or cost tracking disabled). Never errors — the worst case is an empty
+# object, which is forward-compatible with the Console's parser.
+_kt_pulse_metrics() {
+    local log_file="${USAGE_FILE:-${WORKSPACE_DIR:-/tmp}/usage-session.json}.log"
+    if [[ ! -s "$log_file" ]]; then
+        printf '{}'
+        return 0
+    fi
+    # cost (col 9) and tokens (col 8) summed; model (col 3) and agent (col 2)
+    # are taken from the most recent row + uniq count respectively.
+    awk -F'|' '
+        BEGIN { cost = 0; tokens = 0 }
+        NF >= 9 {
+            cost   += $9 + 0
+            tokens += $8 + 0
+            last_model = $3
+            agents[$2] = 1
+        }
+        END {
+            n = 0
+            for (a in agents) n++
+            # Escape the model string defensively — bash-side sources are
+            # trusted but cheap to harden.
+            gsub(/\\/, "\\\\", last_model)
+            gsub(/"/,  "\\\"", last_model)
+            printf "{\"cost_usd\":%.4f,\"model\":\"%s\",\"agents\":%d,\"tokens\":%d}", \
+                cost, last_model, n, tokens
+        }
+    ' "$log_file" 2>/dev/null || printf '{}'
+}
+
 # _kt_pulse_standalone <phase> <task_id> <command...>
 # Wraps a standalone phase invocation (kannaktopus probe / grasp / tangle /
 # ink) with constellation pulses so the arm shows up and visibly moves on
 # observatory.ninja-portal.com even when the user runs a single phase
 # instead of the full embrace workflow.
 #
-# Emits queen.event.join + QUEEN.phase.<armId>{status:"running"}, runs the
-# command, then emits QUEEN.phase.<armId>{status:"completed"|"failed"} and
-# preserves the command's exit status. All publishes are fire-and-forget;
-# the wrapper degrades to a plain command invocation when the helper is
-# missing or the `nats` CLI isn't installed.
+# Emits queen.event.join + QUEEN.phase.<armId>{status:"running",metrics:…},
+# runs the command, then emits QUEEN.phase.<armId>{status:"completed"|
+# "failed",metrics:…} and preserves the command's exit status. All
+# publishes are fire-and-forget; the wrapper degrades to a plain command
+# invocation when the helper is missing or the `nats` CLI isn't installed.
 _kt_pulse_standalone() {
     local phase="$1"; shift
     local task_id="$1"; shift
@@ -91,8 +133,10 @@ _kt_pulse_standalone() {
         if declare -F nats_publish_join >/dev/null 2>&1; then
             nats_publish_join || true
         fi
+        local _start_metrics
+        _start_metrics=$(_kt_pulse_metrics)
         nats_publish_phase "$phase" "$task_id" \
-            "$(printf '{"status":"running","workflow":"standalone"}')" || true
+            "$(printf '{"status":"running","workflow":"standalone","metrics":%s}' "$_start_metrics")" || true
     fi
 
     local _status=0
@@ -101,8 +145,10 @@ _kt_pulse_standalone() {
     if (( _have_pulse )); then
         local _final="completed"
         (( _status != 0 )) && _final="failed"
+        local _end_metrics
+        _end_metrics=$(_kt_pulse_metrics)
         nats_publish_phase "$phase" "$task_id" \
-            "$(printf '{"status":"%s","workflow":"standalone","exit":%d}' "$_final" "$_status")" || true
+            "$(printf '{"status":"%s","workflow":"standalone","exit":%d,"metrics":%s}' "$_final" "$_status" "$_end_metrics")" || true
     fi
     return $_status
 }
@@ -2243,12 +2289,17 @@ ${obs_ctx}"
 
         # Constellation pulse: emit QUEEN.phase.<armId> on the swarm bus so
         # observatory.ninja-portal.com (and the Queen Console) can show this
-        # Kannaktopus arm moving through probe → grasp → tangle → ink. No-op
-        # when the `nats` CLI is missing or the helper failed to load.
+        # Kannaktopus arm moving through probe → grasp → tangle → ink. The
+        # `metrics` block carries per-session cost / last-model / unique
+        # agent count / total tokens — all live values from lib/cost.sh's
+        # call log — so the Console can render spend meters and model
+        # badges per arm without us shipping a parallel telemetry stream.
+        # No-op when the `nats` CLI is missing or the helper failed to load.
         if declare -F nats_publish_phase >/dev/null 2>&1; then
-            local _phase_extra
-            _phase_extra=$(printf '{"status":"%s","workflow":"embrace","completed":%s,"total":%s}' \
-                "$status" "${OCTOPUS_COMPLETED_PHASES:-0}" "${OCTOPUS_TOTAL_PHASES:-4}")
+            local _phase_extra _phase_metrics
+            _phase_metrics=$(_kt_pulse_metrics)
+            _phase_extra=$(printf '{"status":"%s","workflow":"embrace","completed":%s,"total":%s,"metrics":%s}' \
+                "$status" "${OCTOPUS_COMPLETED_PHASES:-0}" "${OCTOPUS_TOTAL_PHASES:-4}" "$_phase_metrics")
             nats_publish_phase "$phase" "${task_group:-}" "$_phase_extra" || true
         fi
     }
