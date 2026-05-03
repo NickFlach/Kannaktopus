@@ -68,6 +68,45 @@ source "${SCRIPT_DIR}/lib/secure.sh" 2>/dev/null || true
 # Fire-and-forget — silently no-ops if the `nats` CLI isn't installed.
 source "${SCRIPT_DIR}/lib/nats-publish.sh" 2>/dev/null || true
 
+# _kt_pulse_standalone <phase> <task_id> <command...>
+# Wraps a standalone phase invocation (kannaktopus probe / grasp / tangle /
+# ink) with constellation pulses so the arm shows up and visibly moves on
+# observatory.ninja-portal.com even when the user runs a single phase
+# instead of the full embrace workflow.
+#
+# Emits queen.event.join + QUEEN.phase.<armId>{status:"running"}, runs the
+# command, then emits QUEEN.phase.<armId>{status:"completed"|"failed"} and
+# preserves the command's exit status. All publishes are fire-and-forget;
+# the wrapper degrades to a plain command invocation when the helper is
+# missing or the `nats` CLI isn't installed.
+_kt_pulse_standalone() {
+    local phase="$1"; shift
+    local task_id="$1"; shift
+    local _have_pulse=0
+    if declare -F nats_publish_phase >/dev/null 2>&1; then
+        _have_pulse=1
+    fi
+
+    if (( _have_pulse )); then
+        if declare -F nats_publish_join >/dev/null 2>&1; then
+            nats_publish_join || true
+        fi
+        nats_publish_phase "$phase" "$task_id" \
+            "$(printf '{"status":"running","workflow":"standalone"}')" || true
+    fi
+
+    local _status=0
+    "$@" || _status=$?
+
+    if (( _have_pulse )); then
+        local _final="completed"
+        (( _status != 0 )) && _final="failed"
+        nats_publish_phase "$phase" "$task_id" \
+            "$(printf '{"status":"%s","workflow":"standalone","exit":%d}' "$_final" "$_status")" || true
+    fi
+    return $_status
+}
+
 # Provider detection & version checking (v9.7.7 extraction)
 source "${SCRIPT_DIR}/lib/providers.sh" 2>/dev/null || true
 source "${SCRIPT_DIR}/lib/preflight.sh" 2>/dev/null || true
@@ -2991,7 +3030,8 @@ case "$COMMAND" in
             echo "Example: $(basename "$0") discover \"What are best practices for API caching?\""
             exit 1
         fi
-        probe_discover "$*"
+        _kt_pulse_standalone "probe" "${OCTOPUS_TASK_GROUP:-standalone}" \
+            probe_discover "$*"
         ;;
     probe-single)
         # v8.54.0: Single-agent probe for multi-agentic skill dispatch
@@ -3015,7 +3055,8 @@ case "$COMMAND" in
             echo "Example: $(basename "$0") define \"implement caching layer\""
             exit 1
         fi
-        grasp_define "$1" "${2:-}"
+        _kt_pulse_standalone "grasp" "${OCTOPUS_TASK_GROUP:-standalone}" \
+            grasp_define "$1" "${2:-}"
         ;;
     develop|tangle)
         # Phase 3: Develop - Implementation with quality gates
@@ -3030,7 +3071,8 @@ case "$COMMAND" in
             echo "Example: $(basename "$0") develop \"build the caching API\""
             exit 1
         fi
-        tangle_develop "$1" "${2:-}"
+        _kt_pulse_standalone "tangle" "${OCTOPUS_TASK_GROUP:-standalone}" \
+            tangle_develop "$1" "${2:-}"
         ;;
     deliver|ink)
         # Phase 4: Deliver - Final validation
@@ -3045,7 +3087,8 @@ case "$COMMAND" in
             echo "Example: $(basename "$0") deliver \"finalize and ship\""
             exit 1
         fi
-        ink_deliver "$1" "${2:-}"
+        _kt_pulse_standalone "ink" "${OCTOPUS_TASK_GROUP:-standalone}" \
+            ink_deliver "$1" "${2:-}"
         ;;
     code-review)
         # Multi-LLM code review pipeline — competitor to CC Code Review
