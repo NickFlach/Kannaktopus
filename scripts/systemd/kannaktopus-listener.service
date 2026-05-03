@@ -1,0 +1,27 @@
+[Unit]
+Description=Kannaktopus command-channel listener (control panel bridge)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/kannaktopus
+ExecStart=/usr/bin/env python3 /opt/kannaktopus/scripts/kannaktopus_listener.py
+Restart=always
+RestartSec=5
+
+# NATS bus + arm identity. Override by editing this unit + reloading.
+Environment=NATS_URL=nats://swarm.ninja-portal.com:4222
+Environment=KANNAKTOPUS_ARM_ID=kannaktopus-01
+# To authenticate as kannaka_internal (required if the bus tightens its
+# anon ACL), drop credentials in /etc/kannaktopus/nats.env and add
+# EnvironmentFile=/etc/kannaktopus/nats.env above.
+
+# Lock the daemon down — it only needs outbound network.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
