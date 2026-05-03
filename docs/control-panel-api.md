@@ -24,10 +24,19 @@ which covers the read-side (how Kannaktopus shows up on the observatory).
 
 ### Subjects
 
-| Subject                              | Purpose                                              |
-| ------------------------------------ | ---------------------------------------------------- |
-| `KANNAKTOPUS.command.<arm_id>`       | Targeted command for one arm (default `kannaktopus-01`). |
-| `KANNAKTOPUS.command.broadcast`      | Fan-out to every Kannaktopus arm subscribed to the bus.  |
+| Subject                              | Purpose                                              | Anon publish? |
+| ------------------------------------ | ---------------------------------------------------- | ------------- |
+| `KANNAKA.ask.<arm_id>`               | **Recommended** for the Replit Console — anon-publishable per the bus's ADR-0026 ACL. | ✅            |
+| `KANNAKA.ask.broadcast`              | Anon-publishable fan-out to every arm.               | ✅            |
+| `KANNAKTOPUS.command.<arm_id>`       | Internal / authenticated — same handlers, kannaka_internal-only publish. | ❌            |
+| `KANNAKTOPUS.command.broadcast`      | Internal / authenticated fan-out.                    | ❌            |
+
+The Replit control panel should use the `KANNAKA.ask.*` subjects so it
+can connect to the bus without holding `kannaka_internal` credentials —
+the bus allows anonymous publish on `KANNAKA.ask.>` and anonymous
+subscribe on `_INBOX.>`, which is enough for the standard NATS
+request-reply pattern. The same listener handles all four subjects
+identically; no per-subject behavior differences.
 
 ### Request schema
 
@@ -56,6 +65,7 @@ standard request-reply pattern). Both shapes are valid:
 | `status`        | none                                          | `{arm_id, mcp_listen_port, orchestrate_available, kannaka_bin_available, platform}`.         |
 | `capabilities`  | none                                          | `{capabilities: [...], skills: [...]}` — for rendering quick-action buttons.                 |
 | `version`       | none                                          | `{kannaktopus, python, nats_py}`.                                                            |
+| `wake`          | `{[reason]}`                                  | `{awake: true, arm_id, ts, status: {…}}` — wake-from-idle handshake for the Console; pairs with `KANNAKTOPUS_WAKE_URL`. Always succeeds (Kannaktopus is always-on while systemd is enabled). |
 | `run`           | `{skill, prompt, [timeout_seconds]}`          | **RESERVED** — returns `{implemented: false}` today; will spawn `orchestrate.sh` when shipped. |
 
 Unknown commands reply with `{ok: false, error: "unknown_command: ...", supported: [...]}`.
@@ -89,12 +99,25 @@ console.log(codec.decode(reply.data));
 
 ## Authentication
 
-The listener inherits NATS auth from `NATS_USER` / `NATS_PASSWORD` env vars.
-On the public bus, anonymous subscribe is allowed (the listener works
-without credentials). The control panel publisher works the same way — no
-credentials needed for the request side. If the constellation operators
-tighten the ACL on `KANNAKTOPUS.command.>`, both sides will need
-credentials and the change is one env var.
+**Listener side** (Kannaktopus): authenticates as `kannaka_internal` via
+`NATS_USER` + `NATS_PASSWORD` env vars so it can subscribe to the
+`KANNAKTOPUS.command.>` subjects (those are restricted to authenticated
+publishers, not subscribers — but `kannaka_internal` simplifies things).
+
+**Replit control panel side**: connect anonymously and use the
+`KANNAKA.ask.<arm_id>` subjects. No credentials required.
+
+```
+KANNAKTOPUS_WAKE_URL=nats://swarm.ninja-portal.com:4222
+```
+
+(That's the public TCP endpoint of the constellation NATS bus. The
+Console's Node server uses [`nats.js`](https://github.com/nats-io/nats.js)
+as the client. No auth params needed; default user is `anon`.)
+
+If the constellation operators ever tighten the anon ACL on
+`KANNAKA.ask.>`, the Console will need to set `NATS_USER` /
+`NATS_PASSWORD` env vars too — single change, no redesign.
 
 ## Versioning policy
 

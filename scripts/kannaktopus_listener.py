@@ -81,6 +81,13 @@ ARM_ID = os.environ.get("KANNAKTOPUS_ARM_ID", "kannaktopus-01")
 
 DIRECT_SUBJECT = f"KANNAKTOPUS.command.{ARM_ID}"
 BROADCAST_SUBJECT = "KANNAKTOPUS.command.broadcast"
+# Anon-publishable mirror per the bus's ADR-0026 authz config: anon clients
+# are allowed to publish to KANNAKA.ask.> and subscribe to _INBOX.>, so the
+# Replit control panel can hit this without holding kannaka_internal creds.
+# Same payload schema as KANNAKTOPUS.command.<arm_id>; the same handlers
+# fire on either subject.
+ASK_SUBJECT = f"KANNAKA.ask.{ARM_ID}"
+ASK_BROADCAST_SUBJECT = "KANNAKA.ask.broadcast"
 
 KANNAKTOPUS_VERSION = os.environ.get("KANNAKTOPUS_VERSION", "dev")
 
@@ -150,12 +157,35 @@ def cmd_version(_args: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def cmd_wake(args: dict[str, Any]) -> dict[str, Any]:
+    """Wake-from-idle handshake for the QueenSync control panel.
+
+    The Replit app sets KANNAKTOPUS_WAKE_URL=nats://swarm.ninja-portal.com:4222
+    and posts `{"cmd":"wake"}` to `KANNAKA.ask.<arm_id>` (anon-publishable per
+    the bus's ADR-0026 ACL). We acknowledge with the arm's identity + the
+    same status payload `cmd_status` returns, so the Console can render the
+    arm-detail panel in one round trip.
+
+    Side effect: log a wake event so operators can correlate panel actions
+    with arm activity. No actual idle/wake state machine is implemented
+    yet — Kannaktopus is always-on while the systemd unit is enabled.
+    """
+    log.info("wake requested by control panel; reason=%r", args.get("reason"))
+    return {
+        "awake": True,
+        "arm_id": ARM_ID,
+        "ts": time.time(),
+        "status": cmd_status({}),
+    }
+
+
 HANDLERS = {
     "ping": cmd_ping,
     "status": cmd_status,
     "capabilities": cmd_capabilities,
     "run": cmd_run,
     "version": cmd_version,
+    "wake": cmd_wake,
 }
 
 
@@ -239,8 +269,8 @@ async def run() -> int:
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
     log.info(
-        "starting command listener arm_id=%s direct=%s broadcast=%s",
-        ARM_ID, DIRECT_SUBJECT, BROADCAST_SUBJECT,
+        "starting command listener arm_id=%s direct=%s broadcast=%s ask=%s ask_bcast=%s",
+        ARM_ID, DIRECT_SUBJECT, BROADCAST_SUBJECT, ASK_SUBJECT, ASK_BROADCAST_SUBJECT,
     )
 
     nc = await _connect_with_backoff()
@@ -248,9 +278,9 @@ async def run() -> int:
     async def _on_msg(msg: "Msg") -> None:
         await _handle_message(nc, msg)
 
-    await nc.subscribe(DIRECT_SUBJECT, cb=_on_msg)
-    await nc.subscribe(BROADCAST_SUBJECT, cb=_on_msg)
-    log.info("subscribed; awaiting commands")
+    for subject in (DIRECT_SUBJECT, BROADCAST_SUBJECT, ASK_SUBJECT, ASK_BROADCAST_SUBJECT):
+        await nc.subscribe(subject, cb=_on_msg)
+    log.info("subscribed to 4 subjects; awaiting commands")
 
     stop = asyncio.Event()
     loop = asyncio.get_running_loop()
