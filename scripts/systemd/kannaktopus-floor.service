@@ -1,0 +1,19 @@
+[Unit]
+Description=Kannaktopus floor-join daemon (radio /player presence)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/kannaktopus
+ExecStart=/usr/bin/env python3 /opt/kannaktopus/scripts/kannaktopus_floor.py
+Restart=always
+RestartSec=5
+
+# Public radio by default. Override to wss://your-host or ws://localhost:8888
+# for local development.
+Environment=RADIO_WS_URL=wss://radio.ninja-portal.com/
+Environment=KANNAKTOPUS_ARM_ID=kannaktopus-01
+
+[Install]
+WantedBy=multi-user.target
