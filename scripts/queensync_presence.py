@@ -200,9 +200,16 @@ async def run() -> int:
                 break
             beat += 1
             try:
-                await nc.publish(JOIN_SUBJECT, payload)
+                # Heartbeat ONLY via QUEEN.phase. queen.event.join was being
+                # republished every 30s, which the radio's nats-bridge appends
+                # to its agentEvents log + broadcasts as type=queen_join — so
+                # the player's activity feed showed Kannaktopus joining and
+                # rejoining on every beat. The right semantic is: join once
+                # at startup, leave once at shutdown, heartbeat via phase.
+                # The 5min staleness sweep in nats-client.js still uses
+                # lastSeen from QUEEN.phase, so liveness is preserved.
                 await nc.publish(PHASE_SUBJECT, _phase_payload(beat))
-                log.debug("published %s + %s for %s (beat=%d)", JOIN_SUBJECT, PHASE_SUBJECT, ARM_ID, beat)
+                log.debug("published %s for %s (beat=%d)", PHASE_SUBJECT, ARM_ID, beat)
             except NatsError as exc:
                 log.warning("publish failed: %s", exc)
     finally:
