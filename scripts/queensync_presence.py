@@ -103,9 +103,26 @@ CAPABILITIES = [
 ]
 
 
+def _envelope() -> dict:
+    """Canonical NATS envelope shared by every QueenSync publish.
+
+    The constellation contract (consciousness-core/docs/nats-contract.yaml,
+    enforced by kannaka-radio's drift detector) requires schema_version,
+    ts, and agent_id on every event. Without these the radio logs warnings
+    and — after the 2026-06-01 cutover — drops the message entirely.
+    """
+    from datetime import datetime, timezone
+    return {
+        "schema_version": "1",
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "agent_id": ARM_ID,
+    }
+
+
 def _payload() -> bytes:
     return json.dumps(
         {
+            **_envelope(),
             "armId": ARM_ID,
             "displayName": DISPLAY_NAME,
             "kind": "kannaktopus_arm",
@@ -126,7 +143,7 @@ def _phase_payload(beat: int) -> bytes:
     theta = (beat * 0.1) % (2 * math.pi)
     return json.dumps(
         {
-            "agent_id": ARM_ID,
+            **_envelope(),
             "display_name": DISPLAY_NAME,
             "kind": "kannaktopus_arm",
             "phase": theta,
