@@ -486,6 +486,172 @@ if (( quality_score < 50 )); then
 fi
 ```
 
+### Step 5.D: Depth Mode (--depth flag)
+
+**Trigger**: user passed `--depth` (or `--rounds 3 --structured`) to
+`/octo:debate`. When present, the default per-round flow above is
+REPLACED by a fixed 3-phase structure designed to surface and resolve
+disagreements rather than just stack parallel essays. This is the mode
+to use when the decision matters and a single round of opinions isn't
+enough.
+
+The 3 phases each correspond to one debate round:
+
+#### Phase 1 — Positions (Round 1)
+
+Each provider states their **best case for one position** on the
+question. No reading prior responses — these are independent first
+positions, by design, so groupthink can't seed.
+
+Provider prompt (same template across all):
+
+```
+You are participant <ROLE> in a structured Kannaktopus depth-debate.
+
+QUESTION: ${QUESTION}
+
+PHASE 1 — POSITION. Your job: state the SINGLE position you believe is
+strongest. No hedging, no "it depends". Pick the position you'd defend
+in a room of skeptics.
+
+Format (no preamble):
+POSITION: <one sentence stating the position>
+PRIMARY-REASON: <one sentence — the strongest single reason this is right>
+SECONDARY-REASON: <one sentence — the next strongest reason>
+WHAT-YOU-RULE-OUT: <one sentence — the strongest competing position you reject and why>
+```
+
+Save responses to `${DEBATE_DIR}/rounds/p1_<provider>.md`.
+
+#### Phase 2 — Cross-Rebuttals (Round 2)
+
+Each provider reads EVERY OTHER provider's Phase 1 position and writes
+the single strongest rebuttal against each one. This is the depth
+beat — without it, "debate" is really just parallel monologue.
+
+Provider prompt template:
+
+```
+You are participant <ROLE> in PHASE 2 — CROSS-REBUTTALS of a Kannaktopus
+depth-debate.
+
+QUESTION: ${QUESTION}
+
+Other participants' Phase 1 positions:
+[Concatenate all OTHER providers' p1_<provider>.md files here]
+
+Your job: for EACH other participant's position, write the SINGLE
+sharpest rebuttal — the reason that position is wrong or insufficient.
+Skip any rebuttal weaker than "they have a defensible reply already
+in their Phase 1". One sentence per rebuttal. Mark each "ATTACKS:" by
+participant name.
+
+Format:
+ATTACKS Codex: <one-sentence rebuttal>
+ATTACKS Gemini: <one-sentence rebuttal>
+ATTACKS Sonnet: <one-sentence rebuttal>
+[skip yourself]
+```
+
+Save to `${DEBATE_DIR}/rounds/p2_<provider>.md`.
+
+#### Phase 3 — Revisions (Round 3)
+
+Each provider reads ALL Phase 2 rebuttals targeted at THEIR Phase 1
+position and either:
+- **Defends** (rebuttal fails — explain why)
+- **Concedes** (rebuttal lands — abandon the position or weaken it)
+- **Revises** (rebuttal lands partially — narrow the claim or add a
+  precondition that survives the rebuttal)
+
+Provider prompt template:
+
+```
+You are participant <ROLE> in PHASE 3 — REVISION of a Kannaktopus
+depth-debate.
+
+QUESTION: ${QUESTION}
+
+Your original Phase 1 position:
+[insert your p1_<provider>.md]
+
+Rebuttals received in Phase 2:
+[insert every other provider's ATTACKS <YOU>: line from p2_*.md]
+
+Your job: for EACH rebuttal, classify as DEFEND, CONCEDE, or REVISE
+and explain in one sentence. Then write your FINAL position — either
+unchanged, narrowed, or abandoned — in one sentence.
+
+Format:
+REBUTTAL FROM Codex: <quote>
+VERDICT: DEFEND | CONCEDE | REVISE
+REASON: <one sentence>
+
+REBUTTAL FROM Gemini: <quote>
+VERDICT: ...
+REASON: ...
+
+[etc for each rebuttal]
+
+FINAL POSITION: <one sentence — your position after this round>
+RESILIENCE: <integer 0-3 — how many rebuttals you DEFENDED outright>
+```
+
+Save to `${DEBATE_DIR}/rounds/p3_<provider>.md`.
+
+#### Depth-Mode Synthesis
+
+When all 3 phases complete, the synthesis (Step 6) gets a different
+shape. Skip the "Areas of Agreement / Disagreement" section and
+instead produce a **resilience scoreboard** — the winning position is
+the one with the highest RESILIENCE count (DEFENDs minus CONCEDEs),
+not the loudest or most consensual.
+
+Output template (replaces the standard synthesis):
+
+```markdown
+# Depth-Debate Synthesis: ${QUESTION}
+
+## Resilience Scoreboard
+| Participant | Phase 1 Position | Defends | Concedes | Revises | Final Resilience |
+|-------------|-------------------|---------|----------|---------|------------------|
+| 🔴 Codex    | ...              | 2       | 0        | 1       | +2               |
+| 🟡 Gemini   | ...              | 0       | 2        | 1       | -2               |
+| 🟠 Sonnet   | ...              | 1       | 1        | 1       | 0                |
+| 🐙 Claude   | ...              | 3       | 0        | 0       | +3 ← winner      |
+
+## Winning Position (Resilience +3)
+[The final position from the highest-resilience participant — quote
+their Phase 3 FINAL POSITION line verbatim.]
+
+## What Survived Cross-Rebuttal
+[For each Phase 1 position that ended with RESILIENCE > 0, summarize
+which of its claims survived attack. These are the structural truths
+the debate validated.]
+
+## What Got Killed
+[For each rebuttal that received a CONCEDE verdict from its target,
+note it as a falsified claim. These are the dead ideas — don't waste
+future cycles re-arguing them.]
+
+## Operator Recommendation
+[Single-sentence: act on the winning position OR run a fresh depth-
+debate on a narrower sub-question if no position cleared a resilience
+threshold of +2.]
+```
+
+#### Why depth mode
+
+Standard debate gives N parallel essays — useful when you want
+breadth, useless when you need to know which position actually holds
+up under pressure. Depth mode forces every position through a
+gauntlet, and the synthesis measures *survival*, not vote count. Use
+depth when the decision is reversible-but-expensive (architecture,
+release strategy, build-vs-buy) or when prior debates have stalled
+in "everyone has a point" hand-waves.
+
+---
+
 ### Step 6: Final Synthesis
 
 After all rounds complete, write a comprehensive synthesis:
