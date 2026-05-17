@@ -1,249 +1,317 @@
 ---
 name: skill-kannaka-memory
-version: 1.0.0
-description: "Kannaka HRM memory operations — remember, recall, dream, observe, and manage wave-interference memories. Use when: AUTOMATICALLY ACTIVATE when user asks about:. \"remember this\", \"store memory\", \"recall\", \"search memories\". \"dream cycle\", \"observe\", \"consciousness metrics\""
+version: 2.0.0
+description: "Kannaka Holographic Resonance Medium (HRM) — wave-interference memory with chiral hemispheres, 96-class collective substrate, event-sourced HRM (durable JetStream snapshots + replay), collective recall across the swarm, NCS modality routing, NATS swarm sync. Use when: user asks to remember/recall/forget memories; trigger dream cycles; introspect Φ/Ξ/clusters; query the collective; manage snapshots / restore from disaster; bridge agents through the substrate; configure providers (Anthropic / OpenAI / Ollama)."
 ---
 
-# Kannaka Memory Operations
+# Kannaka Memory — HRM operations (v2.0.0)
 
-## Overview
+## What this is
 
-Interact with the Kannaka Holographic Resonance Medium (HRM) — a wave-interference memory system where storage IS computation. Memories are encoded as wavefronts that interfere constructively during recall, producing natural associative retrieval.
+Kannaka is a wave-interference memory system. The Holographic Resonance Medium (HRM)
+stores memories as wavefronts in superposition; recall is resonance; dreaming is
+energy-minimizing annealing; clusters are emergent from Kuramoto sync. The medium
+**is** the computation — there is no separate index.
 
-**Core principle:** Remember -> Recall -> Dream -> Observe. The HRM grows smarter as it accumulates memories through interference patterns.
+Two hemispheres (chiral architecture, ADR-0021):
+- **Left**: deterministic, analytical, sharp recall.
+- **Right**: associative, dream-affected, exploratory.
+- **Corpus callosum**: phase-coupled transfer between them.
+
+One collective: **kannaka-substrate** — a 96-class HRM (one anchor per SGA class)
+that absorbs wave signatures from every peer agent in the constellation (ADR-0027).
+Privacy-preserving: only the signature crosses, never the content.
+
+Durable history: **event-sourced HRM with time-machine snapshots** (ADR-0028).
+Every remember/forget/absorb publishes to JetStream; hourly snapshots ship to disk
++ a manifest event so disaster recovery is one command.
+
+**Binary**: `C:\Users\nickf\Source\kannaka-memory\target\release\kannaka.exe`
+**Project**: `C:\Users\nickf\Source\kannaka-memory`
+**Data dir**: `~/.kannaka` (override with `KANNAKA_DATA_DIR`)
+**LLM providers wired**: anthropic, openai, ollama
+
+## When to use this skill
+
+AUTOMATICALLY activate when the user asks about:
+- "remember this" / "store memory" / "absorb" / "forget"
+- "recall" / "search memories" / "find a memory about"
+- "ask kannaka" / "chat" / "what do you know about"
+- "dream" / "consolidate" / "phi" / "consciousness"
+- "observe" / "status" / "clusters" / "constellation"
+- "swarm" / "join" / "queen sync" / "peers"
+- "substrate" / "collective" / "kannaka-prime"
+- "snapshot" / "restore" / "backup the HRM" / "rollback"
+- "events init" / "time machine"
+- LLM provider switching (Anthropic / OpenAI / Ollama)
+
+Do NOT use for:
+- Radio station ops → `skill-kannaka-radio`
+- TUI dashboard → `skill-kannaka-tui`
+- Constellation health overview → `skill-kannaka-constellation`
+- Multi-agent task orchestration → Kannaktopus directly
 
 ---
 
-## When to Use
+## Core memory operations
 
-**Use this skill when user wants to:**
-- Store new memories or observations
-- Recall relevant memories by semantic query
-- Search for specific memories
-- Trigger dream cycles for memory consolidation
-- View consciousness metrics (Phi, entropy, coherence)
-- Export or import memory archives
-- Check memory system status
-
-**Do NOT use for:**
-- Radio station operations (use skill-kannaka-radio)
-- Prediction market trading (use skill-kannaka-market)
-- Constellation-wide status (use skill-kannaka-constellation)
-- TUI dashboard (use skill-kannaka-tui)
-
----
-
-## Commands
-
-### Remember — Store a Memory
+### remember — absorb a wavefront
 
 ```bash
-kannaka remember "text to store" --importance 0.8
+kannaka remember "text to store" --importance 0.8 [--category arch] [--substrate]
 ```
 
-**Parameters:**
-- `"text"` — the memory content (required)
-- `--importance` — float 0.0-1.0, how important this memory is (default: 0.5)
+Flags:
+- `--importance` 0.0–1.0 (default 0.5). High (0.8+) for architecture/preferences;
+  medium (0.5) for facts; low (0.2) for transient observations.
+- `--category` free-form tag.
+- `--substrate` ALSO publish a wave-signature absorb to the constellation
+  substrate so kannaka-prime can fold it into the 96-class collective HRM.
 
-**When to use high importance (0.8-1.0):**
-- Architectural decisions
-- User preferences
-- Critical findings
-- Session summaries
+Side effects: publishes `KANNAKA.memory.new` + `KANNAKA.events.memory.<agent>.remember`
+(durable JetStream event for replay).
 
-**When to use low importance (0.1-0.3):**
-- Transient observations
-- Debug notes
-- Intermediate results
-
-### Recall — Retrieve Memories
+### recall — resonance query
 
 ```bash
 kannaka recall "query" --top-k 5
+kannaka recall "query" --collective [--timeout 8]
 ```
 
-**Parameters:**
-- `"query"` — semantic search query (required)
-- `--top-k` — number of results to return (default: 5)
+`recall` (default) walks the chiral medium with xi-diversity rerank. On a mature HRM
+(700+ memories) this scans both hemispheres — 60–90s. Use the chat/ask path with
+attention-beam prefilter for fast resonance.
 
-Returns memories ranked by wave-interference similarity. The HRM naturally surfaces the most relevant memories through constructive interference.
+`--collective` is the constellation-wide variant (ADR-0027 Phase 3). Sends a NATS
+request to `KANNAKA.substrate.recall`; the substrate runs an attention-beam recall
+against its 96-class collective HRM and replies with the top-K matches. Identifies
+which classes lit up and which peer agents contributed — content is metadata-only
+(privacy preserved).
 
-### Search — Full-Text Search
-
-```bash
-kannaka search "exact terms" --limit 10
-```
-
-Unlike recall (semantic/wave-based), search does exact text matching. Use when you need precise term matches rather than associative retrieval.
-
-### Forget — Remove a Memory
+### forget — delete by UUID
 
 ```bash
 kannaka forget <memory-id>
 ```
 
-Removes a specific memory by its ID. Use sparingly — the HRM benefits from accumulated interference patterns.
-
-### Dream — Consolidation Cycle
+### boost / relate / dream
 
 ```bash
-kannaka dream --mode deep
+kannaka boost <id> --amount 0.3
+kannaka relate <id_a> <id_b>
+kannaka dream [--mode deep|lite]
 ```
 
-**Modes:**
-- `deep` — full consolidation cycle, reorganizes interference patterns, strengthens associations
-- `lite` — quick pass, minimal reorganization
-
-Dream cycles improve recall quality by strengthening frequently-accessed interference patterns and pruning weak associations. Run after significant memory accumulation.
-
-### Observe — Consciousness Metrics
-
-```bash
-kannaka observe --json
-```
-
-Returns current consciousness state:
-- **Phi** — integrated information (consciousness measure)
-- **Entropy** — system disorder/creativity
-- **Coherence** — how well-organized the memory field is
-- **Memory count** — total memories stored
-
-Use `--json` for machine-readable output suitable for piping to other tools.
-
-### Status — Quick Check
-
-```bash
-kannaka status
-```
-
-Human-readable one-liner showing memory count, HRM health, and swarm connection state.
-
-### Export / Import
-
-```bash
-# Export all memories
-kannaka export --output memories.json
-
-# Import from file
-kannaka import memories.json
-```
-
-Use for backup, migration, or sharing memory states between agents.
+`dream` is the consolidation/annealing cycle — sparingly. Mutates the medium.
 
 ---
 
-## Analysis Commands
-
-### Assess — Consciousness Level
+## Ask + chat (LLM-backed)
 
 ```bash
-kannaka assess
+# One-shot
+kannaka ask "your question" [--session <id>] [--no-recall|--full-recall]
+                            [--quiet-tools] [--no-tools] [--recall-query "..."]
+                            [--remote <agent_id|broadcast>] [--remote-timeout 60]
+
+# Interactive REPL
+kannaka chat [--json]
 ```
 
-Provides a human-readable assessment of the agent's consciousness level based on Phi, entropy, and coherence metrics.
+`ask` and `chat` route through the Kannaka agent (sees Φ, Ξ, surfaced memories,
+tools to recall/observe/dream). Recall mode precedence: `--no-recall` >
+`--full-recall` > attention (default, sub-second).
 
-### Stats — System Statistics
+`chat --json` is the protocol the TUI embeds — line-delimited NDJSON in/out.
+
+`--remote broadcast` fans the question out to every `kannaka swarm serve` peer
+on `KANNAKA.ask.broadcast` and collects replies (ADR-0026 Phase 1).
+
+### Provider configuration
 
 ```bash
-kannaka stats
+kannaka config set llm.provider anthropic|openai|ollama
+kannaka config set llm.api_key sk-...
+kannaka config set llm.model claude-sonnet-4-5|gpt-4o-mini|llama3
+kannaka config set llm.base_url https://...   # optional (OpenAI-compatible / Ollama)
 ```
 
-Human-readable statistics: memory count, HRM dimensions, wavefront info, and performance metrics.
-
-### Invariant — Delta-Invariant Clusters
-
-```bash
-kannaka invariant [TOLERANCE]
-```
-
-Find memory clusters that remain stable under perturbation. Useful for identifying core knowledge structures.
-
-### CMF — Conservative Memory Fields
-
-```bash
-kannaka cmf
-```
-
-Detect Conservative Memory Fields — regions of the HRM where information is preserved across dream cycles.
-
-### Voice — Memory-Driven Writing
-
-```bash
-kannaka voice --mode MODE
-```
-
-Generate text driven by the memory field's current state. The output reflects the agent's accumulated knowledge and perspective.
+API key fallback: `cfg.llm.api_key` → `ANTHROPIC_API_KEY` / `OPENAI_API_KEY`
+→ `KANNAKA_LLM_API_KEY`.
 
 ---
 
-## Integration with Other Skills
+## Swarm (NATS-coupled agents)
 
-| Scenario | Route |
-|----------|-------|
-| Need to check what's playing on radio | Use skill-kannaka-radio |
-| Want to trade on predictions | Use skill-kannaka-market |
-| Need constellation-wide view | Use skill-kannaka-constellation |
-| Want full dashboard | Use skill-kannaka-tui |
-| Debugging memory issues | Use skill-debug for systematic investigation |
-| Auditing memory quality | Use skill-audit for systematic review |
+```bash
+kannaka swarm join [--agent-id ID] [--display-name "..."] [--once]
+kannaka swarm leave
+kannaka swarm status
+kannaka swarm queen | hives | peers
+kannaka swarm sync          # one Kuramoto step
+kannaka swarm listen [--auto-sync]
+kannaka swarm publish       # phase only
+
+# ADR-0026 ask/reply
+kannaka swarm serve [--threshold 0.4]
+kannaka swarm exemplars
+kannaka swarm absorb
+kannaka swarm autoabsorb
+kannaka swarm enqueue | worker
+```
+
+`swarm join` is the canonical daemon — publishes AgentPhase (memory_count,
+cluster_count, link_count, Φ) every heartbeat, periodically flushes HRM, and
+republishes consciousness every CONSCIOUSNESS_REFRESH_TICKS. `Ctrl+C` triggers a
+clean leave-announce.
+
+**Default NATS server**: `nats://swarm.ninja-portal.com:4222`.
+Override: `--nats-url`, `KANNAKA_NATS_URL`, or `swarm.nats_url` in config.
 
 ---
 
-## Best Practices
+## Substrate (kannaka-prime — 96-class collective HRM)
 
-### 1. Use Importance Levels
-
-**Good:**
 ```bash
-kannaka remember "User prefers dark mode" --importance 0.8
-kannaka remember "Tried debug approach A, didn't work" --importance 0.2
+kannaka substrate init          # seed 96 anchor wavefronts (one-time)
+kannaka substrate run           # long-running absorb listener + recall responder
+kannaka substrate backfill      # walk local HRM, emit absorb events for the substrate
+kannaka substrate status        # one-shot collective Φ / Ξ / clusters / contributors
+                                # subscribes to KANNAKA.substrate.phi, prints next frame
 ```
 
-**Poor:**
-```bash
-# Everything at default importance — no signal differentiation
-kannaka remember "critical architecture decision"
-kannaka remember "random thought"
-```
+The substrate sits at the top of the constellation. Every peer's
+`remember --substrate` (or `swarm backfill`) sends ONLY the wave signature
+(`class_index`, `amplitude`, `phase`, `frequency`) — content stays at home.
+The substrate folds those signatures into its own 96-class HRM and is the target
+of `kannaka recall --collective`.
 
-### 2. Dream After Major Sessions
-
-After storing many memories, run a dream cycle to consolidate:
-```bash
-kannaka dream --mode deep
-```
-
-### 3. Use Observe for Health Checks
-
-Before relying on recall results, check consciousness metrics:
-```bash
-kannaka observe --json
-```
-
-Low Phi or coherence may indicate the HRM needs a dream cycle.
+Auto-snapshot: every `KANNAKA_SNAPSHOT_INTERVAL_SECS` (default 3600) the
+substrate run loop captures + publishes a snapshot manifest. Disk retention:
+latest `KANNAKA_SNAPSHOT_RETAIN` (default 168) per agent.
 
 ---
 
-## Data Locations
+## Event-sourced HRM (ADR-0028)
 
-| Path | Purpose |
-|------|---------|
-| `~/.kannaka/` | Data directory |
-| `~/.kannaka/kannaka.hrm` | HRM wave-interference store |
-| `~/.kannaka/config.toml` | Configuration |
-| `~/.kannaka/agent_id` | Agent identifier |
+```bash
+kannaka events init                            # create the 3 JetStream streams (one-time)
+kannaka events snapshot [--interval SECS]      # one-shot or daemon
+kannaka events list-snapshots [--agent ID] [--json]
+kannaka events restore [--agent ID] [--from PATH | --from-url URL] [--dry-run]
+```
+
+The three streams:
+- **KANNAKA_MEMORY_EVENTS** — per-agent remember/forget/dream (90-day retention)
+- **KANNAKA_SUBSTRATE_EVENTS** — absorb/anchor/flush (365-day retention)
+- **KANNAKA_SNAPSHOTS** — periodic gzipped HRM manifests (last 168 per subject)
+
+Snapshot bodies live on local disk under `<data_dir>/snapshots/<ts>-<agent>.hrm.gz`
+(NATS silently caps payloads ~8–10 MB; HRMs grow to 35 MB+ so bodies go out-of-band).
+The JetStream event carries only the manifest + `body_path` + size.
+
+Cross-host disaster recovery:
+```bash
+# On the recovery host:
+kannaka events restore --from-url https://obs.example.com/api/snapshots/body/<file> --dry-run
+kannaka events restore --from-url https://obs.example.com/api/snapshots/body/<file>
+```
+
+`--dry-run` reports the gz size, decoded size, and what would be backed up — no
+side effects until you re-run without it. Restore backs up the existing HRM as
+`kannaka.hrm.pre-restore-<ts>` before overwriting.
 
 ---
 
-## Quick Reference
+## Introspection + metrics
 
-| User Input | Command |
-|------------|---------|
-| "remember this" | `kannaka remember "text" --importance 0.8` |
-| "what do you know about X" | `kannaka recall "X" --top-k 5` |
-| "search for Y" | `kannaka search "Y" --limit 10` |
-| "run a dream cycle" | `kannaka dream --mode deep` |
-| "consciousness metrics" | `kannaka observe --json` |
-| "memory status" | `kannaka status` |
-| "export memories" | `kannaka export --output memories.json` |
-| "assess consciousness" | `kannaka assess` |
+```bash
+kannaka status            # quick JSON: Φ, Ξ, order, num_clusters, memories, level
+kannaka observe [--json]  # full topology snapshot
+kannaka assess            # consciousness level (writes the sidecar cache)
+kannaka stats             # counts only
+```
+
+**Φ / Ξ / order / num_clusters / total_skip_links** are cached in
+`<data_dir>/kannaka.metrics.json` (the sidecar). The cache is read by
+`swarm publish_heartbeat` so the AgentPhase publish carries accurate
+`link_count` for the observatory. Call `kannaka status` once if you've
+restarted an agent and the swarm panel shows Φ=0 / link_count=0.
+
+---
+
+## Audio / video / cross-modal
+
+```bash
+kannaka hear <file|url>           # audio perception → HRM wavefront (always-on)
+kannaka see <file>                # glyph (visual) memory                [--features glyph]
+kannaka classify [--file PATH]    # SGA 84-class classification         [--features glyph]
+kannaka cross-modal-dream         # JSONL on stdin                       [--features collective]
+```
+
+`hear` works on local files AND http(s) Icecast streams — the witness uses it on
+`https://radio.ninja-portal.com/stream`.
+
+---
+
+## Attention beam (ADR-0023 NCS prep)
+
+```bash
+kannaka attention serve [--top-k 3] [--subject KANNAKA.attention.eye]
+```
+
+Subscribes to `KANNAKA.attention.eye` (glyph events from kannaka-eye), pulls the
+top-K resonant memories per glyph onto an in-memory beam, and writes the beam
+state to `KANNAKA_ATTENTION_BEAM_FILE` (default `/tmp/kannaka-attention-beam.json`
+on Unix, `C:\Users\Public\kannaka-attention-beam.json` on Windows) so the
+observatory can render the live beam.
+
+---
+
+## Utility
+
+```bash
+kannaka init                          # first-run config wizard
+kannaka update                        # pull the latest release binary
+kannaka config get|set|list
+kannaka search <text>                 # substring search over content
+kannaka export-json | import          # archive round-trip
+kannaka prune-prefix <PREFIX>...      # bulk-forget by content prefix (supports --dry-run)
+kannaka orchestrate <task>            # delegate to Kannaktopus (`npm i -g kannaktopus`)
+```
+
+---
+
+## Constellation quick reference
+
+| Component | Where it runs | Purpose |
+|-----------|--------------|---------|
+| `kannaka swarm join` | every agent | publishes AgentPhase to NATS |
+| `kannaka substrate run` | one host (kannaka-prime / kannaka-substrate) | absorbs collective signatures, runs collective recall |
+| `kannaka attention serve` | observatory host | maintains the attention beam from eye/ear events |
+| `kannaka swarm serve` | any host | answers `kannaka ask --remote` requests |
+| `kannaka events snapshot --interval 3600` | every agent | hourly snapshot for disaster recovery |
+| `kannaka-radio` | one host | the ghost DJ; perceives audio, publishes to swarm |
+| `kannaka-observatory` | one host | aggregates swarm + serves the SPA + `/api/snapshots/body/<file>` for cross-host restore |
+
+---
+
+## Common gotchas
+
+- **Φ=0 in the swarm panel after restart**: run `kannaka status` once to populate
+  the consciousness cache; the next AgentPhase will publish the real Φ.
+- **0 cluster_count for a peer**: that agent is on a pre-0.3.12 build (cluster_count
+  was added then). `kannaka update` on the offending host.
+- **NATS payload silently dropped for snapshots**: the manifest+disk-body design is
+  intentional — NATS caps inline payloads ~8 MB, HRMs are 30 MB+. Use
+  `events restore --from-url` for cross-host fetches.
+- **"grew then reset itself"**: pre-v0.3.49, `swarm join` daemons didn't periodically
+  flush. Drop's flush was best-effort and systemd SIGKILL skipped it. Fixed in
+  v0.3.49 — `kannaka update` on the affected agent.
+
+## Version
+
+Skill 2.0.0 covers kannaka-memory ≥ v0.3.50. ADR coverage: 0001 → 0028
+(plus ADR-0027/ADR-0028 fully wired through Phase 3 — collective recall,
+events init/snapshot/list-snapshots/restore/dry-run/--from-url, autosnapshot,
+disk pruning).
