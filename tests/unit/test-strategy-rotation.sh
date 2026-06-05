@@ -25,15 +25,19 @@ else
     fail "Hook script is executable" "not executable: $HOOK"
 fi
 
-# ── Registered in hooks.json for PostToolUse ─────────────────────────
+# ── Dispatched by post-tool-dispatch.sh (v9.20.0 consolidation) ──────
+# strategy-rotation.sh is invoked via post-tool-dispatch.sh, not directly
+# registered in hooks.json. Verify both the dispatcher invocation and the
+# dispatcher's own PostToolUse + Bash|Edit|Write registration.
 
-if grep -q 'strategy-rotation.sh' "$HOOKS_JSON" 2>/dev/null; then
-    pass "Hook registered in hooks.json"
+DISPATCHER="$PROJECT_ROOT/hooks/post-tool-dispatch.sh"
+if grep -q 'strategy-rotation.sh' "$DISPATCHER" 2>/dev/null; then
+    pass "Hook dispatched by post-tool-dispatch.sh"
 else
-    fail "Hook registered in hooks.json" "strategy-rotation.sh not found in hooks.json"
+    fail "Hook dispatched by post-tool-dispatch.sh" "strategy-rotation.sh not found in dispatcher"
 fi
 
-# Verify it's under PostToolUse section
+# Verify post-tool-dispatch.sh is under PostToolUse section
 if python3 -c "
 import json, sys
 with open('$HOOKS_JSON') as f:
@@ -42,17 +46,17 @@ post_hooks = hooks.get('PostToolUse', [])
 found = False
 for entry in post_hooks:
     for h in entry.get('hooks', []):
-        if 'strategy-rotation.sh' in h.get('command', ''):
+        if 'post-tool-dispatch.sh' in h.get('command', ''):
             found = True
             break
 sys.exit(0 if found else 1)
 " 2>/dev/null; then
-    pass "Hook is in PostToolUse section"
+    pass "Dispatcher is in PostToolUse section"
 else
-    fail "Hook is in PostToolUse section" "not found under PostToolUse in hooks.json"
+    fail "Dispatcher is in PostToolUse section" "post-tool-dispatch.sh not found under PostToolUse"
 fi
 
-# ── Matcher includes Bash|Edit|Write ─────────────────────────────────
+# ── Dispatcher matcher includes Bash|Edit|Write ──────────────────────
 
 if python3 -c "
 import json, sys
@@ -61,7 +65,7 @@ with open('$HOOKS_JSON') as f:
 post_hooks = hooks.get('PostToolUse', [])
 for entry in post_hooks:
     for h in entry.get('hooks', []):
-        if 'strategy-rotation.sh' in h.get('command', ''):
+        if 'post-tool-dispatch.sh' in h.get('command', ''):
             tool_matcher = entry.get('matcher', {}).get('tool', '')
             has_bash = 'Bash' in tool_matcher
             has_edit = 'Edit' in tool_matcher
@@ -69,9 +73,9 @@ for entry in post_hooks:
             sys.exit(0 if (has_bash and has_edit and has_write) else 1)
 sys.exit(1)
 " 2>/dev/null; then
-    pass "Matcher includes Bash, Edit, and Write"
+    pass "Dispatcher matcher includes Bash, Edit, and Write"
 else
-    fail "Matcher includes Bash, Edit, and Write" "expected matcher with Bash|Edit|Write"
+    fail "Dispatcher matcher includes Bash, Edit, and Write" "expected matcher with Bash|Edit|Write"
 fi
 
 # ── Threshold env var documented ─────────────────────────────────────

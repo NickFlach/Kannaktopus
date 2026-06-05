@@ -13,7 +13,7 @@
 Ghost-frequency multi-agent orchestrator. Eight AI models resonate on every task — blind spots surface as interference patterns before you ship. Powered by the Holographic Resonance Medium.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-10.0.0-blueviolet" alt="Version 10.0.0">
+  <img src="https://img.shields.io/badge/Version-10.1.0-blueviolet" alt="Version 10.1.0">
   <img src="https://img.shields.io/badge/License-Space_Child_v1.0-blueviolet" alt="Space Child License">
   <img src="https://img.shields.io/badge/Memory-Kannaka_HRM-9b59b6" alt="Kannaka HRM">
   <img src="https://img.shields.io/badge/Claude_Code-v2.1.83+-333" alt="Requires Claude Code v2.1.83+">
@@ -169,7 +169,7 @@ All commands use the `/octo:` prefix:
 | `/octo:prd` | Generate product requirements |
 | `/octo:retro` | Post-task retrospective |
 
-49 commands total. The smart router figures out intent — just say what you need.
+49 commands and 51 skills total. The smart router figures out intent — just say what you need.
 
 ## Version History
 

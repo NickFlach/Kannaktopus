@@ -1,3 +1,26 @@
+## [10.1.0] - 2026-06-04
+
+### Added
+
+- **PostToolUse dispatcher consolidation** — `hooks/post-tool-dispatch.sh` replaces three blanket `PostToolUse` hook entries (`context-awareness.sh`, `strategy-rotation.sh`, and one more) with a single dispatcher entry. Reduces per-tool-call hook spawn count and centralizes the sub-hook ordering. Hooks still under PostToolUse: dispatcher, quality-gate, task-completion, telemetry.
+- **CC v2.1.87–92 feature sync** — 13 new `SUPPORTS_*` capability flags, `PostCompact` hook event, and `bin/` executable layout.
+- **Headroom-inspired token compression** — `hooks/output-compressor.sh` + `bin/octo-compress` CLI for opportunistic context trimming.
+- **`docs/DEVELOPER.md`** — developer-reference content moved out of `CLAUDE.md` to reduce per-session context tokens.
+
+### Changed
+
+- `hooks/session-sync.sh` removed; its responsibilities are now inlined at the top of `hooks/session-start-memory.sh` (section 0).
+- Several hook scripts upgraded from `#!/bin/bash` to `#!/usr/bin/env bash` and gained `set -euo pipefail`.
+- `managed-settings.d/octopus-defaults.json` is now deployed dynamically on session start (when `SUPPORTS_MANAGED_SETTINGS_D` is set).
+
+### Fixed
+
+- HUD cache bypass on stale data.
+- Invalid manifest field in marketplace.json.
+- Heredoc injection vector in session-start.
+
+---
+
 ## [9.19.0] - 2026-04-03
 
 ### Added

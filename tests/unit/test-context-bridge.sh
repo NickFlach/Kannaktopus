@@ -94,10 +94,19 @@ fi
 # ── Registered in hooks.json ────────────────────────────────────────────────
 
 HOOKS_JSON="$PROJECT_ROOT/.claude-plugin/hooks.json"
-if grep -q 'context-awareness.sh' "$HOOKS_JSON" 2>/dev/null; then
-    pass "context-awareness.sh registered in hooks.json"
+DISPATCHER="$HOOKS_DIR/post-tool-dispatch.sh"
+# v9.20.0+: context-awareness.sh is consolidated under post-tool-dispatch.sh,
+# not registered directly in hooks.json. Verify the dispatcher invokes it.
+if grep -q 'context-awareness.sh' "$DISPATCHER" 2>/dev/null; then
+    pass "context-awareness.sh dispatched by post-tool-dispatch.sh"
 else
-    fail "context-awareness.sh registered in hooks.json" "not found in hooks.json"
+    fail "context-awareness.sh dispatched by post-tool-dispatch.sh" "not found in post-tool-dispatch.sh"
+fi
+
+if grep -q 'post-tool-dispatch.sh' "$HOOKS_JSON" 2>/dev/null; then
+    pass "post-tool-dispatch.sh registered in hooks.json (PostToolUse)"
+else
+    fail "post-tool-dispatch.sh registered in hooks.json" "not found in hooks.json"
 fi
 
 echo ""

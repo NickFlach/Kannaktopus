@@ -116,16 +116,14 @@ check_readme_structure() {
 
   info "\nValidating README.md structure..."
 
-  # Check required sections exist
+  # Required sections — themed README (v10.0+, cyberpunk/ghost rewrite)
   local required_sections=(
     "# Kannaktopus"
+    "## What Is This"
+    "## Ghost Architecture"
     "## Quickstart"
-    "## 8 Commands That Matter Most"
-    "## How It Works"
-    "## Documentation"
+    "## Commands"
     "## Attribution"
-    "## Contributing"
-    "## License"
   )
 
   for section in "${required_sections[@]}"; do
