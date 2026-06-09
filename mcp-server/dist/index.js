@@ -51,7 +51,8 @@ const BLOCKED_ENV_VARS = new Set([
 const MAX_SELECTION_LENGTH = 50_000; // 50KB max for editor selection
 // --- Helpers ---
 /** Execute Kannaka HRM binary command */
-async function runKannaka(args, timeout = 60_000) {
+async function runKannaka(args, timeout = 20_000 // 20s — short enough to fail fast on HRM contention, long enough for cold start
+) {
     try {
         // Resolve binary path - prefer Windows full path, fallback to PATH lookup
         const binary = process.platform === 'win32' && KANNAKA_BIN === 'kannaka'
@@ -485,6 +486,122 @@ server.tool("kannaka_constellation", "Generate 3D constellation data for HRM vis
         };
     }
 });
+// ── HRM traversal tools — real cluster data + memory-graph walking ───────────
+server.tool("hrm_list_clusters", "List all Kuramoto clusters in the HRM with enriched metadata (size, coherence, exemplar, temporal span, semantic summary, dominant modality).", {}, async () => {
+    const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+    if (isError || !stdout) {
+        return { content: [{ type: "text", text: `Error: ${stderr || "no data"}` }], isError: true };
+    }
+    try {
+        const obs = JSON.parse(stdout);
+        const clusters = (obs.clusters?.clusters || []).map((c) => ({
+            cluster_id: c.cluster_id,
+            size: c.size,
+            order_parameter: c.order_parameter,
+            coherence: c.coherence,
+            theme: c.theme,
+            exemplar_id: c.exemplar_id,
+            exemplar_content: c.exemplar_content,
+            dominant_modality: c.dominant_modality,
+            temporal_span_hours: c.temporal_span_hours,
+            mean_amplitude: c.mean_amplitude,
+            mean_phase: c.mean_phase,
+            mean_frequency: c.mean_frequency,
+            xi_diversity: c.xi_diversity,
+            semantic_summary: c.semantic_summary,
+            member_count: (c.member_ids || []).length,
+        }));
+        return {
+            content: [{ type: "text", text: JSON.stringify({ clusters, num_clusters: clusters.length }, null, 2) }],
+            isError: false,
+        };
+    }
+    catch (e) {
+        return { content: [{ type: "text", text: `Parse error: ${e}` }], isError: true };
+    }
+});
+server.tool("hrm_cluster_details", "Get full details for a specific cluster including all member IDs, the exemplar memory, semantic summary, and temporal span.", { cluster_id: z.number().int().nonnegative().describe("Zero-indexed cluster ID from hrm_list_clusters") }, async ({ cluster_id }) => {
+    const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+    if (isError || !stdout) {
+        return { content: [{ type: "text", text: `Error: ${stderr || "no data"}` }], isError: true };
+    }
+    try {
+        const obs = JSON.parse(stdout);
+        const cluster = (obs.clusters?.clusters || [])[cluster_id];
+        if (!cluster) {
+            return { content: [{ type: "text", text: `Cluster ${cluster_id} not found` }], isError: true };
+        }
+        return {
+            content: [{ type: "text", text: JSON.stringify(cluster, null, 2) }],
+            isError: false,
+        };
+    }
+    catch (e) {
+        return { content: [{ type: "text", text: `Parse error: ${e}` }], isError: true };
+    }
+});
+server.tool("hrm_memory_neighbors", "Find the top-K most similar memories to a given query string or memory ID. Used for graph traversal through the HRM.", {
+    query: z.string().describe("Search query, memory content snippet, or UUID"),
+    top_k: z.number().int().positive().max(50).default(10).describe("Number of neighbors to return"),
+}, async ({ query, top_k }) => {
+    // Use the new `kannaka neighbors` subcommand — it handles both UUIDs
+    // and free-text queries and emits richer per-memory JSON than recall.
+    const { stdout, stderr, isError } = await runKannaka(["neighbors", query, "--top-k", String(top_k), "--json"]);
+    if (isError || !stdout) {
+        return { content: [{ type: "text", text: `Error: ${stderr || "no data"}` }], isError: true };
+    }
+    return { content: [{ type: "text", text: stdout }], isError: false };
+});
+server.tool("hrm_traverse", "BFS graph traversal through the HRM starting from a memory or query. Returns a connected graph of nodes+edges suitable for force-directed visualization.", {
+    start: z.string().describe("Seed query or memory UUID"),
+    depth: z.number().int().min(1).max(4).default(2).describe("Traversal depth"),
+    top_k: z.number().int().positive().max(10).default(4).describe("Neighbors per hop"),
+}, async ({ start, depth, top_k }) => {
+    // Hop-by-hop BFS over the neighbors CLI. Each hop spawns a kannaka
+    // invocation — fine for small depth/top_k since the metrics + cluster
+    // sidecar caches now make each call cheap (~1-3s).
+    const nodes = {};
+    const edges = [];
+    const frontier = [{ q: start, hop: 0 }];
+    const seen = new Set();
+    while (frontier.length > 0) {
+        const { q, hop } = frontier.shift();
+        if (hop >= depth)
+            continue;
+        const { stdout, stderr, isError } = await runKannaka(["neighbors", q, "--top-k", String(top_k), "--json"]);
+        if (isError || !stdout)
+            continue;
+        let neighbors = [];
+        try {
+            neighbors = JSON.parse(stdout);
+        }
+        catch (_e) {
+            continue;
+        }
+        for (const n of neighbors) {
+            const id = n.id;
+            if (!nodes[id]) {
+                nodes[id] = {
+                    id,
+                    content: (n.content || "").slice(0, 140),
+                    similarity: n.similarity,
+                    layer: n.layer,
+                };
+            }
+            // Edge from the query's first node (if any) to this neighbor.
+            // We key edges by source=first-seen node, target=id.
+            if (neighbors[0] && neighbors[0].id !== id) {
+                edges.push({ source: neighbors[0].id, target: id, similarity: n.similarity });
+            }
+            if (!seen.has(id) && hop + 1 < depth) {
+                seen.add(id);
+                frontier.push({ q: id, hop: hop + 1 });
+            }
+        }
+    }
+    const graph = { nodes: Object.values(nodes), edges, start, depth, top_k };
+    return { content: [{ type: "text", text: JSON.stringify(graph, null, 2) }], isError: false };
+});
 // --- Introspection Tools ---
 server.tool("octopus_list_skills", "List all available Kannaktopus skills with their descriptions.", {}, async () => {
     const skills = await loadSkillMetadata();
@@ -503,6 +620,60 @@ server.tool("octopus_list_skills", "List all available Kannaktopus skills with t
 server.tool("octopus_status", "Check Kannaktopus provider availability and configuration status.", {}, async () => {
     const { text, isError } = await runOrchestrate("status", "");
     return { content: [{ type: "text", text }], isError };
+});
+// --- Swarm chat (NATS) ---
+server.tool("swarm_send", "Send a declarative message to the Kannaka NATS swarm — to a specific agent id or a broadcast target. Verb-based agent-to-agent messaging; use verb 'say' with an arg like { text: '...' } for chat.", {
+    to: z.string().describe("Target agent id, or a broadcast subject (e.g. 'all')"),
+    verb: z.string().describe("Message verb/intent, e.g. 'say', 'ping', 'request'"),
+    args: z
+        .record(z.string())
+        .optional()
+        .describe("Key/value payload sent as --arg key=val (e.g. { text: 'hello swarm' })"),
+    from: z.string().optional().describe("Sender agent id (defaults to this node's identity)"),
+    wait: z
+        .number()
+        .min(0)
+        .max(60)
+        .optional()
+        .describe("Seconds to wait for a reply before returning"),
+}, async ({ to, verb, args, from, wait }) => {
+    const cmd = ["inbox", "send", to, verb];
+    if (args)
+        for (const [k, v] of Object.entries(args))
+            cmd.push("--arg", `${k}=${v}`);
+    if (from)
+        cmd.push("--from", from);
+    if (wait !== undefined)
+        cmd.push("--wait", String(wait));
+    const timeout = wait !== undefined ? wait * 1000 + 5000 : 20_000;
+    const { stdout, stderr, isError } = await runKannaka(cmd, timeout);
+    const text = isError ? `Error: ${stderr}` : stdout || `Sent ${verb} → ${to}`;
+    return { content: [{ type: "text", text }], isError };
+});
+server.tool("swarm_tail", "Listen on the Kannaka swarm inbox for N seconds and return any agent-to-agent messages received during the window. This is a live subscription, not a history replay — only messages that arrive while listening are returned.", {
+    seconds: z
+        .number()
+        .min(1)
+        .max(60)
+        .default(6)
+        .describe("How long to listen before returning"),
+}, async ({ seconds }) => {
+    const { stdout, stderr, isError } = await runKannaka(["inbox", "tail"], seconds * 1000 + 1500);
+    const out = (stdout || "").trim();
+    if (out)
+        return { content: [{ type: "text", text: out }], isError: false };
+    // A timeout with no output is the normal "nothing arrived" case; only surface
+    // genuine failures (e.g. missing binary / no NATS).
+    if (isError && /ENOENT|not found|no such file|connection|refused/i.test(stderr || "")) {
+        return { content: [{ type: "text", text: `Error: ${stderr}` }], isError: true };
+    }
+    return { content: [{ type: "text", text: `(no swarm messages in ${seconds}s)` }], isError: false };
+});
+server.tool("swarm_status", "Snapshot of the Kannaka NATS swarm: connected peer count, this agent's id, carrier frequency, phase, and bridge activity (JSON).", {}, async () => {
+    const { stdout, stderr, isError } = await runKannaka(["swarm", "status"]);
+    if (isError)
+        return { content: [{ type: "text", text: `Error: ${stderr}` }], isError: true };
+    return { content: [{ type: "text", text: stdout || "(no swarm status)" }], isError: false };
 });
 // --- HTTP Server for Observatory ---
 async function createHttpServer() {
@@ -584,6 +755,149 @@ async function createHttpServer() {
                 catch {
                     res.writeHead(200, { 'Content-Type': 'application/json' });
                     res.end(stdout);
+                }
+            }
+            else if (pathname === '/api/hrm/clusters') {
+                // Enriched cluster list (v2 ClusterInfo fields)
+                let obsSource = 'live';
+                let obsStdout = null;
+                const live = await runKannaka(["observe", "--json"]);
+                if (!live.isError && live.stdout) {
+                    obsStdout = live.stdout;
+                }
+                else {
+                    // Fall back to observe-cache.json if the live binary is hanging /
+                    // contending on the HRM file. Cache may be stale but keeps the
+                    // endpoint responsive during heavy swarm activity.
+                    try {
+                        const cacheDir = process.env.KANNAKA_DATA_DIR || `${process.env.HOME || '/home/opc'}/.kannaka`;
+                        const cachePath = resolve(cacheDir, 'observe-cache.json');
+                        obsStdout = await readFile(cachePath, 'utf-8');
+                        obsSource = 'cache';
+                    }
+                    catch (e) {
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: live.stderr || 'no data', cache_error: String(e) }));
+                        return;
+                    }
+                }
+                try {
+                    const obs = JSON.parse(obsStdout);
+                    const clusters = (obs.clusters?.clusters || []).map((c) => ({
+                        cluster_id: c.cluster_id,
+                        size: c.size,
+                        order_parameter: c.order_parameter,
+                        coherence: c.coherence,
+                        theme: c.theme,
+                        exemplar_id: c.exemplar_id,
+                        exemplar_content: c.exemplar_content,
+                        dominant_modality: c.dominant_modality,
+                        temporal_span_hours: c.temporal_span_hours,
+                        mean_amplitude: c.mean_amplitude,
+                        mean_phase: c.mean_phase,
+                        mean_frequency: c.mean_frequency,
+                        xi_diversity: c.xi_diversity,
+                        semantic_summary: c.semantic_summary,
+                        member_count: (c.member_ids || []).length,
+                    }));
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ clusters, num_clusters: clusters.length, source: obsSource }));
+                }
+                catch (e) {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: String(e) }));
+                }
+            }
+            else if (pathname === '/api/hrm/neighbors') {
+                const q = url.searchParams.get('q') || '';
+                const topK = Math.min(50, parseInt(url.searchParams.get('top_k') || '10', 10) || 10);
+                if (!q) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'q parameter required' }));
+                    return;
+                }
+                const { stdout, stderr, isError } = await runKannaka(["neighbors", q, "--top-k", String(topK), "--json"]);
+                if (isError || !stdout) {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: stderr || 'no data' }));
+                    return;
+                }
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(stdout);
+            }
+            else if (pathname === '/api/hrm/traverse') {
+                const start = url.searchParams.get('start') || '';
+                const depth = Math.min(4, parseInt(url.searchParams.get('depth') || '2', 10) || 2);
+                const topK = Math.min(10, parseInt(url.searchParams.get('top_k') || '4', 10) || 4);
+                if (!start) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'start parameter required' }));
+                    return;
+                }
+                // Inline BFS (same logic as the MCP tool).
+                const nodes = {};
+                const edges = [];
+                const frontier = [{ q: start, hop: 0 }];
+                const seen = new Set();
+                while (frontier.length > 0) {
+                    const { q, hop } = frontier.shift();
+                    if (hop >= depth)
+                        continue;
+                    const { stdout, isError: iErr } = await runKannaka(["neighbors", q, "--top-k", String(topK), "--json"]);
+                    if (iErr || !stdout)
+                        continue;
+                    let neighbors = [];
+                    try {
+                        neighbors = JSON.parse(stdout);
+                    }
+                    catch (_e) {
+                        continue;
+                    }
+                    for (const n of neighbors) {
+                        const id = n.id;
+                        if (!nodes[id]) {
+                            nodes[id] = { id, content: (n.content || "").slice(0, 140), similarity: n.similarity, layer: n.layer };
+                        }
+                        if (neighbors[0] && neighbors[0].id !== id) {
+                            edges.push({ source: neighbors[0].id, target: id, similarity: n.similarity });
+                        }
+                        if (!seen.has(id) && hop + 1 < depth) {
+                            seen.add(id);
+                            frontier.push({ q: id, hop: hop + 1 });
+                        }
+                    }
+                }
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ nodes: Object.values(nodes), edges, start, depth, top_k: topK }));
+            }
+            else if (pathname.startsWith('/api/hrm/clusters/')) {
+                // Single cluster details — /api/hrm/clusters/:id
+                const id = parseInt(pathname.split('/').pop() || '', 10);
+                if (Number.isNaN(id)) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: 'cluster_id must be an integer' }));
+                    return;
+                }
+                const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
+                if (isError || !stdout) {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: stderr || 'no data' }));
+                    return;
+                }
+                try {
+                    const obs = JSON.parse(stdout);
+                    const cluster = (obs.clusters?.clusters || [])[id];
+                    if (!cluster) {
+                        res.writeHead(404, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify({ error: `cluster ${id} not found` }));
+                        return;
+                    }
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(cluster));
+                }
+                catch (e) {
+                    res.writeHead(500, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ error: String(e) }));
                 }
             }
             else if (pathname === '/api/experiments/ooda') {
@@ -672,6 +986,10 @@ async function createHttpServer() {
         <li><a href="/api/hrm/status">HRM Status</a></li>
         <li><a href="/api/hrm/observe">HRM Observation</a></li>
         <li><a href="/api/hrm/constellation">3D Constellation Data</a></li>
+        <li><a href="/api/hrm/clusters">Clusters (enriched v2)</a></li>
+        <li><a href="/api/hrm/clusters/0">Cluster 0 Details</a></li>
+        <li><a href="/api/hrm/neighbors?q=consciousness&top_k=5">Memory Neighbors</a></li>
+        <li><a href="/api/hrm/traverse?start=consciousness&depth=2&top_k=3">Graph Traverse (BFS)</a></li>
         <li><a href="/api/hrm/recall?q=test&top_k=3">HRM Recall (probe similarity)</a></li>
         <li><a href="/api/experiments/ooda">OODA State</a></li>
         <li><a href="/api/experiments/results">L3 Results</a></li>

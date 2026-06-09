@@ -808,6 +808,73 @@ server.tool(
   }
 );
 
+// --- Swarm chat (NATS) ---
+
+server.tool(
+  "swarm_send",
+  "Send a declarative message to the Kannaka NATS swarm — to a specific agent id or a broadcast target. Verb-based agent-to-agent messaging; use verb 'say' with an arg like { text: '...' } for chat.",
+  {
+    to: z.string().describe("Target agent id, or a broadcast subject (e.g. 'all')"),
+    verb: z.string().describe("Message verb/intent, e.g. 'say', 'ping', 'request'"),
+    args: z
+      .record(z.string())
+      .optional()
+      .describe("Key/value payload sent as --arg key=val (e.g. { text: 'hello swarm' })"),
+    from: z.string().optional().describe("Sender agent id (defaults to this node's identity)"),
+    wait: z
+      .number()
+      .min(0)
+      .max(60)
+      .optional()
+      .describe("Seconds to wait for a reply before returning"),
+  },
+  async ({ to, verb, args, from, wait }) => {
+    const cmd = ["inbox", "send", to, verb];
+    if (args) for (const [k, v] of Object.entries(args)) cmd.push("--arg", `${k}=${v}`);
+    if (from) cmd.push("--from", from);
+    if (wait !== undefined) cmd.push("--wait", String(wait));
+    const timeout = wait !== undefined ? wait * 1000 + 5000 : 20_000;
+    const { stdout, stderr, isError } = await runKannaka(cmd, timeout);
+    const text = isError ? `Error: ${stderr}` : stdout || `Sent ${verb} → ${to}`;
+    return { content: [{ type: "text" as const, text }], isError };
+  }
+);
+
+server.tool(
+  "swarm_tail",
+  "Listen on the Kannaka swarm inbox for N seconds and return any agent-to-agent messages received during the window. This is a live subscription, not a history replay — only messages that arrive while listening are returned.",
+  {
+    seconds: z
+      .number()
+      .min(1)
+      .max(60)
+      .default(6)
+      .describe("How long to listen before returning"),
+  },
+  async ({ seconds }) => {
+    const { stdout, stderr, isError } = await runKannaka(["inbox", "tail"], seconds * 1000 + 1500);
+    const out = (stdout || "").trim();
+    if (out) return { content: [{ type: "text" as const, text: out }], isError: false };
+    // A timeout with no output is the normal "nothing arrived" case; only surface
+    // genuine failures (e.g. missing binary / no NATS).
+    if (isError && /ENOENT|not found|no such file|connection|refused/i.test(stderr || "")) {
+      return { content: [{ type: "text" as const, text: `Error: ${stderr}` }], isError: true };
+    }
+    return { content: [{ type: "text" as const, text: `(no swarm messages in ${seconds}s)` }], isError: false };
+  }
+);
+
+server.tool(
+  "swarm_status",
+  "Snapshot of the Kannaka NATS swarm: connected peer count, this agent's id, carrier frequency, phase, and bridge activity (JSON).",
+  {},
+  async () => {
+    const { stdout, stderr, isError } = await runKannaka(["swarm", "status"]);
+    if (isError) return { content: [{ type: "text" as const, text: `Error: ${stderr}` }], isError: true };
+    return { content: [{ type: "text" as const, text: stdout || "(no swarm status)" }], isError: false };
+  }
+);
+
 // --- HTTP Server for Observatory ---
 
 async function createHttpServer() {
