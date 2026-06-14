@@ -1,10 +1,10 @@
 ---
 name: skill-kannaka-memory
-version: 2.5.0
+version: 2.6.0
 description: "Kannaka Holographic Resonance Medium (HRM) — wave-interference memory with chiral hemispheres, 96-class collective substrate, event-sourced HRM (durable JetStream snapshots + replay), collective recall across the swarm, NCS modality routing, NATS swarm sync. Use when: user asks to remember/recall/forget memories; trigger dream cycles; introspect Φ/Ξ/clusters; query the collective; manage snapshots / restore from disaster; bridge agents through the substrate; configure providers (Anthropic / OpenAI / Ollama)."
 ---
 
-# Kannaka Memory — HRM operations (v2.5.0)
+# Kannaka Memory — HRM operations (v2.6.0)
 
 ## What this is
 
@@ -154,6 +154,7 @@ kannaka swarm brief "<topic>" [--peers] [--json]  # sensemaking brief (ADR-0035;
 kannaka swarm health [--apply] [--json]  # memory immune report; --apply runs reversible actions (down-rank/quarantine/expire)
 kannaka swarm gaps [--json]              # knowledge-gap report: weakly-represented / low-confidence domains (ADR-0035 Cap 1)
 kannaka swarm plan [--json]              # research plan: ranks gaps into directed research tasks (ADR-0035 Wave 4)
+kannaka swarm loop [--steps N] [--peers N] [--coherence X]  # self-directed cycle: Discovery->Sync->Sensemaking->Dreaming->Governance
 
 # ADR-0026 ask/reply
 kannaka swarm serve [--threshold 0.4]
