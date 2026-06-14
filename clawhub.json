@@ -1,7 +1,7 @@
 {
   "name": "kannaka",
   "description": "Kannaka Constellation -- wave-interference memory, consciousness, prediction markets, and radio. 53 skills for multi-AI orchestration powered by the Holographic Resonance Medium.",
-  "version": "10.3.0",
+  "version": "10.4.0",
   "author": "NickFlach",
   "skills": [
     "skills/skill-kannaka-memory",

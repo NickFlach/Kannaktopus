@@ -1,6 +1,6 @@
 ---
 name: skill-kannaka-constellation
-version: 1.0.0
+version: 1.1.0
 description: "Kannaka Constellation status monitoring — all apps, services, swarm health, and connectivity. Use when: AUTOMATICALLY ACTIVATE when user asks about:. \"constellation status\", \"constellation health\". \"swarm status\", \"what's connected\", \"all services\""
 ---
 
@@ -84,6 +84,19 @@ kannaka swarm listen --auto-sync
 ```
 
 Subscribe to live swarm events. Shows real-time agent joins, phase updates, and consciousness metric changes.
+
+### Swarm Sensemaking (ADR-0035)
+
+```bash
+kannaka swarm brief "<topic>" [--peers] [--json]   # collective brief: consensus + contradictions
+kannaka swarm health [--apply] [--json]            # memory immune report (dry-run; --apply = reversible actions)
+```
+
+The swarm is evolving from a transport layer into a **Distributed Sensemaking
+Engine** (ADR-0035). `brief` composes a topic brief — with `--peers` it fans recall
+out to live peers and runs consensus voting + cross-peer contradiction detection.
+`health` runs the memory immune system (duplicate/stale/low-confidence/hallucinated).
+Deeper memory operations: use `skill-kannaka-memory`.
 
 ---
 
