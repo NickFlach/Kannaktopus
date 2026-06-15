@@ -93,7 +93,10 @@ async function runKannaka(
     // execFileAsync throws on non-zero exit or stderr. Check if stdout was captured.
     const execErr = error as { stdout?: string; stderr?: string; code?: string | number; killed?: boolean };
     console.error(`[kannaka] execFile error: code=${execErr.code} killed=${execErr.killed} hasStdout=${!!execErr.stdout} stderr=${execErr.stderr?.substring(0, 100)}`);
-    if (execErr.stdout && execErr.stdout.trim().length > 0) {
+    // Only treat captured stdout as success when the process was killed/timed out
+    // (partial-but-usable output). For an arbitrary non-zero exit the stdout may be
+    // garbage or an error envelope, so surface it as an error instead.
+    if (execErr.killed && execErr.stdout && execErr.stdout.trim().length > 0) {
       return { stdout: execErr.stdout, stderr: execErr.stderr || "", isError: false };
     }
     const msg = error instanceof Error ? error.message : String(error);
@@ -107,17 +110,28 @@ function generateConstellation(status: {total_memories: number, num_clusters: nu
   const memories = [];
   const clusters = [];
   const skipLinks = [];
-  const perCluster = Math.ceil(status.total_memories / status.num_clusters);
-  
-  for (let ci = 0; ci < status.num_clusters; ci++) {
-    const theta = Math.acos(1 - 2 * (ci + 0.5) / status.num_clusters);
+
+  // Coerce + validate divisor/count fields. A truthy non-numeric string (e.g. "0")
+  // would otherwise yield NaN coordinates that poison the whole constellation.
+  let nc = Number(status.num_clusters);
+  if (!Number.isFinite(nc) || nc < 1) nc = 1;
+  nc = Math.floor(nc);
+
+  let totalMemories = Number(status.total_memories);
+  if (!Number.isFinite(totalMemories) || totalMemories < 0) totalMemories = 0;
+  totalMemories = Math.floor(totalMemories);
+
+  const perCluster = Math.ceil(totalMemories / nc);
+
+  for (let ci = 0; ci < nc; ci++) {
+    const theta = Math.acos(1 - 2 * (ci + 0.5) / nc);
     const phi = PHI_ANGLE * ci;
     const r = 3.0;
     const cx = Math.sin(theta) * Math.cos(phi) * r;
     const cy = Math.cos(theta) * r * 0.6;
     const cz = Math.sin(theta) * Math.sin(phi) * r;
-    
-    const count = Math.min(perCluster, status.total_memories - memories.length);
+
+    const count = Math.min(perCluster, totalMemories - memories.length);
     clusters.push({ id: ci, count, coherence: status.phi, center: { x: cx, y: cy, z: cz } });
     
     for (let mi = 0; mi < count; mi++) {
@@ -232,20 +246,26 @@ async function loadSkillMetadata(): Promise<SkillMeta[]> {
 
   for (const file of files) {
     if (!file.endsWith(".md")) continue;
-    const content = await readFile(resolve(skillsDir, file), "utf-8");
-    const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
-    if (!frontmatterMatch) continue;
+    try {
+      const content = await readFile(resolve(skillsDir, file), "utf-8");
+      const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+      if (!frontmatterMatch) continue;
 
-    const fm = frontmatterMatch[1];
-    const name =
-      fm.match(/^name:\s*(.+)$/m)?.[1]?.trim().replace(/^["']|["']$/g, "") ??
-      file.replace(".md", "");
-    const description =
-      fm
-        .match(/^description:\s*["']?(.+?)["']?\s*$/m)?.[1]
-        ?.trim() ?? "No description";
+      const fm = frontmatterMatch[1];
+      const name =
+        fm.match(/^name:\s*(.+)$/m)?.[1]?.trim().replace(/^["']|["']$/g, "") ??
+        file.replace(".md", "");
+      const description =
+        fm
+          .match(/^description:\s*["']?(.+?)["']?\s*$/m)?.[1]
+          ?.trim() ?? "No description";
 
-    skills.push({ name, description, file });
+      skills.push({ name, description, file });
+    } catch (e) {
+      // An unreadable/locked .md must not crash octopus_list_skills — skip it.
+      console.error(`[skills] skipping unreadable file ${file}: ${e instanceof Error ? e.message : String(e)}`);
+      continue;
+    }
   }
 
   return skills;
@@ -783,18 +803,30 @@ server.tool(
   "List all available Kannaktopus skills with their descriptions.",
   {},
   async () => {
-    const skills = await loadSkillMetadata();
-    const listing = skills
-      .map((s) => `- **${s.name}**: ${s.description}`)
-      .join("\n");
-    return {
-      content: [
-        {
-          type: "text" as const,
-          text: `# Kannaktopus Skills (${skills.length} available)\n\n${listing}`,
-        },
-      ],
-    };
+    try {
+      const skills = await loadSkillMetadata();
+      const listing = skills
+        .map((s) => `- **${s.name}**: ${s.description}`)
+        .join("\n");
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: `# Kannaktopus Skills (${skills.length} available)\n\n${listing}`,
+          },
+        ],
+      };
+    } catch (e) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: `Error listing skills: ${e instanceof Error ? e.message : String(e)}`,
+          },
+        ],
+        isError: true,
+      };
+    }
   }
 );
 
@@ -829,6 +861,31 @@ server.tool(
       .describe("Seconds to wait for a reply before returning"),
   },
   async ({ to, verb, args, from, wait }) => {
+    // Validate identifiers so they can't smuggle CLI flags. `to`/`from`/`verb`
+    // are positional/flag values; restrict to a safe identifier charset.
+    const ID_RE = /^[\w.:@-]+$/;
+    for (const [label, value] of [["to", to], ["verb", verb], ["from", from]] as const) {
+      if (value !== undefined && !ID_RE.test(value)) {
+        return {
+          content: [{ type: "text" as const, text: `Error: invalid ${label} '${value}' — must match ${ID_RE}` }],
+          isError: true,
+        };
+      }
+    }
+
+    // Validate arg keys before interpolating into "--arg key=val". A key starting
+    // with '-' or containing '=' / whitespace could inject extra flags.
+    if (args) {
+      for (const [k] of Object.entries(args)) {
+        if (/^-/.test(k) || /[=\s]/.test(k)) {
+          return {
+            content: [{ type: "text" as const, text: `Error: invalid arg key '${k}' — keys cannot start with '-' or contain '=' or whitespace` }],
+            isError: true,
+          };
+        }
+      }
+    }
+
     const cmd = ["inbox", "send", to, verb];
     if (args) for (const [k, v] of Object.entries(args)) cmd.push("--arg", `${k}=${v}`);
     if (from) cmd.push("--from", from);
@@ -896,27 +953,40 @@ async function createHttpServer() {
     try {
       if (pathname === '/api/hrm/status') {
         const { stdout, stderr, isError } = await runKannaka(["status"]);
-        
+
         if (isError) {
           res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: stderr }));
           return;
         }
-        
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(stdout);
+
+        // Validate the CLI output is real JSON before serving it as JSON.
+        try {
+          const parsed = JSON.parse(stdout);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(parsed));
+        } catch (e) {
+          res.writeHead(502, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: `invalid JSON from kannaka status: ${String(e)}` }));
+        }
       }
       else if (pathname === '/api/hrm/observe') {
         const { stdout, stderr, isError } = await runKannaka(["observe", "--json"]);
-        
+
         if (isError) {
           res.writeHead(500, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: stderr }));
           return;
         }
-        
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(stdout);
+
+        try {
+          const parsed = JSON.parse(stdout);
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify(parsed));
+        } catch (e) {
+          res.writeHead(502, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: `invalid JSON from kannaka observe: ${String(e)}` }));
+        }
       }
       else if (pathname === '/api/hrm/constellation') {
         const { stdout: statusOutput, stderr, isError } = await runKannaka(["status"]);
@@ -945,7 +1015,7 @@ async function createHttpServer() {
       else if (pathname === '/api/hrm/recall') {
         // Similarity search via HRM resonance — GET /api/hrm/recall?q=<query>&top_k=<N>
         const query = url.searchParams.get('q') || '';
-        const topK = parseInt(url.searchParams.get('top_k') || '') || 5;
+        const topK = Math.max(1, Math.min(20, parseInt(url.searchParams.get('top_k') || '', 10) || 5));
 
         if (!query) {
           res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -954,7 +1024,7 @@ async function createHttpServer() {
         }
 
         const { stdout, stderr, isError } = await runKannaka(
-          ["recall", query, "--top-k", String(Math.min(topK, 20))]
+          ["recall", query, "--top-k", String(topK)]
         );
 
         if (isError) {
@@ -967,9 +1037,9 @@ async function createHttpServer() {
           const results = JSON.parse(stdout || '[]');
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify(results));
-        } catch {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(stdout);
+        } catch (e) {
+          res.writeHead(502, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: `invalid JSON from kannaka recall: ${String(e)}` }));
         }
       }
       else if (pathname === '/api/hrm/clusters') {
