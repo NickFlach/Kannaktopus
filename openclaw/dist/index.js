@@ -19,6 +19,15 @@ import { loadSkills } from "./skill-loader.js";
 const execFileAsync = promisify(execFile);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PLUGIN_ROOT = resolve(__dirname, "../..");
+// Security: these env vars must never be overridden via the OpenClaw client
+// environment. They control security hardening, sandbox modes, and autonomy
+// levels. Mirrors mcp-server/src/index.ts BLOCKED_ENV_VARS.
+const BLOCKED_ENV_VARS = new Set([
+    "OCTOPUS_SECURITY_V870",
+    "OCTOPUS_GEMINI_SANDBOX",
+    "OCTOPUS_CODEX_SANDBOX",
+    "CLAUDE_OCTOPUS_AUTONOMY",
+]);
 // --- Helpers ---
 function textResult(text) {
     return { content: [{ type: "text", text }], details: {} };
@@ -33,7 +42,7 @@ async function executeOrchestrate(command, prompt, flags = [], postFlags = []) {
     try {
         const { stdout, stderr } = await execFileAsync(orchestrateSh, args, {
             cwd: PLUGIN_ROOT,
-            timeout: 300000,
+            timeout: 300_000,
             env: {
                 // Security: only forward required env vars, not the full process.env
                 PATH: process.env.PATH,
@@ -41,21 +50,23 @@ async function executeOrchestrate(command, prompt, flags = [], postFlags = []) {
                 TMPDIR: process.env.TMPDIR,
                 SHELL: process.env.SHELL,
                 USER: process.env.USER,
-                // AI provider keys
-                OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-                GEMINI_API_KEY: process.env.GEMINI_API_KEY,
-                GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
-                OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
-                PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
+                // AI provider keys — only forward keys that are set (avoid injecting
+                // `undefined` into the child env), mirroring mcp-server/src/index.ts.
+                ...(process.env.OPENAI_API_KEY && { OPENAI_API_KEY: process.env.OPENAI_API_KEY }),
+                ...(process.env.GEMINI_API_KEY && { GEMINI_API_KEY: process.env.GEMINI_API_KEY }),
+                ...(process.env.GOOGLE_API_KEY && { GOOGLE_API_KEY: process.env.GOOGLE_API_KEY }),
+                ...(process.env.OPENROUTER_API_KEY && { OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY }),
+                ...(process.env.PERPLEXITY_API_KEY && { PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY }),
                 // Ollama Anthropic-compatible path (ANTHROPIC_BASE_URL=http://localhost:11434)
-                ANTHROPIC_BASE_URL: process.env.ANTHROPIC_BASE_URL,
-                ANTHROPIC_AUTH_TOKEN: process.env.ANTHROPIC_AUTH_TOKEN,
+                ...(process.env.ANTHROPIC_BASE_URL && { ANTHROPIC_BASE_URL: process.env.ANTHROPIC_BASE_URL }),
+                ...(process.env.ANTHROPIC_AUTH_TOKEN && { ANTHROPIC_AUTH_TOKEN: process.env.ANTHROPIC_AUTH_TOKEN }),
                 // GitHub Copilot CLI auth (checked in precedence order by copilot CLI)
-                COPILOT_GITHUB_TOKEN: process.env.COPILOT_GITHUB_TOKEN,
-                GH_TOKEN: process.env.GH_TOKEN,
-                GITHUB_TOKEN: process.env.GITHUB_TOKEN,
-                // Octopus config
-                ...Object.fromEntries(Object.entries(process.env).filter(([k]) => k.startsWith("CLAUDE_OCTOPUS_") || k.startsWith("OCTOPUS_"))),
+                ...(process.env.COPILOT_GITHUB_TOKEN && { COPILOT_GITHUB_TOKEN: process.env.COPILOT_GITHUB_TOKEN }),
+                ...(process.env.GH_TOKEN && { GH_TOKEN: process.env.GH_TOKEN }),
+                ...(process.env.GITHUB_TOKEN && { GITHUB_TOKEN: process.env.GITHUB_TOKEN }),
+                // Octopus config — explicit allowlist (never forward security-governing vars)
+                ...Object.fromEntries(Object.entries(process.env).filter(([k]) => (k.startsWith("CLAUDE_OCTOPUS_") || k.startsWith("OCTOPUS_")) &&
+                    !BLOCKED_ENV_VARS.has(k))),
                 CLAUDE_OCTOPUS_MCP_MODE: "true",
                 CLAUDE_OCTOPUS_OPENCLAW: "true",
             },
