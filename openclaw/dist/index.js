@@ -75,7 +75,9 @@ async function executeOrchestrate(command, prompt, flags = [], postFlags = []) {
     }
     catch (error) {
         const msg = error instanceof Error ? error.message : String(error);
-        return `Error: ${msg}`;
+        // Sanitize potential API key leaks from error messages
+        const sanitized = msg.replace(/[A-Za-z_]+KEY=[^\s]+/g, "[REDACTED]");
+        return `Error: ${sanitized}`;
     }
 }
 const WORKFLOW_DEFS = [

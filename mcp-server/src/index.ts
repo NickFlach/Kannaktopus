@@ -463,7 +463,9 @@ server.tool(
   async ({ filename, selection, cursor_line, language_id, workspace_root }) => {
     // Validate paths — reject path traversal attempts
     for (const [label, value] of [["filename", filename], ["workspace_root", workspace_root]] as const) {
-      if (value && /\.\.[\\/]/.test(value)) {
+      // Block a `..` path segment in any position — `../x`, `x/..`, a bare
+      // `..`, or `x\..\y` — not just `..` immediately followed by a slash.
+      if (value && /(^|[\\/])\.\.([\\/]|$)/.test(value)) {
         return {
           content: [{ type: "text" as const, text: `Error: ${label} cannot contain '..'` }],
           isError: true,

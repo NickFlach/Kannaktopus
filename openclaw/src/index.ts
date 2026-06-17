@@ -134,7 +134,9 @@ async function executeOrchestrate(
     return stdout || stderr || "Command completed with no output.";
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
-    return `Error: ${msg}`;
+    // Sanitize potential API key leaks from error messages
+    const sanitized = msg.replace(/[A-Za-z_]+KEY=[^\s]+/g, "[REDACTED]");
+    return `Error: ${sanitized}`;
   }
 }
 

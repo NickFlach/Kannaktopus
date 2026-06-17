@@ -357,7 +357,9 @@ server.tool("octopus_set_editor_context", "Inject IDE editor state (active file,
 }, async ({ filename, selection, cursor_line, language_id, workspace_root }) => {
     // Validate paths — reject path traversal attempts
     for (const [label, value] of [["filename", filename], ["workspace_root", workspace_root]]) {
-        if (value && /\.\.[\\/]/.test(value)) {
+        // Block a `..` path segment in any position — `../x`, `x/..`, a bare
+        // `..`, or `x\..\y` — not just `..` immediately followed by a slash.
+        if (value && /(^|[\\/])\.\.([\\/]|$)/.test(value)) {
             return {
                 content: [{ type: "text", text: `Error: ${label} cannot contain '..'` }],
                 isError: true,

@@ -102,7 +102,12 @@ function assertWithinDirectory(filePath: string, directory: string): void {
  */
 export async function loadSkills(pluginRoot: string): Promise<SkillMetadata[]> {
   const skillsDir = resolve(pluginRoot, ".claude/skills");
-  const files = await readdir(skillsDir);
+  let files: string[];
+  try {
+    files = await readdir(skillsDir);
+  } catch {
+    return [];
+  }
   const skills: SkillMetadata[] = [];
 
   for (const file of files) {
@@ -138,7 +143,12 @@ export async function loadCommands(
   pluginRoot: string
 ): Promise<SkillMetadata[]> {
   const commandsDir = resolve(pluginRoot, ".claude/commands");
-  const files = await readdir(commandsDir);
+  let files: string[];
+  try {
+    files = await readdir(commandsDir);
+  } catch {
+    return [];
+  }
   const commands: SkillMetadata[] = [];
 
   for (const file of files) {

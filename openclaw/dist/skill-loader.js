@@ -82,7 +82,13 @@ function assertWithinDirectory(filePath, directory) {
  */
 export async function loadSkills(pluginRoot) {
     const skillsDir = resolve(pluginRoot, ".claude/skills");
-    const files = await readdir(skillsDir);
+    let files;
+    try {
+        files = await readdir(skillsDir);
+    }
+    catch {
+        return [];
+    }
     const skills = [];
     for (const file of files) {
         if (!file.endsWith(".md"))
@@ -111,7 +117,13 @@ export async function loadSkills(pluginRoot) {
  */
 export async function loadCommands(pluginRoot) {
     const commandsDir = resolve(pluginRoot, ".claude/commands");
-    const files = await readdir(commandsDir);
+    let files;
+    try {
+        files = await readdir(commandsDir);
+    }
+    catch {
+        return [];
+    }
     const commands = [];
     for (const file of files) {
         if (!file.endsWith(".md"))
