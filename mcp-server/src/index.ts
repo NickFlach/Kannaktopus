@@ -31,6 +31,7 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readFile, readdir, access } from "node:fs/promises";
 import { createServer, type IncomingMessage } from "node:http";
+import { timingSafeEqual } from "node:crypto";
 
 const execFileAsync = promisify(execFile);
 
@@ -936,6 +937,20 @@ server.tool(
 
 // --- HTTP Server for Observatory ---
 
+// Constant-time bearer-token check for the optional HTTP observatory server.
+// Returns true only when the request carries `Authorization: Bearer <token>`
+// exactly matching `expected`. Length is compared first because
+// timingSafeEqual throws on unequal-length buffers.
+function isAuthorized(authHeader: string | undefined, expected: string): boolean {
+  if (!authHeader) return false;
+  const prefix = "Bearer ";
+  if (!authHeader.startsWith(prefix)) return false;
+  const provided = Buffer.from(authHeader.slice(prefix.length));
+  const expectedBuf = Buffer.from(expected);
+  if (provided.length !== expectedBuf.length) return false;
+  return timingSafeEqual(provided, expectedBuf);
+}
+
 async function createHttpServer() {
   const server = createServer(async (req, res) => {
     const url = new URL(req.url || "", `http://${req.headers.host || "localhost"}`);
@@ -951,7 +966,23 @@ async function createHttpServer() {
       res.end();
       return;
     }
-    
+
+    // Bearer auth: when OCTO_HTTP_TOKEN is set, every /api/* request must
+    // present a matching `Authorization: Bearer <token>`. When it is unset the
+    // server binds to 127.0.0.1 only (see main()), so no token gate is applied
+    // to preserve the existing local workflow.
+    const authToken = process.env.OCTO_HTTP_TOKEN;
+    if (authToken && pathname.startsWith('/api/')) {
+      if (!isAuthorized(req.headers.authorization, authToken)) {
+        res.writeHead(401, {
+          'Content-Type': 'application/json',
+          'WWW-Authenticate': 'Bearer',
+        });
+        res.end(JSON.stringify({ error: 'unauthorized' }));
+        return;
+      }
+    }
+
     try {
       if (pathname === '/api/hrm/status') {
         const { stdout, stderr, isError } = await runKannaka(["status"]);
@@ -1293,9 +1324,17 @@ async function main() {
   const httpPort = process.env.HTTP_PORT ? parseInt(process.env.HTTP_PORT, 10) : undefined;
   if (httpPort) {
     const httpServer = await createHttpServer();
-    httpServer.listen(httpPort, () => {
-      console.error(`Kannaktopus Observatory server listening on port ${httpPort}`);
-    });
+    // With a token set the server is safe to expose on all interfaces; without
+    // one it binds to loopback only so it can never be accidentally reachable.
+    if (process.env.OCTO_HTTP_TOKEN) {
+      httpServer.listen(httpPort, () => {
+        console.error(`Kannaktopus Observatory server listening on port ${httpPort} (bearer auth required)`);
+      });
+    } else {
+      httpServer.listen(httpPort, '127.0.0.1', () => {
+        console.error(`Kannaktopus Observatory server listening on 127.0.0.1:${httpPort} — WARNING: OCTO_HTTP_TOKEN not set, so the server is localhost-only. Set OCTO_HTTP_TOKEN to enable authenticated access from other hosts.`);
+      });
+    }
   }
   
   // SECURITY: stdio transport is scoped to the spawning process (local IDE only).

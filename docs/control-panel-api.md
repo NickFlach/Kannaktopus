@@ -119,6 +119,31 @@ If the constellation operators ever tighten the anon ACL on
 `KANNAKA.ask.>`, the Console will need to set `NATS_USER` /
 `NATS_PASSWORD` env vars too — single change, no redesign.
 
+## HTTP observatory API (local)
+
+Separate from the NATS command channel, the MCP server can expose a small
+read-only HTTP API for the observatory when `HTTP_PORT` is set (it serves
+`/api/hrm/*` — `status`, `observe`, `constellation`, `recall`, `clusters`,
+`neighbors`, `traverse`). This surface shells out to the local `kannaka`
+binary, so it must not be reachable by untrusted clients.
+
+Authentication is controlled by the `OCTO_HTTP_TOKEN` env var:
+
+| `OCTO_HTTP_TOKEN` | Bind address      | Auth requirement                                   |
+| ----------------- | ----------------- | -------------------------------------------------- |
+| **set**           | all interfaces    | every `/api/*` request must send `Authorization: Bearer <token>`; otherwise `401`. |
+| **unset**         | `127.0.0.1` only  | no token gate — the server is only reachable from the local host, and a startup warning is logged. |
+
+The token comparison is constant-time. Set a token whenever the port is
+exposed beyond the local host:
+
+```bash
+OCTO_HTTP_TOKEN="$(openssl rand -hex 32)" HTTP_PORT=8787 node mcp-server/dist/index.js
+
+curl -s http://<host>:8787/api/hrm/status \
+  -H "Authorization: Bearer $OCTO_HTTP_TOKEN"
+```
+
 ## Versioning policy
 
 The `cmd` strings are stable. New commands are additive — old ones won't
