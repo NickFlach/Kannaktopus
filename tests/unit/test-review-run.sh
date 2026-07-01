@@ -16,14 +16,18 @@ TEST_COUNT=0; PASS_COUNT=0; FAIL_COUNT=0
 pass() { TEST_COUNT=$((TEST_COUNT+1)); PASS_COUNT=$((PASS_COUNT+1)); echo "PASS: $1"; }
 fail() { TEST_COUNT=$((TEST_COUNT+1)); FAIL_COUNT=$((FAIL_COUNT+1)); echo "FAIL: $1 — $2"; }
 
+# NOTE: use a here-string, not `echo "$output" | grep -q`. With `set -o pipefail`,
+# `grep -q` short-circuits on the first match and closes the pipe, so `echo` gets
+# SIGPIPE ("write error: Broken pipe") on large inputs and pipefail turns the whole
+# pipeline into a failure — a spurious FAIL that only shows up on big files in CI.
 assert_contains() {
   local output="$1" pattern="$2" label="$3"
-  echo "$output" | grep -qE "$pattern" && pass "$label" || fail "$label" "missing: $pattern"
+  grep -qE "$pattern" <<<"$output" && pass "$label" || fail "$label" "missing: $pattern"
 }
 
 assert_not_contains() {
   local output="$1" pattern="$2" label="$3"
-  echo "$output" | grep -qE "$pattern" && fail "$label" "should not contain: $pattern" || pass "$label"
+  grep -qE "$pattern" <<<"$output" && fail "$label" "should not contain: $pattern" || pass "$label"
 }
 
 # ── parse_review_md fixture ───────────────────────────────────────────────────

@@ -335,6 +335,17 @@ Read the synthesis file and present:
 
 **After user confirms, STEP 6: Implement the solution using Write/Edit tools**
 
+### Self-Regulation for Iterative Development
+
+When the develop phase runs iterative build-test cycles, self-regulation prevents infinite loops (mirrors the guardrails in `skill-iterative-loop`):
+
+- **WTF score**: Each iteration is scored for forward progress. Repeated failures, reverts, and stalls increase the score.
+- **Hard cap**: Maximum 50 iterations before forced stop — no exceptions.
+- **Configurable weights**: Tunable via `~/.kannaktopus/loop-config.conf` (WINDOW_SIZE, REVERT_PENALTY, WTF_THRESHOLD); falls back to defaults when the file is absent.
+- **Sliding window**: Only the last N iterations count toward the WTF score, so early struggles don't poison later progress.
+
+If the WTF score exceeds the threshold, the workflow stops and presents findings rather than continuing to loop.
+
 **Include attribution:**
 ```
 ---
