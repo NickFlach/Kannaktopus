@@ -1,7 +1,7 @@
 {
   "name": "octo",
-  "version": "10.2.0",
-  "description": "v10.2.0 — Multi-LLM orchestration for Claude Code: Double Diamond workflows, provider routing, safety gates, discipline mode (8 auto-invoke gates), two-stage review + verification gate, and Cursor + OpenCode support. 32 personas, 49 commands, 54 skills. Use '/octo:auto' or just describe what you need. Run /octo:setup.",
+  "version": "10.3.0",
+  "description": "v10.3.0 — Multi-LLM orchestration for Claude Code: Double Diamond workflows, provider routing, safety gates, discipline mode (8 auto-invoke gates), two-stage review + verification gate, and Cursor + OpenCode support. 32 personas, 49 commands, 62 skills. Use '/octo:auto' or just describe what you need. Run /octo:setup.",
   "author": {
     "name": "Nick Flach"
   },

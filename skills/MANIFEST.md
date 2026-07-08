@@ -1,20 +1,20 @@
 # Kannaktopus Skills Manifest
 
-> Catalog of all 53 skills in the Kannaktopus constellation orchestrator.
-> Generated: 2026-04-14
+> Catalog of all 61 skills in the Kannaktopus constellation orchestrator.
+> Generated: 2026-04-14 · Updated: 2026-07-07
 
 ## Summary
 
 | Category | Count |
 |----------|-------|
 | Kannaka Constellation | 7 |
-| Orchestration Flows | 5 |
-| Development | 16 |
-| Knowledge & Content | 8 |
-| Quality & Review | 7 |
+| Orchestration Flows | 6 |
+| Development | 18 |
+| Knowledge & Content | 9 |
+| Quality & Review | 11 |
 | System & Operations | 4 |
 | Architecture & Planning | 6 |
-| **Total** | **53** |
+| **Total** | **61** |
 
 ---
 
@@ -45,6 +45,7 @@ Double Diamond workflow phases using multi-AI consensus (Claude + Codex + Gemini
 | `flow-develop` | Multi-AI implementation (Develop phase) — divergent building | active |
 | `flow-deliver` | Multi-AI validation and review (Deliver phase) — convergent quality check | active |
 | `flow-spec` | NLSpec authoring from multi-AI research | active |
+| `flow-parallel` | Decompose and execute large changes/migrations in parallel with quality gates | active |
 
 ---
 
@@ -70,6 +71,8 @@ Skills for coding, debugging, testing, and shipping.
 | `skill-resume` | Pick up where you left off from previous session | active |
 | `skill-copilot-provider` | GitHub Copilot CLI as optional zero-cost provider | active |
 | `skill-cost-projections` | Project remaining workflow cost, warn on budget overruns | active |
+| `skill-ship` | Package and finalize completed work for delivery | active |
+| `skill-factory` | Run a full build-and-ship pipeline from a spec | active |
 
 ---
 
@@ -87,6 +90,7 @@ Skills for research, writing, content analysis, and document management.
 | `skill-doc-delivery` | Convert markdown to DOCX, PPTX, XLSX | active |
 | `skill-doc-sync` | Post-ship doc sync across project markdown | active |
 | `skill-debate` | Structured four-way AI debates | active |
+| `octopus-research` | Thorough multi-source research and synthesis for complex topics | active |
 
 ---
 
@@ -103,6 +107,10 @@ Skills for auditing, security, and quality assurance.
 | `skill-extract` | Reverse-engineer design systems from live products | active |
 | `skill-design-lineage` | Persist design documents with branch tracking | active |
 | `skill-prd` | AI-optimized PRD creation with 100-point scoring | active |
+| `octopus-security-audit` | OWASP compliance, vulnerability scanning, adversarial red-team testing | active |
+| `octopus-ui-ux-design` | Design UI/UX systems: style guides, palettes, typography, component specs | active |
+| `skill-verification-gate` | Evidence before claims — verify before declaring work complete | active |
+| `skill-review-response` | Handle code-review feedback: verify before implementing, push back when wrong | active |
 
 ---
 
